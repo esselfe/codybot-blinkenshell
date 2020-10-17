@@ -93,10 +93,10 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize "
 		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "about", 5) == 0) {
 			if (strcmp(nick, "codybot")==0)
 				Msg("codybot is an IRC bot written in C by esselfe, "
-					"sources @ https://github.com/cody1632/codybot");
+					"sources @ https://github.com/cody1632/codybot-blinkenshell");
 			else {
 				sprintf(buffer, "codybot(%s) is an IRC bot written in C by esselfe, "
-					"sources @ https://github.com/cody1632/codybot\n", nick);
+					"sources @ https://github.com/cody1632/codybot-blinkenshell", nick);
 				Msg(buffer);
 			}
 		}
