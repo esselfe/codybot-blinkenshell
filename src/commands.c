@@ -488,67 +488,59 @@ void Weather(struct raw_line *rawp) {
 	}
 	memset(rawp->text, 0, strlen(rawp->text));
 
-	sprintf(buffer, "wget -t 1 -T 24 https://wttr.in/%s -O /tmp/codybot-weather-%s.html\n", city, city);
+	char filename[1024];
+	sprintf(filename, "/tmp/codybot-weather-%s", city);
+	sprintf(buffer, "wget -t 1 -T 24 https://wttr.in/%s?format=%%C:%%t:%%f:%%w:%%p -O %s", city, filename);
 	system(buffer);
 
-	sprintf(buffer,
-		"sed -n \"3p\" /tmp/codybot-weather-%s.html | sed 's/_//g;s/-//g;s/\\.//g;s/`//g;s/\\\"//g;s///g;s/\\[0m//g;s/\\[38\\;5\\;[0-9][0-9][0-9]m//g;s/\\[38\\;5\\;240\\;1m//g;s@\\\\@@g;s@/@@g;s/^ *//g' > /tmp/codybot-weather-%s.temp", city, city);
-	system(buffer);
-
-	sprintf(buffer, 
-		"sed -n \"4p\" /tmp/codybot-weather-%s.html | sed 's/-\\.//g;s/\\.//g;s/--//g;s/\\[38\\;5\\;240\\;1m//g;s/\\[0m//g;s/\\[38\\;5\\;[0-9][0-9][0-9]m//g' | grep -o '[-0-9]*' > /tmp/codybot-weather-%s.temp2", city, city);
-	system(buffer);
-
-	sprintf(buffer, "sed -i '/^-$/d' /tmp/codybot-weather-%s.temp2", city);
-	system(buffer);
-
-	char temp[1024], temp2[1024];
-	sprintf(buffer, "/tmp/codybot-weather-%s.temp", city);
-	FILE *fp = fopen(buffer, "r");
-	if (fp == NULL) {
-		sprintf(buffer_cmd, "codybot::Weather() error: Cannot open %s: %s", buffer, strerror(errno));
-		Msg(buffer_cmd);
-		return;
-	}
-	fgets(temp2, 1023, fp);
-	fclose(fp);
-	
-	// remove blanks at the start of the line
-	// ie "             Partly cloudy"
-	cp = temp2;
-	cnt = 0;
-	while (1) {
-		if (*cp == '\n' || *cp == '\0')
-			break;
-		else if (cnt == 0 && (*cp == ' ' || *cp == '\t' || *cp == 27)) {
-			++cp;
-			continue;
-		}
-		else {
-			temp[cnt] = *cp;
-			++cnt;
-			++cp;
-		}
-	}
-	temp[cnt+1] = '\0';
-
-	sprintf(buffer, "/tmp/codybot-weather-%s.temp2", city);
-	fp = fopen(buffer, "r");
-	if (fp == NULL) {
-		sprintf(buffer_cmd, "codybot::Weather() error: Cannot open %s: %s", buffer, strerror(errno));
-		Msg(buffer_cmd);
-	}
-	fgets(temp2, 1023, fp);
-	fclose(fp);
-
-	temp2[strlen(temp2)-1] = ' ';
+	/*temp2[strlen(temp2)-1] = ' ';
 	int deg_celsius = atoi(temp2);
 	int deg_farenheit = (deg_celsius * 9 / 5) + 32;
 	sprintf(buffer_cmd, "%s: %s %dC/%dF", city, temp, deg_celsius, deg_farenheit);
-	Msg(buffer_cmd);
+	Msg(buffer_cmd);*/
+
+	FILE *fp = fopen(filename, "r");
+    if (fp == NULL) {
+        sprintf(buffer, "codybot error: Cannot open %s: %s", filename, strerror(errno));
+        Msg(buffer);
+        return;
+    }
+    fseek(fp, 0, SEEK_END);
+    unsigned long filesize = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    char *str = malloc(filesize+1);
+    char *str2 = malloc(filesize+1);
+    fgets(str, filesize, fp);
+    cnt = 0;
+    int cnt2 = 0;
+    while (1) {
+        if (str[cnt] == '\0') {
+            str2[cnt2] = '\n';
+            str2[cnt2+1] = '\0';
+            break;
+        }
+        else if (str[cnt] == -62 && str[cnt+1] == -80) {
+            str2[cnt2] = '*';
+            cnt += 2;
+            ++cnt2;
+            continue;
+        }
+		else if (str[cnt] < 32 || str[cnt] > 126) {
+			++cnt;
+			continue;
+		}
+
+        str2[cnt2] = str[cnt];
+        ++cnt;
+        ++cnt2;
+    }
+    sprintf(buffer, "%s: %s", city, str2);
+    Msg(buffer);
+	free(str);
+	free(str2);
 	
 	if (!debug) {
-		sprintf(buffer, "rm /tmp/codybot-weather-%s.*\n", city);
+		sprintf(buffer, "rm %s", filename);
 		system(buffer);
 		memset(buffer, 0, 4096);
 	}
