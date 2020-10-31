@@ -509,16 +509,28 @@ void Weather(struct raw_line *rawp) {
     unsigned long filesize = ftell(fp);
     fseek(fp, 0, SEEK_SET);
     char *str = malloc(filesize+1);
-    char *str2 = malloc(filesize+1);
+    char *str2 = malloc(filesize+128);
+	memset(str2, 0, filesize+128);
     fgets(str, filesize, fp);
     cnt = 0;
-    int cnt2 = 0;
+    int cnt2 = 0, step = 0;
     while (1) {
         if (str[cnt] == '\0') {
             str2[cnt2] = '\n';
             str2[cnt2+1] = '\0';
             break;
         }
+		else if (str[cnt] == ':') {
+			str2[cnt2] = ' ';
+			++cnt;
+			++cnt2;
+			++step;
+			if (step == 2) {
+				strcat(str2, "feels like ");
+				cnt2 += 11;
+			}
+			continue;
+		}
         else if (str[cnt] == -62 && str[cnt+1] == -80) {
             str2[cnt2] = '*';
             cnt += 2;
