@@ -67,7 +67,7 @@ void *ThreadRXFunc(void *argp) {
 			if (CheckCTCPTime())
 				continue;
 
-			sprinf(buffer, "NOTICE %s :\001CLIENTINFO CLIENTINFO PING TIME VERSION\x01\n",
+			sprintf(buffer, "NOTICE %s :\001CLIENTINFO CLIENTINFO PING TIME VERSION\x01\n",
 				raw.nick);
 			if (use_ssl)
 				SSL_write(pSSL, buffer, strlen(buffer));
