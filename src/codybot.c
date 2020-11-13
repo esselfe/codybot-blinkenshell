@@ -219,7 +219,7 @@ int main(int argc, char **argv) {
 	// initialize time for !uptime
 	gettimeofday(&tv_start, NULL);
 
-	ctcp_prev_time = time(NULL) - 5;
+	ctcp_prev_time = tv_start.tv_sec - 5;
 	sprintf(ctcp_prev_nick, "codybot");
 
 	signal(SIGINT, SignalFunc);
