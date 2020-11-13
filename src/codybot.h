@@ -14,7 +14,7 @@ extern int debug, socket_fd, ret, endmainloop, cc_disabled, sh_disabled,
 extern unsigned long long fortune_total;
 extern struct timeval tv0, tv_start;
 extern struct tm *tm0;
-extern time_t t0;
+extern time_t t0, ctcp_prev_time;
 extern char *log_filename;
 extern char *buffer, *buffer_rx, *buffer_cmd, *buffer_log;
 extern char trigger_char;
@@ -53,7 +53,7 @@ extern struct raw_line raw;
 // from admin.c
 struct Admin {
 	struct Admin *prev, *next;
-	char *nick, *host;
+	char *nick, *hostmask;
 };
 
 struct AdminList {
@@ -62,10 +62,10 @@ struct AdminList {
 };
 extern struct AdminList admin_list;
 
-void AddAdmin(char *newnick, char *host);
+void AddAdmin(char *newnick, char *hostmask);
 void DestroyAdminList(void);
 char *EnumerateAdmins(void);
-int IsAdmin(char *newnick, char *host);
+int IsAdmin(char *newnick, char *hostmask);
 void ParseAdminFile(void);
 
 // from codybot.c

@@ -41,7 +41,7 @@ int debug, socket_fd, ret, endmainloop, wttr_disabled, use_ssl;
 unsigned long long fortune_total;
 struct timeval tv0, tv_start;
 struct tm *tm0;
-time_t t0;
+time_t t0, ctcp_prev_time;
 char *log_filename;
 char *buffer, *buffer_rx, *buffer_cmd, *buffer_log;
 char trigger_char, trigger_char_default = '!';
@@ -217,6 +217,8 @@ void SignalFunc(int signum) {
 int main(int argc, char **argv) {
 	// initialize time for !uptime
 	gettimeofday(&tv_start, NULL);
+
+	ctcp_prev_time = time(NULL) - 5;
 
 	signal(SIGINT, SignalFunc);
 

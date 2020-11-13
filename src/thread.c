@@ -14,12 +14,12 @@
 void *ThreadRXFunc(void *argp);
 void ThreadRXStart(void) {
 	pthread_t thr;
-    pthread_attr_t attr;
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    pthread_create(&thr, &attr, ThreadRXFunc, NULL);
-    pthread_detach(thr);
-    pthread_attr_destroy(&attr);
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+	pthread_create(&thr, &attr, ThreadRXFunc, NULL);
+	pthread_detach(thr);
+	pthread_attr_destroy(&attr);
 }
 
 void *ThreadRXFunc(void *argp) {
@@ -49,36 +49,55 @@ void *ThreadRXFunc(void *argp) {
 		RawLineParse(&raw, buffer_rx);
 		RawGetTarget(&raw);
 
+		int CheckCTCPTime(void) {
+			t0 = time(NULL);
+			if (ctcp_prev_time <= t0-5) {
+				ctcp_prev_time = t0;
+				return 0;
+			}
+			else
+				return 1;
+		}
+
 		// Respond to CTCP version requests
-        if (strcmp(raw.text, "\x01VERSION\x01") == 0) {
-            sprintf(buffer, "NOTICE %s :\x01VERSION codybot %s\x01\n", raw.nick,
-                codybot_version_string);
-            if (use_ssl)
-                SSL_write(pSSL, buffer, strlen(buffer));
-            else
-                write(socket_fd, buffer, strlen(buffer));
-            Log(buffer);
-            continue;
-        }
+		if (strcmp(raw.text, "\x01VERSION\x01") == 0) {
+			if (CheckCTCPTime())
+				continue;
+
+			sprintf(buffer, "NOTICE %s :\x01VERSION codybot %s\x01\n", raw.nick,
+				codybot_version_string);
+			if (use_ssl)
+				SSL_write(pSSL, buffer, strlen(buffer));
+			else
+				write(socket_fd, buffer, strlen(buffer));
+			Log(buffer);
+			continue;
+		}
 		else if (strncmp(raw.text, "\x01PING ", 6) == 0) {
-            sprintf(buffer, "NOTICE %s :%s\n", raw.nick, raw.text);
-            if (use_ssl)
-                SSL_write(pSSL, buffer, strlen(buffer));
-            else
-                write(socket_fd, buffer, strlen(buffer));
-            Log(buffer);
-            continue;
-        }
-        else if (strcmp(raw.text, "\x01TIME\x01") == 0) {
-            t0 = time(NULL);
-            sprintf(buffer, "NOTICE %s :\x01TIME %s\x01\n", raw.nick, ctime(&t0));
-            if (use_ssl)
-                SSL_write(pSSL, buffer, strlen(buffer));
-            else
-                write(socket_fd, buffer, strlen(buffer));
-            Log(buffer);
-            continue;
-        }
+			if (CheckCTCPTime())
+				continue;
+
+			sprintf(buffer, "NOTICE %s :%s\n", raw.nick, raw.text);
+			if (use_ssl)
+				SSL_write(pSSL, buffer, strlen(buffer));
+			else
+				write(socket_fd, buffer, strlen(buffer));
+			Log(buffer);
+			continue;
+		}
+		else if (strcmp(raw.text, "\x01TIME\x01") == 0) {
+			if (CheckCTCPTime())
+				continue;
+
+			t0 = time(NULL);
+			sprintf(buffer, "NOTICE %s :\x01TIME %s\x01\n", raw.nick, ctime(&t0));
+			if (use_ssl)
+				SSL_write(pSSL, buffer, strlen(buffer));
+			else
+				write(socket_fd, buffer, strlen(buffer));
+			Log(buffer);
+			continue;
+		}
 
 		if (strcmp(raw.channel, nick) == 0) {
 			sprintf(buffer, "privmsg %s :Cannot use private messages\n", raw.nick);
