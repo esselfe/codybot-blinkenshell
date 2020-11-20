@@ -129,7 +129,7 @@ void Calc(struct raw_line *rawp) {
 		Msg(line);
 		++cnt;
 		if (cnt >= 4) {
-			system("cat cmd.output |nc termbin.com 9999 > cmd.url");
+			system("cat cmd.output | ./nc termbin.com 9999 > cmd.url");
 			FILE *fu = fopen("cmd.url", "r");
 			if (fu == NULL) {
 				sprintf(buffer, "##codybot::Calc() error: Cannot open cmd.url: %s\n", strerror(errno));
@@ -254,7 +254,7 @@ void Dict(struct raw_line *rawp) {
 	fclose(fw);
 
 	if (line_cnt >= 5) {
-		system("cat cmd.output | nc termbin.com 9999 > cmd.url");
+		system("cat cmd.output | ./nc termbin.com 9999 > cmd.url");
 		fp = fopen("cmd.url", "r");
 		if (fp == NULL) {
 			sprintf(buffer, "##codybot::Dict() error: Cannot open cmd.url: %s\n",
