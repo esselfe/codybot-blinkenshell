@@ -127,9 +127,9 @@ strcmp(raw.command, "NICK")!=0) {
 // help
 		if (raw.text[0]==trigger_char && strncmp(raw.text+1, "help", 4) == 0) {
 			char c = trigger_char;
-sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize "
-"%chelp %cfortune %cjoke %crainbow %cstats %cuptime %cversion %cweather\n",
-	c,c,c,c,c,c,c,c,c,c,c,c,c);
+sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize %chelp "
+"%cdict %cfortune %cjoke %crainbow %cstats %cuptime %cversion %cweather\n",
+	c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 			Msg(buffer);
 			continue;
 		}
@@ -184,6 +184,13 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize "
 		}
 		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "colorize ", 9) == 0)
 			Colorize(&raw);
+// dict
+		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "dict") == 0) {
+			sprintf(buffer, "Missing argument, e.g. '%cdict wordhere'", trigger_char);
+			Msg(buffer);
+		}
+		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "dict ", 5) == 0)
+			Dict(&raw);
 // fortune
 		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "fortune", 7) == 0)
 			Fortune(&raw);
