@@ -128,8 +128,8 @@ strcmp(raw.command, "NICK")!=0) {
 		if (raw.text[0]==trigger_char && strncmp(raw.text+1, "help", 4) == 0) {
 			char c = trigger_char;
 sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize %chelp "
-"%cdict %cfortune %cjoke %crainbow %cstats %cuptime %cversion %cweather\n",
-	c,c,c,c,c,c,c,c,c,c,c,c,c,c);
+"%cdict %cfoldoc %cfortune %cjoke %crainbow %cstats %cuptime %cversion %cweather\n",
+	c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 			Msg(buffer);
 			continue;
 		}
@@ -186,11 +186,19 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize %chelp "
 			Colorize(&raw);
 // dict
 		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "dict") == 0) {
-			sprintf(buffer, "Missing argument, e.g. '%cdict wordhere'", trigger_char);
+			sprintf(buffer, "Missing term argument, e.g. '%cdict wordhere'", trigger_char);
 			Msg(buffer);
 		}
 		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "dict ", 5) == 0)
 			Dict(&raw);
+// foldoc
+		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "foldoc") == 0) {
+			sprintf(buffer, "Missing term argument, e.g. '%cfoldoc linux' "
+				" (foldoc is a computer-related dictionary)", trigger_char);
+			Msg(buffer);
+		}
+		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "foldoc ", 7) == 0)
+			Foldoc(&raw);
 // fortune
 		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "fortune", 7) == 0)
 			Fortune(&raw);
