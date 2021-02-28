@@ -241,7 +241,7 @@ int main(int argc, char **argv) {
 			break;
 		case 'H':
 			hostname = (char *)malloc(strlen(optarg)+1);
-			sprintf(hostname, optarg);
+			sprintf(hostname, "%s", optarg);
 			break;
 		case 'l':
 			log_filename = (char *)malloc(strlen(optarg)+1);
@@ -249,7 +249,7 @@ int main(int argc, char **argv) {
 			break;
 		case 'N':
 			full_user_name = (char *)malloc(strlen(optarg)+1);
-			sprintf(full_user_name, optarg);
+			sprintf(full_user_name, "%s", optarg);
 			break;
 		case 'n':
 			nick = (char *)malloc(strlen(optarg)+1);
@@ -280,7 +280,7 @@ int main(int argc, char **argv) {
 	if (!full_user_name) {
 		char *name = getlogin();
 		full_user_name = (char *)malloc(strlen(name)+1);
-		sprintf(full_user_name, name);
+		sprintf(full_user_name, "%s", name);
 	}
 	if (!hostname) {
 		hostname = (char *)malloc(1024);
