@@ -33,7 +33,7 @@ void *ThreadRXFunc(void *argp) {
 		buffer_rx[strlen(buffer_rx)-2] = '\0';
 		if (buffer_rx[0] != 'P' && buffer_rx[1] != 'I' && buffer_rx[2] != 'N' &&
 		  buffer_rx[3] != 'G' && buffer_rx[4] != ' ')
-			Log(buffer_rx);
+			Log(IN, buffer_rx);
 		// respond to ping request from the server with a pong
 		if (buffer_rx[0] == 'P' && buffer_rx[1] == 'I' && buffer_rx[2] == 'N' &&
 			buffer_rx[3] == 'G' && buffer_rx[4] == ' ' && buffer_rx[5] == ':') {
@@ -41,7 +41,7 @@ void *ThreadRXFunc(void *argp) {
 			buffer_cmd[1] = 'O';
 			SSL_write(pSSL, buffer_cmd, strlen(buffer_cmd));
 			if (debug)
-				Log(buffer_cmd);
+				Log(OUT, buffer_cmd);
 			memset(buffer_cmd, 0, 4096);
 			continue;
 		}
@@ -73,7 +73,7 @@ void *ThreadRXFunc(void *argp) {
 				SSL_write(pSSL, buffer, strlen(buffer));
 			else
 				write(socket_fd, buffer, strlen(buffer));
-			Log(buffer);
+			Log(OUT, buffer);
 			continue;
 		}
 		else if (strncmp(raw.text, "\x01PING ", 6) == 0) {
@@ -85,7 +85,7 @@ void *ThreadRXFunc(void *argp) {
 				SSL_write(pSSL, buffer, strlen(buffer));
 			else
 				write(socket_fd, buffer, strlen(buffer));
-			Log(buffer);
+			Log(OUT, buffer);
 			continue;
 		}
 		else if (strcmp(raw.text, "\x01TIME\x01") == 0) {
@@ -98,7 +98,7 @@ void *ThreadRXFunc(void *argp) {
 				SSL_write(pSSL, buffer, strlen(buffer));
 			else
 				write(socket_fd, buffer, strlen(buffer));
-			Log(buffer);
+			Log(OUT, buffer);
 			continue;
 		}
 		else if (strcmp(raw.text, "\x01VERSION\x01") == 0) {
@@ -111,7 +111,7 @@ void *ThreadRXFunc(void *argp) {
 				SSL_write(pSSL, buffer, strlen(buffer));
 			else
 				write(socket_fd, buffer, strlen(buffer));
-			Log(buffer);
+			Log(OUT, buffer);
 			continue;
 		}
 
@@ -159,10 +159,10 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize %chelp "
 		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "about", 5) == 0) {
 			if (strcmp(nick, "codybot")==0)
 				Msg("codybot is an IRC bot written in C by esselfe, "
-					"sources @ https://github.com/cody1632/codybot-blinkenshell");
+					"sources @ https://github.com/esselfe/codybot-blinkenshell");
 			else {
 				sprintf(buffer, "codybot(%s) is an IRC bot written in C by esselfe, "
-					"sources @ https://github.com/cody1632/codybot-blinkenshell", nick);
+					"sources @ https://github.com/esselfe/codybot-blinkenshell", nick);
 				Msg(buffer);
 			}
 		}
