@@ -13,7 +13,7 @@
 #include "codybot.h"
 
 // b stands for blinkenshell's version
-const char *codybot_version_string = "0.3.7b";
+const char *codybot_version_string = "0.3.8b";
 
 static const struct option long_options[] = {
 	{"help", no_argument, NULL, 'h'},
@@ -51,7 +51,7 @@ char *nick; // nick used by the bot
 char *full_user_name;
 char *hostname;
 
-void Log(char *text) {
+void Log(unsigned int direction, char *text) {
 	FILE *fp = fopen(log_filename, "a+");
 	if (fp == NULL) {
 		fprintf(stderr, "##codybot::Log() error: Cannot open %s: %s\n",
@@ -69,14 +69,26 @@ void Log(char *text) {
 //	if (str[strlen(str)] == '\n')
 //		str[strlen(str)] = '\0';
 
-	sprintf(buffer_log, "%02d%02d%02d-%02d:%02d:%02d.%03ld ##%s##\n",
+	char dirstr[3];
+	if (direction == LOCAL)
+		sprintf(dirstr, "==");
+	else if (direction == IN)
+		sprintf(dirstr, "<<");
+	else if (direction == OUT)
+		sprintf(dirstr, ">>");
+	else
+		sprintf(dirstr, "::");
+
+	sprintf(buffer_log, "%02d%02d%02d-%02d:%02d:%02d.%03ld %s##%s##\n",
 		tm0->tm_year+1900-2000, tm0->tm_mon+1,
-		tm0->tm_mday, tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv0.tv_usec, str);
+		tm0->tm_mday, tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv0.tv_usec,
+		dirstr, str);
 	fputs(buffer_log, fp);
 
-	sprintf(buffer_log, "\e[00;36m%02d%02d%02d-%02d:%02d:%02d.%03ld ##\e[00m%s\e[00;36m##\e[00m\n", 
+	sprintf(buffer_log, "\e[00;36m%02d%02d%02d-%02d:%02d:%02d.%03ld %s##\e[00m%s\e[00;36m##\e[00m\n", 
 		tm0->tm_year+1900-2000, tm0->tm_mon+1,
-		tm0->tm_mday, tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv0.tv_usec, str);
+		tm0->tm_mday, tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv0.tv_usec,
+		dirstr, str);
 	fputs(buffer_log, stdout);
 	
 	memset(buffer_log, 0, 4096);
@@ -92,7 +104,7 @@ void Msg(char *text) {
 			SSL_write(pSSL, buffer_log, strlen(buffer_log));
 		else
 			write(socket_fd, buffer_log, strlen(buffer_log));
-		Log(buffer_log);
+		Log(OUT, buffer_log);
 		memset(buffer_log, 0, 4096);
 	}
 	else if (total_len > 400) {
@@ -112,7 +124,7 @@ void Msg(char *text) {
 					SSL_write(pSSL, str, strlen(str));
 				else
 					write(socket_fd, str, strlen(str));
-				Log(str);
+				Log(OUT, str);
 				memset(str, 0, 400);
 				break;
 			}
@@ -123,7 +135,7 @@ void Msg(char *text) {
 					SSL_write(pSSL, str, strlen(str));
 				else
 					write(socket_fd, str, strlen(str));
-				Log(str);
+				Log(OUT, str);
 				memset(str, 0, 400);
 				sprintf(str, "PRIVMSG %s :", target);
 				cnt = strlen(str);
@@ -190,7 +202,7 @@ void ReadCommandLoop(void) {
 				SSL_write(pSSL, buffer_cmd, strlen(buffer_cmd));
 			else
 				write(socket_fd, buffer_cmd, strlen(buffer_cmd));
-			Log("PRIVMSG NickServ :identify *********");
+			Log(OUT, "PRIVMSG NickServ :identify *********");
 			memset(buffer_cmd, 0, 4096);
 		}
 		else if (strcmp(buffer_line, "trigger\n") == 0)

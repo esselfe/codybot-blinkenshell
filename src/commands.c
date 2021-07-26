@@ -27,9 +27,9 @@ char *colors[] = {
 	"\00315"}; // light grey
 
 void AsciiArt(struct raw_line *rawp) {
-	FILE *fp = fopen("data-ascii.txt", "r");
+	FILE *fp = fopen("data/ascii.txt", "r");
 	if (fp == NULL) {
-		Msg("codybot::AsciiArt() error: cannot open data-ascii.txt");
+		Msg("codybot::AsciiArt() error: cannot open data/ascii.txt");
 		return;
 	}
 
@@ -129,7 +129,7 @@ void Calc(struct raw_line *rawp) {
 		Msg(line);
 		++cnt;
 		if (cnt >= 4) {
-			system("cat cmd.output | ./nc termbin.com 9999 > cmd.url");
+			system("cat cmd.output | nc esselfe.ca 9999 > cmd.url");
 			FILE *fu = fopen("cmd.url", "r");
 			if (fu == NULL) {
 				sprintf(buffer, "##codybot::Calc() error: Cannot open cmd.url: %s\n", strerror(errno));
@@ -149,9 +149,9 @@ void Calc(struct raw_line *rawp) {
 void Chars(struct raw_line *rawp) {
 	Msg("https://esselfe.ca/chars.html");
 
-	FILE *fp = fopen("data-chars.txt", "r");
+	FILE *fp = fopen("data/chars.txt", "r");
 	if (fp == NULL) {
-		Msg("codybot::Chars() error: Cannot open data-chars.txt: %s\n");
+		Msg("codybot::Chars() error: Cannot open data/chars.txt: %s\n");
 		return;
 	}
 
@@ -203,7 +203,7 @@ void Dict(struct raw_line *rawp) {
 	}
 
 	sprintf(buffer_cmd, "curl dict.org/d:%s:wn -o dict.output", word);
-	Log(buffer_cmd);
+	Log(LOCAL, buffer_cmd);
 	system(buffer_cmd);
 
 	FILE *fp = fopen("dict.output", "r");
@@ -254,7 +254,7 @@ void Dict(struct raw_line *rawp) {
 	fclose(fw);
 
 	if (line_cnt >= 5) {
-		system("cat cmd.output | ./nc termbin.com 9999 > cmd.url");
+		system("cat cmd.output | nc esselfe.ca 9999 > cmd.url");
 		fp = fopen("cmd.url", "r");
 		if (fp == NULL) {
 			sprintf(buffer, "##codybot::Dict() error: Cannot open cmd.url: %s\n",
@@ -286,7 +286,7 @@ void Foldoc(struct raw_line *rawp) {
 	}
 
 	sprintf(buffer_cmd, "curl dict.org/d:%s:foldoc -o dict.output", word);
-	Log(buffer_cmd);
+	Log(LOCAL, buffer_cmd);
 	system(buffer_cmd);
 
 	FILE *fp = fopen("dict.output", "r");
@@ -340,7 +340,7 @@ void Foldoc(struct raw_line *rawp) {
 	fclose(fw);
 
 	if (line_cnt >= 11) {
-		system("cat cmd.output | ./nc termbin.com 9999 > cmd.url");
+		system("cat cmd.output | nc esselfe.ca 9999 > cmd.url");
 		fp = fopen("cmd.url", "r");
 		if (fp == NULL) {
 			sprintf(buffer, "##codybot::Foldoc() error: Cannot open cmd.url: %s\n",
@@ -358,9 +358,9 @@ void Foldoc(struct raw_line *rawp) {
 }
 
 void Fortune(struct raw_line *rawp) {
-	FILE *fp = fopen("data-fortunes.txt", "r");
+	FILE *fp = fopen("data/fortunes.txt", "r");
 	if (fp == NULL) {
-		sprintf(buffer, "##codybot::Fortune() error: Cannot open data-fortunes.txt: %s", strerror(errno));
+		sprintf(buffer, "##codybot::Fortune() error: Cannot open data/fortunes.txt: %s", strerror(errno));
 		Msg(buffer);
 		return;
 	}
@@ -392,7 +392,7 @@ void Fortune(struct raw_line *rawp) {
 
 	if (debug) {
 		sprintf(buffer, "&&&&fortune pos: %ld&&&&", ftell(fp));
-		Log(buffer);
+		Log(LOCAL, buffer);
 	}
 
 	while (1) {
@@ -444,9 +444,9 @@ void Fortune(struct raw_line *rawp) {
 }
 
 void Joke(struct raw_line *rawp) {
-	FILE *fp = fopen("data-jokes.txt", "r");
+	FILE *fp = fopen("data/jokes.txt", "r");
 	if (fp == NULL) {
-		sprintf(buffer, "codybot::Joke() error: cannot open data-jokes.txt: %s", strerror(errno));
+		sprintf(buffer, "codybot::Joke() error: cannot open data/jokes.txt: %s", strerror(errno));
 		Msg(buffer);
 		return;
 	}
