@@ -665,12 +665,6 @@ void Weather(struct raw_line *rawp) {
 	sprintf(buffer, "wget -t 1 -T 24 https://wttr.in/%s?format=%%C:%%t:%%f:%%w:%%p -O %s", city, filename);
 	system(buffer);
 
-	/*temp2[strlen(temp2)-1] = ' ';
-	int deg_celsius = atoi(temp2);
-	int deg_farenheit = (deg_celsius * 9 / 5) + 32;
-	sprintf(buffer_cmd, "%s: %s %dC/%dF", city, temp, deg_celsius, deg_farenheit);
-	Msg(buffer_cmd);*/
-
 	FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
         sprintf(buffer, "codybot error: Cannot open %s: %s", filename, strerror(errno));
@@ -685,7 +679,9 @@ void Weather(struct raw_line *rawp) {
 	memset(str2, 0, filesize+128);
     fgets(str, filesize, fp);
     cnt = 0;
-    int cnt2 = 0, step = 0;
+    int cnt2 = 0;
+	int reading_conditions = 1, reading_temp = 0, reading_feelslike = 0,
+		reading_wind = 0, reading_precip = 0;
     while (1) {
         if (str[cnt] == '\0') {
 			str2[cnt2] = 'm';
@@ -694,15 +690,86 @@ void Weather(struct raw_line *rawp) {
             break;
         }
 		else if (str[cnt] == ':') {
-			str2[cnt2] = ' ';
-			++cnt;
-			++cnt2;
-			++step;
-			if (step == 2) {
-				strcat(str2, "feels like ");
-				cnt2 += 11;
+			if (reading_conditions) {
+                reading_conditions = 0;
+                reading_temp = 1;
+            }
+            else if (reading_temp) {
+                reading_temp = 0;
+                reading_feelslike = 1;
+
+                // Partly cloudy:+28°C:+28°C:↓6km/h:0.0mm
+                int isminus = 0;
+                char strtemp[128];
+                memset(strtemp, 0, 128);
+                if (str[cnt-5] == '+' || str[cnt-5] == '-') {
+                    if (str[cnt-5] == '-')
+                        isminus = 1;
+                    strtemp[0] = str[cnt-4];
+                    strtemp[1] = str[cnt-3];
+                }
+                else if (str[cnt-4] == '+' || str[cnt-4] == '-') {
+                    if (str[cnt-5] == '-')
+                        isminus = 1;
+                    strtemp[0] = str[cnt-3];
+                }
+                int temp = atoi(strtemp);
+                int tempF;
+                if (isminus)
+                    tempF = (-temp)*9/5+32;
+                else
+                    tempF = temp*9/5+32;
+                sprintf(strtemp, "/%d*F ", tempF);
+                strcat(str2, strtemp);
+                cnt2 += strlen(strtemp);
+                strcat(str2, "feels like ");
+                cnt2 += 11;
+
+                ++cnt;
+                continue;
 			}
-			continue;
+            else if (reading_feelslike) {
+                reading_feelslike = 0;
+                reading_wind = 1;
+
+                int isminus;
+                char strtemp[128];
+                memset(strtemp, 0, 128);
+                if (str[cnt-5] == '+' || str[cnt-5] == '-') {
+                    if (str[cnt-5] == '-')
+                        isminus = 1;
+                    strtemp[0] = str[cnt-4];
+                    strtemp[1] = str[cnt-3];
+                }
+                else if (str[cnt-4] == '+' || str[cnt-4] == '-') {
+                    if (str[cnt-5] == '-')
+                        isminus = 1;
+                    strtemp[0] = str[cnt-3];
+                }
+                int temp = atoi(strtemp);
+                int tempF;
+                if (isminus)
+                    tempF = (-temp)*9/5+32;
+                else
+                    tempF = temp*9/5+32;
+                sprintf(strtemp, "/%d*F ", tempF);
+                strcat(str2, strtemp);
+                cnt2 += strlen(strtemp);
+
+                ++cnt;
+                continue;
+            }
+            else if (reading_wind) {
+                reading_wind = 0;
+                reading_precip = 1;
+            }
+            else if (reading_precip) {
+				reading_precip = 0;
+            }
+
+            str2[cnt2++] = ' ';
+            ++cnt;
+            continue;
 		}
         else if (str[cnt] == -62 && str[cnt+1] == -80) {
             str2[cnt2] = '*';
