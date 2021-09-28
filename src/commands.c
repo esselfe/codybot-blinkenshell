@@ -702,16 +702,16 @@ void Weather(struct raw_line *rawp) {
                 int isminus = 0;
                 char strtemp[128];
                 memset(strtemp, 0, 128);
-                if (str[cnt-5] == '+' || str[cnt-5] == '-') {
+                if (str[cnt-6] == '+' || str[cnt-6] == '-') {
+                    if (str[cnt-6] == '-')
+                        isminus = 1;
+                    strtemp[0] = str[cnt-5];
+                    strtemp[1] = str[cnt-4];
+                }
+                else if (str[cnt-5] == '+' || str[cnt-5] == '-') {
                     if (str[cnt-5] == '-')
                         isminus = 1;
                     strtemp[0] = str[cnt-4];
-                    strtemp[1] = str[cnt-3];
-                }
-                else if (str[cnt-4] == '+' || str[cnt-4] == '-') {
-                    if (str[cnt-5] == '-')
-                        isminus = 1;
-                    strtemp[0] = str[cnt-3];
                 }
                 int temp = atoi(strtemp);
                 int tempF;
@@ -735,16 +735,16 @@ void Weather(struct raw_line *rawp) {
                 int isminus;
                 char strtemp[128];
                 memset(strtemp, 0, 128);
-                if (str[cnt-5] == '+' || str[cnt-5] == '-') {
+                if (str[cnt-6] == '+' || str[cnt-6] == '-') {
+                    if (str[cnt-6] == '-')
+                        isminus = 1;
+                    strtemp[0] = str[cnt-5];
+                    strtemp[1] = str[cnt-4];
+                }
+                else if (str[cnt-5] == '+' || str[cnt-5] == '-') {
                     if (str[cnt-5] == '-')
                         isminus = 1;
                     strtemp[0] = str[cnt-4];
-                    strtemp[1] = str[cnt-3];
-                }
-                else if (str[cnt-4] == '+' || str[cnt-4] == '-') {
-                    if (str[cnt-5] == '-')
-                        isminus = 1;
-                    strtemp[0] = str[cnt-3];
                 }
                 int temp = atoi(strtemp);
                 int tempF;
