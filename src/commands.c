@@ -254,7 +254,7 @@ void Dict(struct raw_line *rawp) {
 	fclose(fw);
 
 	if (line_cnt >= 5) {
-		system("cat cmd.output | nc esselfe.ca 9999 > cmd.url");
+		system("cat cmd.output | nc hobby.esselfe.ca 9999 > cmd.url");
 		fp = fopen("cmd.url", "r");
 		if (fp == NULL) {
 			sprintf(buffer, "##codybot::Dict() error: Cannot open cmd.url: %s\n",
@@ -340,7 +340,7 @@ void Foldoc(struct raw_line *rawp) {
 	fclose(fw);
 
 	if (line_cnt >= 11) {
-		system("cat cmd.output | nc esselfe.ca 9999 > cmd.url");
+		system("cat cmd.output | nc hobby.esselfe.ca 9999 > cmd.url");
 		fp = fopen("cmd.url", "r");
 		if (fp == NULL) {
 			sprintf(buffer, "##codybot::Foldoc() error: Cannot open cmd.url: %s\n",
@@ -647,7 +647,7 @@ void Weather(struct raw_line *rawp) {
 			++cp;
 			continue;
 		}
-		else if (*cp == '"') {
+		else if (*cp == '"' || *cp == '$' || *cp == '\\' || *cp == '/') {
 			++cp;
 			continue;
 		}
@@ -678,6 +678,7 @@ void Weather(struct raw_line *rawp) {
     char *str2 = malloc(filesize+128);
 	memset(str2, 0, filesize+128);
     fgets(str, filesize, fp);
+	fclose(fp);
     cnt = 0;
     int cnt2 = 0;
 	int reading_conditions = 1, reading_temp = 0, reading_feelslike = 0,
@@ -714,12 +715,12 @@ void Weather(struct raw_line *rawp) {
                     strtemp[0] = str[cnt-4];
                 }
                 int temp = atoi(strtemp);
-                int tempF;
+                float tempF;
                 if (isminus)
-                    tempF = (-temp)*9/5+32;
+                    tempF = (float)(-temp)*9/5+32;
                 else
-                    tempF = temp*9/5+32;
-                sprintf(strtemp, "/%d*F ", tempF);
+                    tempF = (float)temp*9/5+32;
+                sprintf(strtemp, "/%.1f*F ", tempF);
                 strcat(str2, strtemp);
                 cnt2 += strlen(strtemp);
                 strcat(str2, "feels like ");
@@ -732,7 +733,7 @@ void Weather(struct raw_line *rawp) {
                 reading_feelslike = 0;
                 reading_wind = 1;
 
-                int isminus;
+                int isminus = 0;
                 char strtemp[128];
                 memset(strtemp, 0, 128);
                 if (str[cnt-6] == '+' || str[cnt-6] == '-') {
@@ -747,12 +748,12 @@ void Weather(struct raw_line *rawp) {
                     strtemp[0] = str[cnt-4];
                 }
                 int temp = atoi(strtemp);
-                int tempF;
+                float tempF;
                 if (isminus)
-                    tempF = (-temp)*9/5+32;
+                    tempF = (float)(-temp)*9/5+32;
                 else
-                    tempF = temp*9/5+32;
-                sprintf(strtemp, "/%d*F ", tempF);
+                    tempF = (float)temp*9/5+32;
+                sprintf(strtemp, "/%.1f*F ", tempF);
                 strcat(str2, strtemp);
                 cnt2 += strlen(strtemp);
 
