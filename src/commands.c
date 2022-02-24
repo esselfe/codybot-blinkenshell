@@ -279,8 +279,12 @@ void Foldoc(struct raw_line *rawp) {
 	for (cnt=0; cnt<127; cp++,cnt++) {
 		if (*cp == '\0')
 			break;
-		else if (*cp == ' ')
-			break;
+		else if (*cp == ' ') {
+			word[cnt++] = '%';
+			word[cnt++] = '2';
+			word[cnt] = '0';
+			continue;
+		}
 
 		word[cnt] = *cp;
 	}
