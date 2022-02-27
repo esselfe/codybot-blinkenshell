@@ -112,7 +112,7 @@ void Calc(struct raw_line *rawp) {
 	fputs(rawp->text+6, fi);
 	fclose(fi);
 
-	system("bc -l 2>&1 > cmd.output < cmd.input");
+	system("bash -c 'bc -l 2>&1 > cmd.output < cmd.input'");
 
 	FILE *fp = fopen("cmd.output", "r");
 	if (fp == NULL) {
