@@ -62,8 +62,10 @@ void AsciiArt(struct raw_line *rawp) {
 			if (cprev == '\n' && c == '%')
 				++cnt;
 		
-			if (cnt == choice)
+			if (cnt == choice) {
+				c = fgetc(fp); // skip newline
 				break;
+			}
 		}
 	}
 
