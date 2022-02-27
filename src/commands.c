@@ -33,30 +33,43 @@ void AsciiArt(struct raw_line *rawp) {
 		return;
 	}
 
-	fseek(fp, 0, SEEK_END);
-	unsigned long filesize = ftell(fp);
-	fseek(fp, 0, SEEK_SET);
-	gettimeofday(&tv0, NULL);
-	srand((unsigned int)tv0.tv_usec);
-	fseek(fp, rand()%(filesize-100), SEEK_CUR);
-
+	// count how many '%'
 	int c = 0, cprev, cnt = 0;
 	while (1) {
 		cprev = c;
 		c = fgetc(fp);
-		if (c == -1) {
+		if (c == -1)
 			break;
-		}
-		if (cprev == '\n' && c == '%') {
-			//skip the newline
-			fgetc(fp);
-			break;
+		else if (cprev == '\n' && c == '%')
+			++cnt;
+	}
+
+	fseek(fp, 0, SEEK_SET);
+	gettimeofday(&tv0, NULL);
+	srand((unsigned int)tv0.tv_usec);
+	int choice = rand() % cnt;
+
+	// go to chosen item
+	fseek(fp, 0, SEEK_SET);
+	if (choice > 0) {
+		c = 0, cnt = 0;
+		while (1) {
+			cprev = c;
+			c = fgetc(fp);
+			if (c == -1)
+				break;
+
+			if (cprev == '\n' && c == '%')
+				++cnt;
+		
+			if (cnt == choice)
+				break;
 		}
 	}
 
-	char line[1024];
-	memset(line, 0, 1024);
-	cnt = 0, c = ' ';
+	char line[400];
+	memset(line, 0, 400);
+	cnt = 0, c = 0;
 	while (1) {
         cprev = c;
         c = fgetc(fp);
@@ -64,11 +77,11 @@ void AsciiArt(struct raw_line *rawp) {
             break;
         else if (c == '%' && cprev == '\n')
             break;
-		else if (c == '\n') {
+		else if (c == '\n' || cnt >= 397) { // 397 + '\r\n\0' = 400
 			Msg(line);
 			// throttled due to server notice of flooding
 			sleep(2);
-			memset(line, 0, 1024);
+			memset(line, 0, 400);
 			cnt = 0;
 		}
         else
@@ -112,7 +125,7 @@ void Calc(struct raw_line *rawp) {
 	fputs(rawp->text+6, fi);
 	fclose(fi);
 
-	system("bash -c 'bc -l 2>&1 > cmd.output < cmd.input'");
+	system("/bin/bash -c './bc -l &> cmd.output < cmd.input'");
 
 	FILE *fp = fopen("cmd.output", "r");
 	if (fp == NULL) {
