@@ -88,6 +88,11 @@ void Calc(struct raw_line *rawp) {
 			Msg("No backslashes allowed, sorry");
 			return;
 		}
+		else if (*c == '$') {
+			*(c++) = ' ';
+			continue;
+		}
+
         if (strlen(c) >= 5 && strncmp(c, "kill", 4) == 0) {
             Msg("calc: contains a blocked term...\n");
             return;
@@ -95,22 +100,19 @@ void Calc(struct raw_line *rawp) {
         ++c;
     }
 
-	// remove '^calc' from the line
-	rawp->text += 6;
 	strcat(rawp->text, "\n");
 
 	FILE *fi = fopen("cmd.input", "w+");
 	if (fi == NULL) {
-		sprintf(buffer, "codybot::calc() error: Cannot open cmd.input for writing");
+		sprintf(buffer, "codybot::Calc() error: Cannot open cmd.input for writing");
 		Msg(buffer);
 		return;
 	}
-	fputs(rawp->text, fi);
+	fputs("scale=2; ", fi);
+	fputs(rawp->text+6, fi);
 	fclose(fi);
 
-	rawp->text -= 6;
-
-	system("bc -l &> cmd.output < cmd.input");
+	system("bc -l 2>&1 > cmd.output < cmd.input");
 
 	FILE *fp = fopen("cmd.output", "r");
 	if (fp == NULL) {
@@ -128,7 +130,7 @@ void Calc(struct raw_line *rawp) {
 			break;
 		Msg(line);
 		++cnt;
-		if (cnt >= 4) {
+		if (cnt >= 10) {
 			system("cat cmd.output | nc esselfe.ca 9999 > cmd.url");
 			FILE *fu = fopen("cmd.url", "r");
 			if (fu == NULL) {

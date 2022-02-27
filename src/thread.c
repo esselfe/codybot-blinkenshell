@@ -168,7 +168,7 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %cchars %ccolorize %chelp "
 		}
 // calc
 		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "calc") == 0)
-			Msg("calc  example: '^calc 10+20'");
+			Msg("calc  example: '!calc 10+20'");
 		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "calc ", 5) == 0)
 			Calc(&raw);
 // chars
