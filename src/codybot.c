@@ -13,7 +13,7 @@
 #include "codybot.h"
 
 // b stands for blinkenshell's version
-const char *codybot_version_string = "0.3.13b";
+const char *codybot_version_string = "0.3.14b";
 
 static const struct option long_options[] = {
 	{"help", no_argument, NULL, 'h'},

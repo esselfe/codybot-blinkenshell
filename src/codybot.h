@@ -83,6 +83,7 @@ void Calc(struct raw_line *rawp);
 void CC(struct raw_line *rawp);
 void Chars(struct raw_line *rawp);
 void Colorize(struct raw_line *rawp);
+void Date(void);
 void Dict(struct raw_line *rawp);
 void Foldoc(struct raw_line *rawp);
 void Fortune(struct raw_line *rawp);
