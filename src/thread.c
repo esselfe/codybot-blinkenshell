@@ -127,9 +127,10 @@ strcmp(raw.command, "NICK")!=0) {
 // help
 		if (raw.text[0]==trigger_char && strncmp(raw.text+1, "help", 4) == 0) {
 			char c = trigger_char;
-sprintf(buffer, "commands: %cabout %cadmins %cascii %ccalc %cchars %ccolorize %cdate %chelp "
-"%cdict %cfoldoc %cfortune %cjoke %crainbow %cstats %cuptime %cversion %cweather\n",
-	c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
+sprintf(buffer, "commands: %cabout %cadmins %cascii %ccal %ccalc %cchars "
+"%ccolorize %cdate %chelp %cdict %cfoldoc %cfortune %cjoke %crainbow "
+"%cstats %cuptime %cversion %cweather\n",
+	c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 			Msg(buffer);
 			continue;
 		}
@@ -166,6 +167,9 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %ccalc %cchars %ccolorize %c
 				Msg(buffer);
 			}
 		}
+// cal
+		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "cal") == 0)
+			Cal();
 // calc
 		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "calc") == 0)
 			Msg("calc  example: '!calc 10+20'");
