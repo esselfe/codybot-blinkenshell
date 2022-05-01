@@ -96,7 +96,7 @@ void AsciiArt(struct raw_line *rawp) {
 // Show calendars
 void Cal(void) {
 	// Change terminal highlight for IRC coloring codes
-	system("cal -3 | sed 's/\x5F\x8\\([0-9]\\)/\00308\\1\003/g' > cmd.output");
+	system("cal -3 | sed 's/\x5F\x8 / /;s/\x5F\x8\\([0-9]\\)/\00308\\1\003/g' > cmd.output");
 
 	FILE *fp = fopen("cmd.output", "r");
 	if (fp == NULL) {
