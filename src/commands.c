@@ -109,7 +109,7 @@ void Cal(void) {
 	int cnt = 0;
 	size_t size = 1024;
 	char *line = malloc(size);
-	while (++cnt <= 7) {
+	while (++cnt <= 8) {
 		memset(line, 0, 1024);
 		getline(&line, &size, fp);
 		Msg(line);
