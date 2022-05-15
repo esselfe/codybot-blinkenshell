@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <sys/stat.h>
 #include <sys/time.h>
 #include <openssl/ssl.h>
 
@@ -492,25 +493,44 @@ void Fortune(struct raw_line *rawp) {
 		sprintf(buffer, "fortune: %s", fortune_line);
 		Msg(buffer);
 
+		struct stat st;
+		if (stat("stats", &st) < 0) {
+			if (errno == ENOENT) { // doesn't exist, try to create it
+				fp = fopen("stats", "w+");
+				if (fp == NULL) {
+					sprintf(buffer, 
+						"codybot::Fortune() error: Cannot create stats file: %s", strerror(errno));
+					Msg(buffer);
+					return;
+				}
+				fputs("0", fp);
+				fclose(fp);
+			}
+			else if (errno == EACCES) {
+				sprintf(buffer, 
+					"codybot::Fortune() error: Cannot open stats file: %s", strerror(EACCES));
+				Msg(buffer);
+				return;
+			}
+		}
+	
 		fp = fopen("stats", "r");
 		if (fp == NULL) {
-			sprintf(buffer, "codybot::Fortune() error: Cannot open stats file: %s", strerror(errno));
+			sprintf(buffer, "codybot::Fortune() error: Cannot read stats file: %s", strerror(errno));
 			Msg(buffer);
 			return;
 		}
 		fgets(buffer, 4095, fp);
 		fortune_total = atoi(buffer);
 		fclose(fp);
-	
+
 		fp = fopen("stats", "w");
 		if (fp == NULL) {
-			sprintf(buffer, "codybot::Fortune() error: Cannot open stats file: %s", strerror(errno));
+			sprintf(buffer, "codybot::Fortune() error: Cannot write stats file: %s", strerror(errno));
 			Msg(buffer);
 			return;
 		}
-
 		fprintf(fp, "%llu\n", ++fortune_total);
-
 		fclose(fp);
 	}
 
@@ -642,7 +662,29 @@ void SlapCheck(struct raw_line *rawp) {
 }
 
 void Stats(struct raw_line *rawp) {
-	FILE *fp = fopen("stats", "r");
+	FILE *fp;
+	struct stat st;
+	if (stat("stats", &st) < 0) {
+		if (errno == ENOENT) { // doesn't exist, try to create it
+			fp = fopen("stats", "w+");
+			if (fp == NULL) {
+				sprintf(buffer, 
+					"codybot::Fortune() error: Cannot create stats file: %s", strerror(errno));
+				Msg(buffer);
+				return;
+			}
+			fputs("0", fp);
+			fclose(fp);
+		}
+		else if (errno == EACCES) {
+			sprintf(buffer, 
+				"codybot::Fortune() error: Cannot open stats file: %s", strerror(EACCES));
+			Msg(buffer);
+			return;
+		}
+	}
+
+	fp = fopen("stats", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "##codybot::Stats() error: Cannot open stats file: %s", strerror(errno));
 		Msg(buffer);
