@@ -5,7 +5,7 @@ A few hours grace before the madness begins again.
 A gift of a flower will soon be made to you.
 %
 A long-forgotten loved one will appear soon.
-
+%
 Buy the negatives at any price.
 %
 A tall, dark stranger will have more fun than you.
@@ -32,25 +32,11 @@ All the troubles you have will pass away very quickly.
 %
 Among the lucky, you are the chosen one.
 %
-An avocado-tone refrigerator would look good on your resume.
-%
-An exotic journey in downtown Newark is in your future.
-%
-Another good night not to sleep in a eucalyptus tree.
-%
-Are you a turtle?
-%
-Are you ever going to do the dishes?  Or will you change your major to biology?
-%
 Are you making all this up as you go along?
 %
 Are you sure the back door is locked?
 %
-Artistic ventures highlighted.  Rob a museum.
-%
 Avert misunderstanding by calm, poise, and balance.
-%
-Avoid gunfire in the bathroom tonight.
 %
 Avoid reality at all costs.
 %
@@ -58,12 +44,9 @@ Bank error in your favor.  Collect $200.
 %
 Be careful!  Is it classified?
 %
-Be careful!  UGLY strikes 9 out of 10!
-%
 Be cautious in your daily affairs.
 %
 Be cheerful while you are alive.
-		-- Phathotep, 24th Century B.C.
 %
 Be different: conform.
 %
@@ -74,34 +57,9 @@ Be security conscious -- National defense is at stake.
 %
 Beauty and harmony are as necessary to you as the very breath of life.
 %
-Best of all is never to have been born.  Second best is to die soon.
-%
-Better hope the life-inspector doesn't come around while you have your
-life in such a mess.
-%
-Beware of a dark-haired man with a loud tie.
-%
-Beware of a tall black man with one blond shoe.
-%
-Beware of a tall blond man with one black shoe.
-%
-Beware of Bigfoot!
-%
-Beware of low-flying butterflies.
-%
-Beware the one behind you.
-%
 Blow it out your ear.
 %
-Break into jail and claim police brutality.
-%
 Bridge ahead.  Pay troll.
-%
-Caution: breathing may be hazardous to your health.
-%
-Caution: Keep out of reach of children.
-%
-Celebrate Hannibal Day this year.  Take an elephant to lunch.
 %
 Change your thoughts and you change your world.
 %
@@ -123,17 +81,11 @@ Day of inquiry.  You will be subpoenaed.
 %
 Do not overtax your powers.
 %
-Do not sleep in a eucalyptus tree tonight.
-%
 Do nothing unless you must, and when you must act -- hesitate.
-%
-Do something unusual today.  Pay a bill.
 %
 Do what comes naturally.  Seethe and fume and throw a tantrum.
 %
 Domestic happiness and faithful friends.
-%
-Don't feed the bats tonight.
 %
 Don't get stuck in a closet -- wear yourself out.
 %
@@ -153,8 +105,6 @@ Don't look now, but the man in the moon is laughing at you.
 %
 Don't look now, but there is a multi-legged creature on your shoulder.
 %
-Don't plan any hasty moves.  You'll be evicted soon anyway.
-%
 Don't read any sky-writing for the next two weeks.
 %
 Don't read everything you believe.
@@ -166,10 +116,8 @@ Don't tell any big lies today.  Small ones can be just as effective.
 Don't worry so loud, your roommate can't think.
 %
 Don't Worry, Be Happy.
-		-- Meher Baba
 %
 Don't worry.  Life's too long.
-		-- Vincent Sardi, Jr.
 %
 Don't you feel more like you do now than you did when you came in?
 %
@@ -181,10 +129,6 @@ Everything will be just tickety-boo today.
 %
 Excellent day for putting Slinkies on an escalator.
 %
-Excellent day to have a rotten day.
-%
-Excellent time to become a missing person.
-%
 Executive ability is prominent in your make-up.
 %
 Exercise caution in your daily affairs.
@@ -192,17 +136,6 @@ Exercise caution in your daily affairs.
 Expect a letter from a friend who will ask a favor of you.
 %
 Expect the worst, it's the least you can do.
-%
-Fine day for friends.
-So-so day for you.
-%
-Fine day to work off excess energy.  Steal something heavy.
-%
-Fortune: You will be attacked next Wednesday at 3:15 p.m. by six samurai
-sword wielding purple fish glued to Harley-Davidson motorcycles.
-
-Oh, and have a nice day!
-		-- Bryce Nesbitt '84
 %
 Future looks spotty.  You will spill soup in late evening.
 %
@@ -234,20 +167,7 @@ new lover.
 %
 Green light in A.M. for new projects.  Red light in P.M. for traffic tickets.
 %
-Hope that the day after you die is a nice day.
-%
-If you can read this, you're too close.
-%
-If you learn one useless thing every day, in a single year you'll learn
-365 useless things.
-%
-If you sow your wild oats, hope for a crop failure.
-%
-If you stand on your head, you will get footprints in your hair.
-%
 If you think last Tuesday was a drag, wait till you see what happens tomorrow!
-%
-If your life was a horse, you'd have to shoot it.
 %
 In the stairway of life, you'd best take the elevator.
 %
@@ -264,9 +184,6 @@ grown-up.
 It may or may not be worthwhile, but it still has to be done.
 %
 It was all so different before everything changed.
-%
-It's a very *__UN*lucky week in which to be took dead.
-		-- Churchy La Femme
 %
 It's all in the mind, ya know.
 %
@@ -289,8 +206,7 @@ Let me put it this way: today is going to be a learning experience.
 %
 Life is to you a dashing and bold adventure.
 %
-"Life, loathe it or ignore it, you can't like it."
-		-- Marvin, "Hitchhiker's Guide to the Galaxy"
+Life, loathe it or ignore it, you can't like it.
 %
 Live in a world of your own, but always welcome visitors.
 %
@@ -325,13 +241,9 @@ People are beginning to notice you.  Try dressing before you leave the house.
 %
 Perfect day for scrubbing the floor and other exciting things.
 %
-Questionable day.
-
-Ask somebody something.
+Questionable day. Ask somebody something.
 %
 Reply hazy, ask again later.
-%
-Save energy: be apathetic.
 %
 Ships are safe in harbor, but they were never meant to stay there.
 %
@@ -345,24 +257,17 @@ So you're back... about time...
 %
 Someone is speaking well of you.
 %
-Someone is speaking well of you.
-
-How unusual!
-%
 Someone whom you reject today, will reject you tomorrow.
 %
 Stay away from flying saucers today.
 %
 Stay away from hurricanes for a while.
 %
-Stay the curse.
-%
 That secret you've been guarding, isn't.
 %
 The time is right to make new friends.
 %
 The whole world is a tuxedo and you are a pair of brown shoes.
-		-- George Gobel
 %
 There is a 20% chance of tomorrow.
 %
@@ -380,10 +285,6 @@ This life is yours.  Some of it was given to you; the rest, you made yourself.
 %
 This will be a memorable month -- no matter how hard you try to forget it.
 %
-Time to be aggressive.  Go after a tattooed Virgo.
-%
-Today is National Existential Ennui Awareness Day.
-%
 Today is the first day of the rest of the mess.
 %
 Today is the first day of the rest of your life.
@@ -395,7 +296,6 @@ Today is the tomorrow you worried about yesterday.
 Today is what happened to yesterday.
 %
 Today's weirdness is tomorrow's reason why.
-		-- Hunter S. Thompson
 %
 Tomorrow will be cancelled due to lack of interest.
 %
@@ -420,7 +320,6 @@ Try to get all of your posthumous medals in advance.
 Try to have as good a life as you can under the circumstances.
 %
 Try to relax and enjoy the crisis.
-		-- Ashleigh Brilliant
 %
 Try to value useful qualities in one who loves you.
 %
@@ -437,24 +336,16 @@ Write yourself a threatening letter and pen a defiant reply.
 %
 You are a bundle of energy, always on the go.
 %
-You are a fluke of the universe; you have no right to be here.
-%
-You are a very redundant person, that's what kind of person you are.
-%
 You are always busy.
 %
 You are as I am with You.
 %
 You are capable of planning your future.
 %
-You are confused; but this is your normal state.
-%
 You are deeply attached to your friends and acquaintances.
 %
 You are destined to become the commandant of the fighting men of the
 department of transportation.
-%
-You are dishonest, but never to the point of hurting a friend.
 %
 You are fairminded, just and loving.
 %
@@ -466,18 +357,12 @@ You are going to have a new love affair.
 %
 You are magnetic in your bearing.
 %
-You are not dead yet.  But watch for further reports.
-%
 You are number 6!  Who is number one?
 %
 You are only young once, but you can stay immature indefinitely.
 %
 You are scrupulously honest, frank, and straightforward.  Therefore you
 have few friends.
-%
-You are sick, twisted and perverted.  I like that in a person.
-%
-You are so boring that when I see you my feet go to sleep.
 %
 You are standing on my toes.
 %
@@ -501,8 +386,6 @@ You could live a better life, if you had a better mind and a better body.
 %
 You definitely intend to start living sometime soon.
 %
-You dialed 5483.
-%
 You display the wonderful traits of charm and courtesy.
 %
 You don't become a failure until you're satisfied with being one.
@@ -523,11 +406,6 @@ You have a deep appreciation of the arts and music.
 You have a deep interest in all that is artistic.
 %
 You have a reputation for being thoroughly reliable and trustworthy.
-A pity that it's totally undeserved.
-%
-You have a strong appeal for members of the opposite sex.
-%
-You have a strong appeal for members of your own sex.
 %
 You have a strong desire for a home and your family interests come first.
 %
@@ -547,8 +425,6 @@ metal objects which are not fastened down.
 You have an unusual understanding of the problems of human relationships.
 %
 You have been selected for a secret mission.
-%
-You have Egyptian flu: you're going to be a mummy.
 %
 You have had a long-term stimulation relative to business.
 %
@@ -572,8 +448,6 @@ You learn to write as if to someone else because NEXT YEAR YOU WILL BE
 You like to form new friendships and make new acquaintances.
 %
 You look like a million dollars.  All green and wrinkled.
-%
-You look tired.
 %
 You love peace.
 %
@@ -615,9 +489,6 @@ You seek to shield those you love and you like the role of the provider.
 %
 You shall be rewarded for a dastardly deed.
 %
-You should emulate your heroes, but don't carry it too far.  Especially
-if they are dead.
-%
 You should go home.
 %
 You single-handedly fought your way into this hopeless mess.
@@ -640,11 +511,6 @@ You will be advanced socially, without any special effort on your part.
 %
 You will be aided greatly by a person whom you thought to be unimportant.
 %
-You will be attacked by a beast who has the body of a wolf, the tail of
-a lion, and the face of Donald Duck.
-%
-You will be audited by the Internal Revenue Service.
-%
 You will be awarded a medal for disregarding safety in saving someone.
 %
 You will be awarded some great honor.
@@ -658,8 +524,6 @@ You will be divorced within a year.
 You will be given a post of trust and responsibility.
 %
 You will be honored for contributing your time and skill to a worthy cause.
-%
-You will be imprisoned for contributing your time and skill to a bank robbery.
 %
 You will be married within a year, and divorced within two.
 %
@@ -752,8 +616,6 @@ You will outgrow your usefulness.
 %
 You will overcome the attacks of jealous associates.
 %
-You will pass away very quickly.
-%
 You will pay for your sins.  If you have already paid, please disregard
 this message.
 %
@@ -824,10 +686,6 @@ You're definitely on their list.  The question to ask next is what list it is.
 You're growing out of some of your problems, but there are others that
 you're growing into.
 %
-You're not my type.  For that matter, you're not even my species!!!
-%
-You're ugly and your mother dresses you funny.
-%
 You're working under a slight handicap.  You happen to be human.
 %
 You've been leading a dog's life.  Stay off the furniture.
@@ -846,8 +704,6 @@ Your boss climbed the corporate ladder, wrong by wrong.
 %
 Your boss is a few sandwiches short of a picnic.
 %
-Your boyfriend takes chocolate from strangers.
-%
 Your business will assume vast proportions.
 %
 Your business will go through a period of considerable expansion.
@@ -857,9 +713,6 @@ Your depth of comprehension may tend to make you lax in worldly ways.
 Your domestic life may be harmonious.
 %
 Your fly might be open (but don't check it just now).
-%
-Your goose is cooked.
-(Your current chick is burned up too!)
 %
 Your heart is pure, and your mind clear, and your soul devout.
 %
@@ -901,10 +754,6 @@ Your reasoning powers are good, and you are a fairly good planner.
 Your sister swims out to meet troop ships.
 %
 Your society will be sought by people of taste and refinement.
-%
-Your step will soil many countries.
-%
-Your supervisor is thinking about you.
 %
 Your talents will be recognized and suitably rewarded.
 %
