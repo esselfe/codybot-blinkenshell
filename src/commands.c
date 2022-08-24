@@ -107,15 +107,19 @@ void Cal(void) {
 		return;
 	}
 
-	int cnt = 0;
 	size_t size = 1024;
+	ssize_t ret;
 	char *line = malloc(size);
-	while (++cnt <= 8) {
-		memset(line, 0, 1024);
-		getline(&line, &size, fp);
-		Msg(line);
+	while (1) {
+		memset(line, 0, size);
+		ret = getline(&line, &size, fp);
+		if (ret <= 0)
+			break;
+		else
+			Msg(line);
 	}
 
+	free(line);
 	fclose(fp);
 }
 
@@ -434,7 +438,8 @@ void Foldoc(struct raw_line *rawp) {
 void Fortune(struct raw_line *rawp) {
 	FILE *fp = fopen("data/fortunes.txt", "r");
 	if (fp == NULL) {
-		sprintf(buffer, "##codybot::Fortune() error: Cannot open data/fortunes.txt: %s", strerror(errno));
+		sprintf(buffer, "##codybot::Fortune() error: Cannot open data/fortunes.txt: %s",
+			strerror(errno));
 		Msg(buffer);
 		return;
 	}
@@ -442,14 +447,16 @@ void Fortune(struct raw_line *rawp) {
 	fseek(fp, 0, SEEK_END);
 	unsigned long filesize = (unsigned long)ftell(fp);
 	fseek(fp, 0, SEEK_SET);
+
 	gettimeofday(&tv0, NULL);
 	srand((unsigned int)tv0.tv_usec);
-	fseek(fp, rand()%(filesize-500), SEEK_CUR);
+	// 150 to be remeasured if 2 last items in the file are deleted or new
+	fseek(fp, rand()%(filesize-150), SEEK_CUR);
 
 	int c = 0, cprev, cnt = 0;
 	char fortune_line[4096];
 	memset(fortune_line, 0, 4096);
-	while (1) {
+	while (1) { // go to next entry following '%'
 		cprev = c;
 		c = fgetc(fp);
 		if (c == -1) {
@@ -469,7 +476,7 @@ void Fortune(struct raw_line *rawp) {
 		Log(LOCAL, buffer);
 	}
 
-	while (1) {
+	while (1) { // record the entry
 		cprev = c;
 		c = fgetc(fp);
 		if (c == -1)
@@ -514,6 +521,7 @@ void Fortune(struct raw_line *rawp) {
 			}
 		}
 	
+		// Read current stat count
 		fp = fopen("stats", "r");
 		if (fp == NULL) {
 			sprintf(buffer, "codybot::Fortune() error: Cannot read stats file: %s", strerror(errno));
@@ -524,6 +532,7 @@ void Fortune(struct raw_line *rawp) {
 		fortune_total = atoi(buffer);
 		fclose(fp);
 
+		// Add 1 to stats
 		fp = fopen("stats", "w");
 		if (fp == NULL) {
 			sprintf(buffer, "codybot::Fortune() error: Cannot write stats file: %s", strerror(errno));
