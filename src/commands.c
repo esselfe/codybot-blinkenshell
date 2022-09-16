@@ -650,6 +650,7 @@ char *slap_items[20] = {
 "a rubber band", "a large trout", "a rabbit", "a lizard", "a dinosaur",
 "a chair", "a mouse pad", "a C programming book", "a belt"
 };
+unsigned int slap_max = 10, slap_cnt, slap_hour;
 void SlapCheck(struct raw_line *rawp) {
 	char *c = rawp->text;
 	if ((*c==1 && *(c+1)=='A' && *(c+2)=='C' && *(c+3)=='T' && *(c+4)=='I' &&
@@ -664,6 +665,21 @@ void SlapCheck(struct raw_line *rawp) {
 	  *(c+28)==' '))) {
 		RawGetTarget(rawp);
 		gettimeofday(&tv0, NULL);
+
+		time_t slap_time = (time_t)tv0.tv_sec;
+		struct tm *tm0 = gmtime(&slap_time);
+		if (slap_cnt == 0) {
+			slap_hour = tm0->tm_hour;
+		}
+		else {
+			if (slap_hour != tm0->tm_hour) {
+				slap_hour = tm0->tm_hour;
+				slap_cnt = 0;
+			}
+			else if (slap_hour == tm0->tm_hour && slap_cnt >= slap_max)
+				return;
+		}
+
 		srand((unsigned int)tv0.tv_usec);
 		sprintf(buffer, "%cACTION slaps %s with %s%c", 1, rawp->nick, slap_items[rand()%20], 1);
 		Msg(buffer);
