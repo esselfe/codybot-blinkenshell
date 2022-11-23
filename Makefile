@@ -1,9 +1,9 @@
 
-CFLAGS = -std=c11 -Wall -Werror -D_GNU_SOURCE
-LDFLAGS = -lpthread -lssl -lcrypto -lmagic
+CFLAGS = -std=c11 -Wall -Werror -D_GNU_SOURCE -I/home/codybot/opt/include
+LDFLAGS = -lpthread -lssl -lcrypto -lmagic -L/home/codybot/opt/lib -lsqlite3
 OBJDIR = obj
 OBJS = $(OBJDIR)/admin.o $(OBJDIR)/commands.o $(OBJDIR)/codybot.o \
-$(OBJDIR)/server.o $(OBJDIR)/raw.o $(OBJDIR)/thread.o
+$(OBJDIR)/raw.o $(OBJDIR)/server.o $(OBJDIR)/thread.o
 PROGNAME = codybot
 
 .PHONY: tcc default all prepare clean
@@ -13,7 +13,7 @@ default: all
 all: prepare $(OBJS) $(PROGNAME)
 
 prepare:
-	@[ -d $(OBJDIR) ] || mkdir $(OBJDIR) 2>/dev/null || true
+	@[ -d $(OBJDIR) ] || mkdir $(OBJDIR)
 
 $(OBJDIR)/admin.o: src/admin.c
 	gcc -c $(CFLAGS) src/admin.c -o $(OBJDIR)/admin.o
