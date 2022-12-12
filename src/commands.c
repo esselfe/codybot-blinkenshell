@@ -75,12 +75,12 @@ void AsciiArt(struct raw_line *rawp) {
 	memset(line, 0, 400);
 	cnt = 0, c = 0;
 	while (1) {
-        cprev = c;
-        c = fgetc(fp);
-        if (c == -1)
-            break;
-        else if (c == '%' && cprev == '\n')
-            break;
+		cprev = c;
+		c = fgetc(fp);
+		if (c == -1)
+			break;
+		else if (c == '%' && cprev == '\n')
+			break;
 		else if (c == '\n' || cnt >= 397) { // 397 + '\r\n\0' = 400
 			Msg(line);
 			// throttled due to server notice of flooding
@@ -88,9 +88,9 @@ void AsciiArt(struct raw_line *rawp) {
 			memset(line, 0, 400);
 			cnt = 0;
 		}
-        else
+		else
 			line[cnt++] = c;
-    }
+	}
 
 	fclose(fp);
 }
@@ -126,10 +126,10 @@ void Cal(void) {
 
 void Calc(struct raw_line *rawp) {
 	// check for "kill" found in ",calc `killall codybot`" which kills the bot
-    char *c = rawp->text;
-    while (1) {
-        if (*c == '\0' || *c == '\n')
-            break;
+	char *c = rawp->text;
+	while (1) {
+		if (*c == '\0' || *c == '\n')
+			break;
 		if (*c == '\\') {
 			Msg("No backslashes allowed, sorry");
 			return;
@@ -139,12 +139,12 @@ void Calc(struct raw_line *rawp) {
 			continue;
 		}
 
-        if (strlen(c) >= 5 && strncmp(c, "kill", 4) == 0) {
-            Msg("calc: contains a blocked term...\n");
-            return;
-        }
-        ++c;
-    }
+		if (strlen(c) >= 5 && strncmp(c, "kill", 4) == 0) {
+			Msg("calc: contains a blocked term...\n");
+			return;
+		}
+		++c;
+	}
 
 	strcat(rawp->text, "\n");
 
@@ -582,27 +582,27 @@ void Joke(struct raw_line *rawp) {
 	memset(joke_line, 0, 4096);
 	cnt = 0, c = ' ';
 	while (1) {
-        cprev = c;
-        c = fgetc(fp);
-        if (c == -1)
-            break;
-        else if (c == '\t' && cprev == '\n')
-            break;
-        else if (c == '%' && cprev == '\n')
-            break;
-        else if (c == '\n' && cprev == '\n')
-            joke_line[cnt++] = ' ';
-        else if (c == '\n' && cprev != '\n')
-            joke_line[cnt++] = ' ';
-        else
-            joke_line[cnt++] = c;
-    }
+		cprev = c;
+		c = fgetc(fp);
+		if (c == -1)
+			break;
+		else if (c == '\t' && cprev == '\n')
+			break;
+		else if (c == '%' && cprev == '\n')
+			break;
+		else if (c == '\n' && cprev == '\n')
+			joke_line[cnt++] = ' ';
+		else if (c == '\n' && cprev != '\n')
+			joke_line[cnt++] = ' ';
+		else
+			joke_line[cnt++] = c;
+	}
 
 	RawGetTarget(rawp);
 	if (strlen(joke_line) > 0) {
-        sprintf(buffer, "joke: %s", joke_line);
+		sprintf(buffer, "joke: %s", joke_line);
 		Msg(buffer);
-    }
+	}
 	else {
 		Msg("codybot::Joke(): joke_line is empty!");
 	}
@@ -732,55 +732,55 @@ unsigned long weather_usage[10];
 
 // pop the first item
 void WeatherDecayUsage(void) {
-    int cnt;
-    for (cnt = 0; cnt < 9; cnt++)
-        weather_usage[cnt] = weather_usage[cnt+1];
+	int cnt;
+	for (cnt = 0; cnt < 9; cnt++)
+		weather_usage[cnt] = weather_usage[cnt+1];
 
-    weather_usage[cnt] = 0;
+	weather_usage[cnt] = 0;
 }
 
 // return true if permitted, false if quota reached
 int WeatherCheckUsage(void) {
-    int cnt;
-    for (cnt = 0; cnt < 10; cnt++) {
-        // if there's available slot
-        if (weather_usage[cnt] == 0) {
-            weather_usage[cnt] = time(NULL);
-            return 1;
-        }
-        // if usage is complete and first item dates from over 30 minutes
-        else if (cnt == 9 && weather_usage[0] < (time(NULL) - (60*30))) {
-            WeatherDecayUsage();
-            weather_usage[cnt] = time(NULL);
-            return 1;
-        }
-    }
+	int cnt;
+	for (cnt = 0; cnt < 10; cnt++) {
+		// if there's available slot
+		if (weather_usage[cnt] == 0) {
+			weather_usage[cnt] = time(NULL);
+			return 1;
+		}
+		// if usage is complete and first item dates from over 30 minutes
+		else if (cnt == 9 && weather_usage[0] < (time(NULL) - (60*30))) {
+			WeatherDecayUsage();
+			weather_usage[cnt] = time(NULL);
+			return 1;
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 void *WeatherFunc(void *ptr) {
-	struct raw_line *rawp = ptr;
+	struct raw_line *rawp = RawLineDup((struct raw_line *)ptr);
 	char buf[4096]; // Use our own buffer instead of the global one
 	memset(buf,0, 4096);
 
-    if (!WeatherCheckUsage()) {
-        Msg("Weather quota reached, maximum 10 times every 30 minutes.");
-        return NULL;
-    }
+	if (!WeatherCheckUsage()) {
+		Msg("Weather quota reached, maximum 10 times every 30 minutes.");
+		return NULL;
+	}
 
 	// check for "kill" found in ",weather `pkill${IFS}codybot`"
 	// which kills the bot
-    char *c = rawp->text;
-    while (1) {
-        if (*c == '\0' || *c == '\n')
-            break;
-        if (strlen(c) >= 5 && strncmp(c, "kill", 4) == 0) {
-            Msg("weather: contains a blocked term...\n");
-            return NULL;
-        }
-        ++c;
-    }
+	char *c = rawp->text;
+	while (1) {
+		if (*c == '\0' || *c == '\n')
+			break;
+		if (strlen(c) >= 5 && strncmp(c, "kill", 4) == 0) {
+			Msg("weather: contains a blocked term...\n");
+			return NULL;
+		}
+		++c;
+	}
 
 
 	unsigned int cnt = 0;
@@ -814,130 +814,130 @@ void *WeatherFunc(void *ptr) {
 	system(buf);
 
 	FILE *fp = fopen(filename, "r");
-    if (fp == NULL) {
-        sprintf(buf, "codybot error: Cannot open %s: %s",
+	if (fp == NULL) {
+		sprintf(buf, "codybot error: Cannot open %s: %s",
 			filename, strerror(errno));
-        Msg(buf);
-        return NULL;
-    }
-    fseek(fp, 0, SEEK_END);
-    unsigned long filesize = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-    char *str = malloc(filesize+1);
-    char *str2 = malloc(filesize+128);
+		Msg(buf);
+		return NULL;
+	}
+	fseek(fp, 0, SEEK_END);
+	unsigned long filesize = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	char *str = malloc(filesize+1);
+	char *str2 = malloc(filesize+128);
 	memset(str2, 0, filesize+128);
-    fgets(str, filesize, fp);
+	fgets(str, filesize, fp);
 	fclose(fp);
-    cnt = 0;
-    int cnt2 = 0;
+	cnt = 0;
+	int cnt2 = 0;
 	int reading_conditions = 1, reading_temp = 0, reading_feelslike = 0,
 		reading_wind = 0, reading_precip = 0;
-    while (1) {
-        if (str[cnt] == '\0') {
+	while (1) {
+		if (str[cnt] == '\0') {
 			str2[cnt2] = 'm';
-            str2[cnt2+1] = '\n';
-            str2[cnt2+2] = '\0';
-            break;
-        }
+			str2[cnt2+1] = '\n';
+			str2[cnt2+2] = '\0';
+			break;
+		}
 		else if (str[cnt] == ':') {
 			if (reading_conditions) {
-                reading_conditions = 0;
-                reading_temp = 1;
-            }
-            else if (reading_temp) {
-                reading_temp = 0;
-                reading_feelslike = 1;
-
-                // Partly cloudy:+28°C:+28°C:↓6km/h:0.0mm
-                int isminus = 0;
-                char strtemp[128];
-                memset(strtemp, 0, 128);
-                if (str[cnt-6] == '+' || str[cnt-6] == '-') {
-                    if (str[cnt-6] == '-')
-                        isminus = 1;
-                    strtemp[0] = str[cnt-5];
-                    strtemp[1] = str[cnt-4];
-                }
-                else if (str[cnt-5] == '+' || str[cnt-5] == '-') {
-                    if (str[cnt-5] == '-')
-                        isminus = 1;
-                    strtemp[0] = str[cnt-4];
-                }
-                int temp = atoi(strtemp);
-                float tempF;
-                if (isminus)
-                    tempF = (float)(-temp)*9/5+32;
-                else
-                    tempF = (float)temp*9/5+32;
-                sprintf(strtemp, "/%.1f*F ", tempF);
-                strcat(str2, strtemp);
-                cnt2 += strlen(strtemp);
-                strcat(str2, "feels like ");
-                cnt2 += 11;
-
-                ++cnt;
-                continue;
+				reading_conditions = 0;
+				reading_temp = 1;
 			}
-            else if (reading_feelslike) {
-                reading_feelslike = 0;
-                reading_wind = 1;
+			else if (reading_temp) {
+				reading_temp = 0;
+				reading_feelslike = 1;
 
-                int isminus = 0;
-                char strtemp[128];
-                memset(strtemp, 0, 128);
-                if (str[cnt-6] == '+' || str[cnt-6] == '-') {
-                    if (str[cnt-6] == '-')
-                        isminus = 1;
-                    strtemp[0] = str[cnt-5];
-                    strtemp[1] = str[cnt-4];
-                }
-                else if (str[cnt-5] == '+' || str[cnt-5] == '-') {
-                    if (str[cnt-5] == '-')
-                        isminus = 1;
-                    strtemp[0] = str[cnt-4];
-                }
-                int temp = atoi(strtemp);
-                float tempF;
-                if (isminus)
-                    tempF = (float)(-temp)*9/5+32;
-                else
-                    tempF = (float)temp*9/5+32;
-                sprintf(strtemp, "/%.1f*F ", tempF);
-                strcat(str2, strtemp);
-                cnt2 += strlen(strtemp);
+				// Partly cloudy:+28°C:+28°C:↓6km/h:0.0mm
+				int isminus = 0;
+				char strtemp[128];
+				memset(strtemp, 0, 128);
+				if (str[cnt-6] == '+' || str[cnt-6] == '-') {
+					if (str[cnt-6] == '-')
+						isminus = 1;
+					strtemp[0] = str[cnt-5];
+					strtemp[1] = str[cnt-4];
+				}
+				else if (str[cnt-5] == '+' || str[cnt-5] == '-') {
+					if (str[cnt-5] == '-')
+						isminus = 1;
+					strtemp[0] = str[cnt-4];
+				}
+				int temp = atoi(strtemp);
+				float tempF;
+				if (isminus)
+					tempF = (float)(-temp)*9/5+32;
+				else
+					tempF = (float)temp*9/5+32;
+				sprintf(strtemp, "/%.1f*F ", tempF);
+				strcat(str2, strtemp);
+				cnt2 += strlen(strtemp);
+				strcat(str2, "feels like ");
+				cnt2 += 11;
 
-                ++cnt;
-                continue;
-            }
-            else if (reading_wind) {
-                reading_wind = 0;
-                reading_precip = 1;
-            }
-            else if (reading_precip) {
+				++cnt;
+				continue;
+			}
+			else if (reading_feelslike) {
+				reading_feelslike = 0;
+				reading_wind = 1;
+
+				int isminus = 0;
+				char strtemp[128];
+				memset(strtemp, 0, 128);
+				if (str[cnt-6] == '+' || str[cnt-6] == '-') {
+					if (str[cnt-6] == '-')
+						isminus = 1;
+					strtemp[0] = str[cnt-5];
+					strtemp[1] = str[cnt-4];
+				}
+				else if (str[cnt-5] == '+' || str[cnt-5] == '-') {
+					if (str[cnt-5] == '-')
+						isminus = 1;
+					strtemp[0] = str[cnt-4];
+				}
+				int temp = atoi(strtemp);
+				float tempF;
+				if (isminus)
+					tempF = (float)(-temp)*9/5+32;
+				else
+					tempF = (float)temp*9/5+32;
+				sprintf(strtemp, "/%.1f*F ", tempF);
+				strcat(str2, strtemp);
+				cnt2 += strlen(strtemp);
+
+				++cnt;
+				continue;
+			}
+			else if (reading_wind) {
+				reading_wind = 0;
+				reading_precip = 1;
+			}
+			else if (reading_precip) {
 				reading_precip = 0;
-            }
+			}
 
-            str2[cnt2++] = ' ';
-            ++cnt;
-            continue;
+			str2[cnt2++] = ' ';
+			++cnt;
+			continue;
 		}
-        else if (str[cnt] == -62 && str[cnt+1] == -80) {
-            str2[cnt2] = '*';
-            cnt += 2;
-            ++cnt2;
-            continue;
-        }
+		else if (str[cnt] == -62 && str[cnt+1] == -80) {
+			str2[cnt2] = '*';
+			cnt += 2;
+			++cnt2;
+			continue;
+		}
 		else if (str[cnt] < 32 || str[cnt] > 126) {
 			++cnt;
 			continue;
 		}
 
-        str2[cnt2] = str[cnt];
-        ++cnt;
-        ++cnt2;
-    }
-    sprintf(buf, "%s: %s", city, str2);
-    Msg(buf);
+		str2[cnt2] = str[cnt];
+		++cnt;
+		++cnt2;
+	}
+	sprintf(buf, "%s: %s", city, str2);
+	Msg(buf);
 	free(str);
 	free(str2);
 	

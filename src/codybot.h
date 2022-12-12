@@ -97,6 +97,7 @@ void Weather(struct raw_line *rawp);
 // from raw.c
 char *RawGetTarget(struct raw_line *rawp);
 void RawLineClear(struct raw_line *rawp);
+struct raw_line *RawLineDup(struct raw_line *rawp);
 void RawLineParse(struct raw_line *rawp, char *line);
 
 // from server.c
