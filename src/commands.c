@@ -940,6 +940,7 @@ void *WeatherFunc(void *ptr) {
 	Msg(buf);
 	free(str);
 	free(str2);
+	RawLineFree(rawp);
 	
 	if (!debug) {
 		sprintf(buf, "rm %s", filename);

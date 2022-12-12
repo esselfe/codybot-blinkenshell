@@ -40,6 +40,16 @@ struct raw_line *RawLineDup(struct raw_line *rawp) {
 	return ptr;
 }
 
+void RawLineFree(struct raw_line *rawp) {
+	free(rawp->nick);
+	free(rawp->username);
+	free(rawp->host);
+	free(rawp->command);
+	free(rawp->channel);
+	free(rawp->text);
+	free(rawp);
+}
+
 // Type of message to be parsed:
 // :esselfe!~bsfc@unaffiliated/esselfe PRIVMSG #codybot :^codybot_version
 void RawLineParse(struct raw_line *rawp, char *line) {
