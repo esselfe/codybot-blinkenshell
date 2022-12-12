@@ -761,13 +761,16 @@ int WeatherCheckUsage(void) {
 
 void *WeatherFunc(void *ptr) {
 	struct raw_line *rawp = ptr;
+	char buf[4096]; // Use our own buffer instead of the global one
+	memset(buf,0, 4096);
 
     if (!WeatherCheckUsage()) {
         Msg("Weather quota reached, maximum 10 times every 30 minutes.");
         return NULL;
     }
 
-	// check for "kill" found in ",weather `pkill${IFS}codybot`" which kills the bot
+	// check for "kill" found in ",weather `pkill${IFS}codybot`"
+	// which kills the bot
     char *c = rawp->text;
     while (1) {
         if (*c == '\0' || *c == '\n')
@@ -781,8 +784,8 @@ void *WeatherFunc(void *ptr) {
 
 
 	unsigned int cnt = 0;
-	char city[1024], *cp = rawp->text + strlen("^weather ");
-	memset(city, 0, 1024);
+	char city[512], *cp = rawp->text + strlen("^weather ");
+	memset(city, 0, 512);
 	while (1) {
 		if (*cp == '\n' || *cp == '\0')
 			break;
@@ -803,16 +806,18 @@ void *WeatherFunc(void *ptr) {
 	}
 	memset(rawp->text, 0, strlen(rawp->text));
 
-	char filename[4096];
+	char filename[1024];
 	sprintf(filename, "/tmp/codybot-weather-%s", city);
-	sprintf(buffer, "wget -t 1 -T 24 https://wttr.in/%s?format=%%C:%%t:%%f:%%w:%%p -O %s",
+	sprintf(buf, 
+		"wget -t 1 -T 24 https://wttr.in/%s?format=%%C:%%t:%%f:%%w:%%p -O %s",
 		city, filename);
-	system(buffer);
+	system(buf);
 
 	FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
-        sprintf(buffer, "codybot error: Cannot open %s: %s", filename, strerror(errno));
-        Msg(buffer);
+        sprintf(buf, "codybot error: Cannot open %s: %s",
+			filename, strerror(errno));
+        Msg(buf);
         return NULL;
     }
     fseek(fp, 0, SEEK_END);
@@ -931,15 +936,15 @@ void *WeatherFunc(void *ptr) {
         ++cnt;
         ++cnt2;
     }
-    sprintf(buffer, "%s: %s", city, str2);
-    Msg(buffer);
+    sprintf(buf, "%s: %s", city, str2);
+    Msg(buf);
 	free(str);
 	free(str2);
 	
 	if (!debug) {
-		sprintf(buffer, "rm %s", filename);
-		system(buffer);
-		memset(buffer, 0, 4096);
+		sprintf(buf, "rm %s", filename);
+		system(buf);
+		memset(buf, 0, 4096);
 	}
 
 	return NULL;
