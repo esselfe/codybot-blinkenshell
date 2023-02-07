@@ -145,7 +145,8 @@ void ServerConnect(void) {
 	else
 		write(socket_fd, buffer, strlen(buffer));
 
-	sprintf(buffer, "USER %s %s irc.blinkenshell.org :%s\n", nick, hostname, full_user_name);
+	sprintf(buffer, "USER %s %s irc.blinkenshell.org :%s\n",
+		getlogin(), hostname, full_user_name);
 	if (use_ssl)
 		SSL_write(pSSL, buffer, strlen(buffer));
 	else
