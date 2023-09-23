@@ -1,5 +1,5 @@
-20190824-20201017
-codybot is an IRC bot written in the C programming language,
+20190824-20230923
+Codybot is an IRC bot written in the C programming language,
 providing users with fortune cookies, jokes, weather per city,
 ascii-art images, text colorization and fortune cookie counter.
 
@@ -11,8 +11,8 @@ and run with './codybot -n YourBotNick'. Run './codybot --help'
 to see all program options.
 
 There is no installation mechanism, you should use the source directory
-or move the files where you want. The files 'data-ascii.txt', 'data-chars.txt',
-'data-fortunes.txt', 'data-jokes.txt' and 'stats' must be in the program's
+or move the files where you want. The files 'data/ascii.txt', 'data/chars.txt',
+'data/fortunes.txt', 'data/jokes.txt' and 'stats' must be in the program's
 current working directory otherwise the program will not run.
 
 You can identify to NickServ by typing 'id yourpasswordhere' or 
@@ -34,7 +34,11 @@ To get a random joke type '!joke'. This database is hand written using
 https://www.funnyshortjokes.com content and is far from containing all
 the sites' jokes! There's 25 jokes as of 20200510.
 
-To get weather report from https://wttr.in type '!weather citynamehere'
-This should return something like "Montreal: Partly cloudy 23C/73F"
+To get weather report from https://www.weatherapi.com type
+'!weather citynamehere'. This should return something like
+"Montreal, Quebec, Canada: Partly cloudy 23.6C/74.5F feels like "
+"24.2C/75.6F, wind 10.1kmh/6.3mph, gust 12.5kmh/7.8mph, precip. 1.5mm".
+Note that you will need an API key from them, it's free.
 
 Enjoy!
+
