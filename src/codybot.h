@@ -69,6 +69,9 @@ char *EnumerateAdmins(void);
 int IsAdmin(char *newnick, char *host);
 void ParseAdminFile(void);
 
+// from api.c
+void APIFetch(char *city);
+
 // from codybot.c
 #define LOCAL 0
 #define IN 1
