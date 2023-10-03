@@ -127,10 +127,10 @@ strcmp(raw.command, "NICK")!=0) {
 // help
 		if (raw.text[0]==trigger_char && strncmp(raw.text+1, "help", 4) == 0) {
 			char c = trigger_char;
-sprintf(buffer, "commands: %cabout %cadmins %cascii %ccal %ccalc %cchars "
-"%ccolorize %cdate %chelp %cdict %cfoldoc %cfortune %cjoke %crainbow "
+sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
+"%cchars %ccolorize %cdate %chelp %cdict %cfoldoc %cfortune %cjoke %crainbow "
 "%cstats %cuptime %cversion %cweather\n",
-	c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
+	c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 			Msg(buffer);
 			continue;
 		}
@@ -166,6 +166,20 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %ccal %ccalc %cchars "
 					"sources @ https://github.com/esselfe/codybot-blinkenshell", nick);
 				Msg(buffer);
 			}
+		}
+// astro
+		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "astro") == 0) {
+			sprintf(buffer, "astro: missing city argument, example: '%castro"
+				" montreal'", trigger_char);
+			Msg(buffer);
+		}
+		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "astro ", 6) == 0) {
+			if (wttr_disabled) {
+				sprintf(buffer, "!astro is currently disabled, try again later or ask an admin to enable it");
+				Msg(buffer);
+			}
+			else
+				Astro(&raw);
 		}
 // cal
 		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "cal") == 0)

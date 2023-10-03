@@ -95,6 +95,93 @@ void AsciiArt(struct raw_line *rawp) {
 	fclose(fp);
 }
 
+// array containing time at which !astro have been run
+unsigned long astro_usage[10];
+
+// pop the first item
+void AstroDecayUsage(void) {
+	int cnt;
+	for (cnt = 0; cnt < 9; cnt++)
+		astro_usage[cnt] = astro_usage[cnt+1];
+
+	astro_usage[cnt] = 0;
+}
+
+// return true if permitted, false if quota reached
+int AstroCheckUsage(void) {
+	int cnt;
+	for (cnt = 0; cnt < 10; cnt++) {
+		// if there's available slot
+		if (astro_usage[cnt] == 0) {
+			astro_usage[cnt] = time(NULL);
+			return 1;
+		}
+		// if usage is complete and first item dates from over 30 minutes
+		else if (cnt == 9 && astro_usage[0] < (time(NULL) - (60*30))) {
+			AstroDecayUsage();
+			astro_usage[cnt] = time(NULL);
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+void *AstroFunc(void *ptr) {
+	struct raw_line *rawp = RawLineDup((struct raw_line *)ptr);
+
+	if (!AstroCheckUsage()) {
+		Msg("Astro quota reached, maximum 10 times every 30 minutes.");
+		return NULL;
+	}
+
+	unsigned int cnt = 0, cnt_conv = 0;
+	char city[128], city_conv[128], *cp = rawp->text + strlen("!astro ");
+	memset(city, 0, 128);
+	memset(city_conv, 0, 128);
+	while (1) {
+		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
+			break;
+		else if (cnt == 0 && *cp == ' ') {
+			++cp;
+			continue;
+		}
+		else if (*cp == '"' || *cp == '$' || *cp == '/' || *cp == '\\') {
+			++cp;
+			continue;
+		}
+		else if (*cp == ' ') {
+			city[cnt++] = ' ';
+			city_conv[cnt_conv++] = '%';
+			city_conv[cnt_conv++] = '2';
+			city_conv[cnt_conv++] = '0';
+			++cp;
+			continue;
+		}
+		
+		city[cnt] = *cp;
+		city_conv[cnt_conv] = *cp;
+		++cnt;
+		++cnt_conv;
+		++cp;
+	}
+	RawLineFree(rawp);
+
+	APIFetchAstro(city_conv);
+
+	return NULL;
+}
+
+void Astro(struct raw_line *rawp) {
+	pthread_t thr;
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+	pthread_create(&thr, &attr, AstroFunc, (void *)rawp);
+	pthread_detach(thr);
+	pthread_attr_destroy(&attr);
+}
+
 // Show calendars
 void Cal(void) {
 	// Change terminal highlight for IRC coloring codes
@@ -805,7 +892,7 @@ void *WeatherFunc(void *ptr) {
 		++cp;
 	}
 
-	APIFetch(city);
+	APIFetchWeather(city);
 
 	return NULL;
 }

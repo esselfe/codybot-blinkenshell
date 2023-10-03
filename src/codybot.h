@@ -70,7 +70,8 @@ int IsAdmin(char *newnick, char *host);
 void ParseAdminFile(void);
 
 // from api.c
-void APIFetch(char *city);
+void APIFetchAstro(char *city);
+void APIFetchWeather(char *city);
 
 // from codybot.c
 #define LOCAL 0
@@ -82,6 +83,7 @@ void *ThreadRXFunc(void *argp);
 
 // from commands.c
 void AsciiArt(struct raw_line *rawp);
+void Astro(struct raw_line *rawp);
 void Cal(void);
 void Calc(struct raw_line *rawp);
 void CC(struct raw_line *rawp);
