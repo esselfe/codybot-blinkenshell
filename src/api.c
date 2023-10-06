@@ -71,8 +71,14 @@ void APIFetchAstro(char *city) {
 	// Parse json-formatted response
 	////////////////////////////////
 	json_object *root = json_object_from_file("cmd.output");
+	if (root == NULL)
+		return;
 	
 	json_object *location = json_object_object_get(root, "location");
+	if (location == NULL) {
+		Msg("No matching location found.");
+		return;
+	}
 	json_object *name = json_object_object_get(location, "name");
 	json_object *region = json_object_object_get(location, "region");
 	json_object *country = json_object_object_get(location, "country");
@@ -179,8 +185,14 @@ void APIFetchWeather(char *city) {
 	// Parse json-formatted response
 	////////////////////////////////
 	json_object *root = json_object_from_file("cmd.output");
+	if (root == NULL)
+		return;
 	
 	json_object *location = json_object_object_get(root, "location");
+	if (location == NULL) {
+		Msg("No matching location found.");
+		return;
+	}
 	json_object *name = json_object_object_get(location, "name");
 	json_object *region = json_object_object_get(location, "region");
 	json_object *country = json_object_object_get(location, "country");
