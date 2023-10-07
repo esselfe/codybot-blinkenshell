@@ -213,6 +213,11 @@ void ReadCommandLoop(void) {
 			sprintf(buffer, "trigger_char = %c", trigger_char);
 			Msg(buffer);
 		}
+		else if (strcmp(buffer_line, "uptime\n") == 0) {
+			sprintf(raw.channel, "%s", current_channel);
+			target = raw.channel;
+			Uptime(NULL);
+		}
 		else {
 			if (use_ssl)
 				SSL_write(pSSL, buffer_line, strlen(buffer_line));

@@ -814,6 +814,35 @@ void Stats(struct raw_line *rawp) {
 	Msg(buffer);
 }
 
+void Uptime(struct raw_line *rawp) {
+	gettimeofday(&tv0, NULL);
+	t0 = (time_t)tv0.tv_sec - tv_start.tv_sec;
+	tm0 = gmtime(&t0);
+	char buf[1024];
+	if (tm0->tm_year - 70)
+		sprintf(buf,
+		  "uptime: %d year%s %d month%s %02d day%s %02d:%02d:%02d",
+		  tm0->tm_year-70, ((tm0->tm_year-70)>1)?"s":"",
+		  tm0->tm_mon, (tm0->tm_mon>1)?"s":"",
+		  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
+		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
+	else if (tm0->tm_mon > 0)
+		sprintf(buf,
+		  "uptime: %d month%s %02d day%s %02d:%02d:%02d",
+		  tm0->tm_mon, (tm0->tm_mon>1)?"s":"",
+		  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
+		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
+	else if (tm0->tm_mday > 1)
+		sprintf(buf, "uptime: %02d day%s %02d:%02d:%02d",
+		  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
+		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
+	else
+		sprintf(buf, "uptime: %02d:%02d:%02d",
+		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
+	
+	Msg(buf);
+}
+
 // array containing time at which !weather have been run
 unsigned long weather_usage[10];
 

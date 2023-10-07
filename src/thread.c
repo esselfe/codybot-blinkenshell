@@ -326,33 +326,8 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 			sprintf(buffer, "trigger = '%c'", trigger_char);
 			Msg(buffer);
 		}
-		else if (strcmp(raw.text+1, "uptime") == 0) {
-			gettimeofday(&tv0, NULL);
-			t0 = (time_t)tv0.tv_sec - tv_start.tv_sec;
-			tm0 = gmtime(&t0);
-			if (tm0->tm_year - 70)
-				sprintf(buffer,
-				  "uptime: %d year%s %d month%s %02d day%s %02d:%02d:%02d",
-				  tm0->tm_year-70, ((tm0->tm_year-70)>1)?"s":"",
-				  tm0->tm_mon, (tm0->tm_mon>1)?"s":"",
-				  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
-				  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
-			else if (tm0->tm_mon > 0)
-				sprintf(buffer,
-				  "uptime: %d month%s %02d day%s %02d:%02d:%02d",
-				  tm0->tm_mon, (tm0->tm_mon>1)?"s":"",
-				  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
-				  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
-			else if (tm0->tm_mday > 1)
-				sprintf(buffer, "uptime: %02d day%s %02d:%02d:%02d",
-				  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
-				  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
-			else
-				sprintf(buffer, "uptime: %02d:%02d:%02d",
-				  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
-			
-			Msg(buffer);
-		}
+		else if (strcmp(raw.text+1, "uptime") == 0)
+			Uptime(&raw);
 		else if (strcmp(raw.text+1, "version") == 0) {
 			sprintf(buffer, "codybot %s", codybot_version_string);
 			Msg(buffer);

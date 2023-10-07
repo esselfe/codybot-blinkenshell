@@ -97,6 +97,7 @@ void Joke(struct raw_line *rawp);
 void Rainbow(struct raw_line *rawp);
 void SlapCheck(struct raw_line *rawp);
 void Stats(struct raw_line *rawp);
+void Uptime(struct raw_line *rawp);
 void Weather(struct raw_line *rawp);
 
 // from raw.c
