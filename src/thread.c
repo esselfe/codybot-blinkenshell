@@ -125,7 +125,8 @@ if (raw.text != NULL && raw.nick != NULL && strcmp(raw.command, "JOIN") != 0 &&
 strcmp(raw.command, "NICK")!=0) {
 		SlapCheck(&raw);
 // help
-		if (raw.text[0]==trigger_char && strncmp(raw.text+1, "help", 4) == 0) {
+		if (raw.text[0]==trigger_char) {
+		if (strncmp(raw.text+1, "help", 4) == 0) {
 			char c = trigger_char;
 sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 "%cchars %ccolorize %cdate %chelp %cdict %cfoldoc %cfortune %cjoke %crainbow "
@@ -134,30 +135,8 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 			Msg(buffer);
 			continue;
 		}
-// admins
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "admins reload") == 0) {
-			DestroyAdminList();
-			ParseAdminFile();
-			char *str = EnumerateAdmins();
-			sprintf(buffer, "Admins: %s\n", str);
-			free(str);
-			Msg(buffer);
-		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "admins", 6) == 0) {
-			char *str = EnumerateAdmins();
-			sprintf(buffer, "Admins: %s\n", str);
-			free(str);
-			Msg(buffer);
-		}
-// ascii
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "ascii", 5) == 0) {
-			if (strcmp(raw.channel, "#codybot")==0)
-				AsciiArt(&raw);
-			else
-				Msg("ascii: can only be run in #codybot (due to output > 4 lines)");
-		}
 // about
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "about", 5) == 0) {
+		else if (strncmp(raw.text+1, "about", 5) == 0) {
 			if (strcmp(nick, "codybot")==0)
 				Msg("codybot is an IRC bot written in C by esselfe, "
 					"sources @ https://github.com/esselfe/codybot-blinkenshell");
@@ -167,13 +146,35 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 				Msg(buffer);
 			}
 		}
+// admins
+		else if (strcmp(raw.text+1, "admins reload") == 0) {
+			DestroyAdminList();
+			ParseAdminFile();
+			char *str = EnumerateAdmins();
+			sprintf(buffer, "Admins: %s\n", str);
+			free(str);
+			Msg(buffer);
+		}
+		else if (strncmp(raw.text+1, "admins", 6) == 0) {
+			char *str = EnumerateAdmins();
+			sprintf(buffer, "Admins: %s\n", str);
+			free(str);
+			Msg(buffer);
+		}
+// ascii
+		else if (strncmp(raw.text+1, "ascii", 5) == 0) {
+			if (strcmp(raw.channel, "#codybot")==0)
+				AsciiArt(&raw);
+			else
+				Msg("ascii: can only be run in #codybot (due to output > 4 lines)");
+		}
 // astro
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "astro") == 0) {
+		else if (strcmp(raw.text+1, "astro") == 0) {
 			sprintf(buffer, "astro: missing city argument, example: '%castro"
 				" montreal'", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "astro ", 6) == 0) {
+		else if (strncmp(raw.text+1, "astro ", 6) == 0) {
 			if (wttr_disabled) {
 				sprintf(buffer, "!astro is currently disabled, try again later or ask an admin to enable it");
 				Msg(buffer);
@@ -182,28 +183,28 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 				Astro(&raw);
 		}
 // cal
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "cal") == 0)
+		else if (strcmp(raw.text+1, "cal") == 0)
 			Cal();
 // calc
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "calc") == 0)
+		else if (strcmp(raw.text+1, "calc") == 0)
 			Msg("calc  example: '!calc 10+20'");
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "calc ", 5) == 0)
+		else if (strncmp(raw.text+1, "calc ", 5) == 0)
 			Calc(&raw);
 // chars
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "chars", 5) == 0)
+		else if (strncmp(raw.text+1, "chars", 5) == 0)
 			Chars(&raw);
 // colorize
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "colorlist") == 0) {
+		else if (strcmp(raw.text+1, "colorlist") == 0) {
 			Msg("\003011\003022\003044\003055\003066\003077\003088\00309\0031010\0031111\0031212\0031313\0031414\0031515");
 		}
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "colorize") == 0) {
+		else if (strcmp(raw.text+1, "colorize") == 0) {
 			sprintf(buffer, "Usage: %ccolorize some text to process", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "colorize ", 9) == 0)
+		else if (strncmp(raw.text+1, "colorize ", 9) == 0)
 			Colorize(&raw);
 // date
-		else if (raw.text[0]==trigger_char && strlen(raw.text) >= 6 &&
+		else if (strlen(raw.text) >= 6 &&
 			strncmp(raw.text+1, "date utc", 8) == 0) {
 			if (strncmp(raw.text+5, "utc-12", 6) == 0)
 				Date(-12);
@@ -254,27 +255,27 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 			else if (strncmp(raw.text+6, "utc+12", 6) == 0)
 				Date(12);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "date", 4) == 0)
+		else if (strncmp(raw.text+1, "date", 4) == 0)
 			Date(0);
 // dict
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "dict") == 0) {
+		else if (strcmp(raw.text+1, "dict") == 0) {
 			sprintf(buffer, "Missing term argument, e.g. '%cdict wordhere'", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "dict ", 5) == 0)
+		else if (strncmp(raw.text+1, "dict ", 5) == 0)
 			Dict(&raw);
 // foldoc
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "foldoc") == 0) {
+		else if (strcmp(raw.text+1, "foldoc") == 0) {
 			sprintf(buffer, "Missing term argument, e.g. '%cfoldoc linux' "
 				" (foldoc is a computer-related dictionary)", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "foldoc ", 7) == 0)
+		else if (strncmp(raw.text+1, "foldoc ", 7) == 0)
 			Foldoc(&raw);
 // fortune
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "fortune", 7) == 0)
+		else if (strncmp(raw.text+1, "fortune", 7) == 0)
 			Fortune(&raw);
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "debug on") == 0) {
+		else if (strcmp(raw.text+1, "debug on") == 0) {
 			if (IsAdmin(raw.nick, raw.host)) {
 				debug = 1;
 				Msg("debug = 1");
@@ -282,7 +283,7 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 			else
 				Msg("debug mode can only be changed by an admin");
 		}
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "debug off") == 0) {
+		else if (strcmp(raw.text+1, "debug off") == 0) {
 			if (IsAdmin(raw.nick, raw.host)) {
 				debug = 0;
 				Msg("debug = 0");
@@ -290,34 +291,34 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 			else
 				Msg("debug mode can only be changed by an admin");
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "die", 4) == 0) {
+		else if (strncmp(raw.text+1, "die", 4) == 0) {
 			if (IsAdmin(raw.nick, raw.host))
 				exit(0);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "joke", 4) == 0)
+		else if (strncmp(raw.text+1, "joke", 4) == 0)
 			Joke(&raw);
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "msgbig") == 0 &&
+		else if (strcmp(raw.text+1, "msgbig") == 0 &&
 			IsAdmin(raw.nick, raw.host)) {
 			memset(buffer, 0, 4096);
 			memset(buffer, '#', 1024);
 			Msg(buffer);
 		}
 // rainbow
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "rainbow") == 0) {
+		else if (strcmp(raw.text+1, "rainbow") == 0) {
 			sprintf(buffer, "Usage: %crainbow some random text", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "rainbow ", 8) == 0)
+		else if (strncmp(raw.text+1, "rainbow ", 8) == 0)
 			Rainbow(&raw);
 // stats
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "stats") == 0)
+		else if (strcmp(raw.text+1, "stats") == 0)
 			Stats(&raw);
 // trigger
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "trigger") == 0) {
+		else if (strcmp(raw.text+1, "trigger") == 0) {
 			sprintf(buffer, "trigger = '%c'", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char&&raw.text[1]=='t'&&raw.text[2]=='r'&&
+		else if (raw.text[1]=='t'&&raw.text[2]=='r'&&
 			raw.text[3]=='i'&&raw.text[4]=='g'&&raw.text[5]=='g'&&raw.text[6]=='e'&&
 			raw.text[7]=='r'&&raw.text[8]==' '&&raw.text[9]!='\n') {
 			if (IsAdmin(raw.nick, raw.host))
@@ -325,7 +326,7 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 			sprintf(buffer, "trigger = '%c'", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "uptime") == 0) {
+		else if (strcmp(raw.text+1, "uptime") == 0) {
 			gettimeofday(&tv0, NULL);
 			t0 = (time_t)tv0.tv_sec - tv_start.tv_sec;
 			tm0 = gmtime(&t0);
@@ -336,15 +337,15 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 				sprintf(buffer, "uptime: %02d:%02d:%02d", tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "version") == 0) {
+		else if (strcmp(raw.text+1, "version") == 0) {
 			sprintf(buffer, "codybot %s", codybot_version_string);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "weather") == 0) {
+		else if (strcmp(raw.text+1, "weather") == 0) {
 			sprintf(buffer, "weather: missing city argument, example: '%cweather montreal'", trigger_char);
 			Msg(buffer);
 		}
-		else if (raw.text[0]==trigger_char && strncmp(raw.text+1, "weather ", 8) == 0) {
+		else if (strncmp(raw.text+1, "weather ", 8) == 0) {
 			if (wttr_disabled) {
 				sprintf(buffer, ",weather is currently disabled, try again later or ask an admin to enable it");
 				Msg(buffer);
@@ -352,7 +353,7 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 			else
 				Weather(&raw);
 		}
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "weather_disable") == 0) {
+		else if (strcmp(raw.text+1, "weather_disable") == 0) {
 			if (IsAdmin(raw.nick, raw.host)) {
 				wttr_disabled = 1;
 				Msg("weather_disabled = 1");
@@ -362,7 +363,7 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 				Msg(buffer);
 			}
 		}
-		else if (raw.text[0]==trigger_char && strcmp(raw.text+1, "weather_enable") == 0) {
+		else if (strcmp(raw.text+1, "weather_enable") == 0) {
 			if (IsAdmin(raw.nick, raw.host)) {
 				wttr_disabled = 0;
 				Msg("weather_disabled = 0");
@@ -372,6 +373,7 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 				Msg(buffer);
 			}
 		}
+		} // if (raw.text[0]==trigger_char)
 
 		usleep(10000);
 }
