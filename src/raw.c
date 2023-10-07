@@ -64,7 +64,6 @@ void RawLineParse(struct raw_line *rawp, char *line) {
 // :codybot MODE codybot :+Zi
 // :ChanServ!ChanServ@services. MODE #codybot +o esselfe
 // :NickServ!NickServ@services. NOTICE codybot :Invalid password for codybot.
-// :freenode-connect!frigg@freenode/utility-bot/frigg NOTICE codybot :Welcome to freenode.
 // :PING :livingstone.freenode.net
 // ERROR :Closing Link: mtrlpq69-157-190-235.bell.ca (Quit: codybot)
 	if (*c==':' && *(c+1)=='s' && *(c+2)=='a' && *(c+3)=='o' && *(c+4)=='.')
@@ -76,10 +75,6 @@ void RawLineParse(struct raw_line *rawp, char *line) {
 		return;
 	else if (*(c+1)=='N' && *(c+2)=='i' && *(c+3)=='c' && *(c+4)=='k' && *(c+5)=='S' &&
 		*(c+6)=='e' && *(c+7)=='r' && *(c+8)=='v' && *(c+9)=='!')
-		return;
-	else if (*c==':' && *(c+1)=='f' && *(c+2)=='r' && *(c+3)=='e' && *(c+4)=='e' && *(c+5)=='n' &&
-		*(c+6)=='o' && *(c+7)=='d' && *(c+8)=='e' && *(c+9)=='-' && *(c+10)=='c' &&
-		*(c+11)=='o' && *(c+12)=='n')
 		return;
 	else if (*c=='P' && *(c+1)=='I' && *(c+2)=='N' && *(c+3)=='G' && *(c+4)==' ')
 		return;
