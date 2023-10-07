@@ -43,7 +43,10 @@ void APIFetchAstro(char *city) {
 	memset(url, 0, 4096);
 	sprintf(url, "https://api.weatherapi.com/v1/astronomy.json"
 		"?key=%s&q=%s&dt=%s", key, city, datestr);
+	free(datestr);
+	free(key);
 	curl_easy_setopt(handle, CURLOPT_URL, url);
+	free(url);
 	
 	fp = fopen("cmd.output", "w");
 	if (fp == NULL) {
@@ -64,19 +67,26 @@ void APIFetchAstro(char *city) {
 	}
 	fclose(fp);
 	curl_easy_cleanup(handle);
-	free(key);
-	free(datestr);
-	free(url);
 
 	// Parse json-formatted response
 	////////////////////////////////
 	json_object *root = json_object_from_file("cmd.output");
-	if (root == NULL)
+	if (root == NULL) {
+		Msg("No results.");
 		return;
+	}
 	
 	json_object *location = json_object_object_get(root, "location");
 	if (location == NULL) {
-		Msg("No matching location found.");
+		json_object *error = json_object_object_get(root, "error");
+		if (error == NULL)
+			Msg("No location found in response.");
+		else {
+			json_object *message = json_object_object_get(error, "message");
+			Msg((char *)json_object_get_string(message));
+		}
+		
+		json_object_put(root);
 		return;
 	}
 	json_object *name = json_object_object_get(location, "name");
@@ -185,12 +195,22 @@ void APIFetchWeather(char *city) {
 	// Parse json-formatted response
 	////////////////////////////////
 	json_object *root = json_object_from_file("cmd.output");
-	if (root == NULL)
+	if (root == NULL) {
+		Msg("No results.");
 		return;
+	}
 	
 	json_object *location = json_object_object_get(root, "location");
 	if (location == NULL) {
-		Msg("No matching location found.");
+		json_object *error = json_object_object_get(root, "error");
+		if (error == NULL)
+			Msg("No location found in response.");
+		else {
+			json_object *message = json_object_object_get(error, "message");
+			Msg((char *)json_object_get_string(message));
+		}
+		
+		json_object_put(root);
 		return;
 	}
 	json_object *name = json_object_object_get(location, "name");
