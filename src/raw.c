@@ -6,8 +6,8 @@
 struct raw_line raw;
 char *target;
 
-// ":esselfe!~codybot@unaffiliated/codybot PRIVMSG ##c-offtopic :message"
-// ":esselfe!~codybot@unaffiliated/codybot PRIVMSG SpringSprocket :message"
+// ":esselfe!~codybot@user/codybot PRIVMSG #c-offtopic :message"
+// ":esselfe!~codybot@user/codybot PRIVMSG SpringSprocket :message"
 // If sender sends to channel, set target to channel
 // If sender sends to PM/nick, set target to nick
 char *RawGetTarget(struct raw_line *rawp) {
@@ -51,7 +51,7 @@ void RawLineFree(struct raw_line *rawp) {
 }
 
 // Type of message to be parsed:
-// :esselfe!~bsfc@unaffiliated/esselfe PRIVMSG #codybot :^codybot_version
+// :esselfe!~bsfc@user/esselfe PRIVMSG #codybot :!version
 void RawLineParse(struct raw_line *rawp, char *line) {
 	RawLineClear(rawp);
 
@@ -60,16 +60,14 @@ void RawLineParse(struct raw_line *rawp, char *line) {
 		rec_channel = 0, rec_text = 0; // recording flags
 	
 	// messages to skip:
-// :livingstone.freenode.net 372 codybot :- Thank you for using freenode!
+// :sao.blinkenshell.org 254 codybot 15 :channels formed
 // :codybot MODE codybot :+Zi
 // :ChanServ!ChanServ@services. MODE #codybot +o esselfe
 // :NickServ!NickServ@services. NOTICE codybot :Invalid password for codybot.
 // :freenode-connect!frigg@freenode/utility-bot/frigg NOTICE codybot :Welcome to freenode.
 // :PING :livingstone.freenode.net
 // ERROR :Closing Link: mtrlpq69-157-190-235.bell.ca (Quit: codybot)
-	if (*c==':' && *(c+1)=='l' && *(c+2)=='i' && *(c+3)=='v' && *(c+4)=='i' && *(c+5)=='n' &&
-		*(c+6)=='g' && *(c+7)=='s' && *(c+8)=='t' && *(c+9)=='o' && *(c+10)=='n' &&
-		*(c+11)=='e' && *(c+12)=='.')
+	if (*c==':' && *(c+1)=='s' && *(c+2)=='a' && *(c+3)=='o' && *(c+4)=='.')
 		return;
 	else if (*(c+8)==' ' && *(c+9)=='M' && *(c+10)=='O' && *(c+11)=='D' && *(c+12)=='E')
 		return;
