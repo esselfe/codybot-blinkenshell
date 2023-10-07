@@ -856,20 +856,6 @@ void *WeatherFunc(void *ptr) {
 		return NULL;
 	}
 
-	// check for "kill" found in ",weather `pkill${IFS}codybot`"
-	// which kills the bot
-	char *c = rawp->text;
-	while (1) {
-		if (*c == '\0' || *c == '\n')
-			break;
-		if (strlen(c) >= 5 && strncmp(c, "kill", 4) == 0) {
-			Msg("weather: contains a blocked term...\n");
-			return NULL;
-		}
-		++c;
-	}
-
-
 	unsigned int cnt = 0, cnt_conv = 0;
 	char city[128], city_conv[128], *cp = rawp->text + strlen("!weather ");
 	memset(city, 0, 128);
