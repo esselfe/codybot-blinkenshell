@@ -13,7 +13,7 @@ void APIFetchAstro(char *city) {
 	///////////////////
 	FILE *fp = fopen("api.key", "r");
 	if (fp == NULL) {
-		sprintf(buffer, "codybot error: Cannot open cmd.output: %s",
+		sprintf(buffer, "codybot error: Cannot open api.key: %s",
 			strerror(errno));
 		Msg(buffer);
 		return;
@@ -146,7 +146,7 @@ void APIFetchWeather(char *city) {
 	///////////////////
 	FILE *fp = fopen("api.key", "r");
 	if (fp == NULL) {
-		sprintf(buffer, "codybot error: Cannot open cmd.output: %s",
+		sprintf(buffer, "codybot error: Cannot open api.key: %s",
 			strerror(errno));
 		Msg(buffer);
 		return;
