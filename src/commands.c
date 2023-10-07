@@ -870,29 +870,39 @@ void *WeatherFunc(void *ptr) {
 	}
 
 
-	unsigned int cnt = 0;
-	char city[512], *cp = rawp->text + strlen("^weather ");
-	memset(city, 0, 512);
+	unsigned int cnt = 0, cnt_conv = 0;
+	char city[128], city_conv[128], *cp = rawp->text + strlen("!weather ");
+	memset(city, 0, 128);
+	memset(city_conv, 0, 128);
 	while (1) {
-		if (*cp == '\n' || *cp == '\0')
+		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
 			break;
 		else if (cnt == 0 && *cp == ' ') {
 			++cp;
 			continue;
 		}
-		else if (*cp == '"' || *cp == '$' || *cp == '\\' || *cp == '/') {
+		else if (*cp == '"' || *cp == '$' || *cp == '/' || *cp == '\\') {
 			++cp;
 			continue;
 		}
-		//else if (*cp == ' ')
-		//	break;
+		else if (*cp == ' ') {
+			city[cnt++] = ' ';
+			city_conv[cnt_conv++] = '%';
+			city_conv[cnt_conv++] = '2';
+			city_conv[cnt_conv++] = '0';
+			++cp;
+			continue;
+		}
 		
 		city[cnt] = *cp;
+		city_conv[cnt_conv] = *cp;
 		++cnt;
+		++cnt_conv;
 		++cp;
 	}
+	RawLineFree(rawp);
 
-	APIFetchWeather(city);
+	APIFetchWeather(city_conv);
 
 	return NULL;
 }
