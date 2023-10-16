@@ -8,15 +8,13 @@
 
 #include "codybot.h"
 
-void APIFetchAstro(char *city) {
-	// Retrieve API key
-	///////////////////
+static char *APIGetKey(void) {
 	FILE *fp = fopen("api.key", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "codybot error: Cannot open api.key: %s",
 			strerror(errno));
 		Msg(buffer);
-		return;
+		return NULL;
 	}
 	char *key = malloc(512);
 	memset(key, 0, 512);
@@ -27,6 +25,16 @@ void APIFetchAstro(char *city) {
 	/////////////////////////////////
 	if (*(key+strlen(key)-1) == '\n')
 		*(key+strlen(key)-1) = '\0';
+	
+	return key;
+}
+
+void APIFetchAstro(char *city) {
+	// Retrieve API key
+	///////////////////
+	char *key = APIGetKey();
+	if (key == NULL)
+		return;
 
 	// Perform curl request
 	///////////////////////
@@ -48,7 +56,7 @@ void APIFetchAstro(char *city) {
 	curl_easy_setopt(handle, CURLOPT_URL, url);
 	free(url);
 	
-	fp = fopen("cmd.output", "w");
+	FILE *fp = fopen("cmd.output", "w");
 	if (fp == NULL) {
 		sprintf(buffer, "codybot error: Cannot open cmd.output: %s",
 			strerror(errno));
@@ -144,22 +152,9 @@ void APIFetchAstro(char *city) {
 void APIFetchWeather(char *city) {
 	// Retrieve API key
 	///////////////////
-	FILE *fp = fopen("api.key", "r");
-	if (fp == NULL) {
-		sprintf(buffer, "codybot error: Cannot open api.key: %s",
-			strerror(errno));
-		Msg(buffer);
+	char *key = APIGetKey();
+	if (key == NULL)
 		return;
-	}
-	char *key = malloc(512);
-	memset(key, 0, 512);
-	fgets(key, 511, fp);
-	fclose(fp);
-
-	// Remove newline from key string
-	/////////////////////////////////
-	if (*(key+strlen(key)-1) == '\n')
-		*(key+strlen(key)-1) = '\0';
 
 	// Perform curl request
 	///////////////////////
@@ -172,7 +167,7 @@ void APIFetchWeather(char *city) {
 	free(key);
 	curl_easy_setopt(handle, CURLOPT_URL, url);
 	
-	fp = fopen("cmd.output", "w");
+	FILE *fp = fopen("cmd.output", "w");
 	if (fp == NULL) {
 		sprintf(buffer, "codybot error: Cannot open cmd.output: %s",
 			strerror(errno));
