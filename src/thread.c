@@ -272,6 +272,20 @@ sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 		}
 		else if (strncmp(raw.text+1, "foldoc ", 7) == 0)
 			Foldoc(&raw);
+// forecast
+		else if (strcmp(raw.text+1, "forecast") == 0) {
+			sprintf(buffer, "forecast: missing city argument, example: '%cforecast"
+				" montreal'", trigger_char);
+			Msg(buffer);
+		}
+		else if (strncmp(raw.text+1, "forecast ", 9) == 0) {
+			if (wttr_disabled) {
+				sprintf(buffer, "!forecast is currently disabled, try again later or ask an admin to enable it");
+				Msg(buffer);
+			}
+			else
+				Forecast(&raw);
+		}
 // fortune
 		else if (strncmp(raw.text+1, "fortune", 7) == 0)
 			Fortune(&raw);
