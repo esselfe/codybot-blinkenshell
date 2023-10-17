@@ -129,9 +129,9 @@ strcmp(raw.command, "NICK")!=0) {
 		if (strncmp(raw.text+1, "help", 4) == 0) {
 			char c = trigger_char;
 sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
-"%cchars %ccolorize %cdate %chelp %cdict %cfoldoc %cfortune %cjoke %crainbow "
-"%cstats %cuptime %cversion %cweather\n",
-	c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
+"%cchars %ccolorize %cdate %chelp %cdict %cfoldoc %cforecast %cfortune %cjoke "
+"%crainbow %cstats %cuptime %cversion %cweather\n",
+c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 			Msg(buffer);
 			continue;
 		}
