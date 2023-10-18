@@ -62,7 +62,7 @@ char *nick; // nick used by the bot
 char *full_user_name;
 char *hostname;
 
-void Log(unsigned int direction, char *text) {
+void Log(unsigned int direction, const char *text) {
 	FILE *fp = fopen(log_filename, "a+");
 	if (fp == NULL) {
 		fprintf(stderr, "##codybot::Log() error: Cannot open %s: %s\n",
