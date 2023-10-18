@@ -96,7 +96,7 @@ void APIFetchWeather(char *city);
 #define IN 1
 #define OUT 2
 void Log(unsigned int direction, char *text);
-void Msg(char *text);
+void Msg(const char *text);
 void *ThreadRXFunc(void *argp);
 
 // from commands.c

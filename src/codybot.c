@@ -107,7 +107,7 @@ void Log(unsigned int direction, char *text) {
 	fclose(fp);
 }
 
-void Msg(char *text) {
+void Msg(const char *text) {
 	unsigned int total_len = strlen(text);
 	if (total_len <= 400) {
 		sprintf(buffer_log, "PRIVMSG %s :%s\n", target, text);
@@ -120,7 +120,7 @@ void Msg(char *text) {
 	}
 	else if (total_len > 400) {
 		char str[400];
-		char *cp = text;
+		const char *cp = text;
 		unsigned int cnt;
 		unsigned int cnt2 = 0;
 		memset(str, 0, 400);
