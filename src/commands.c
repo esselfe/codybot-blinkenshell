@@ -412,6 +412,7 @@ void Dict(struct raw_line *dict_rawp) {
 			sprintf(buffer, "##codybot::Dict() error: Cannot open cmd.url: %s\n",
 				strerror(errno));
 			Msg(buffer);
+			free(line);
 			return;
 		}
 
@@ -421,6 +422,8 @@ void Dict(struct raw_line *dict_rawp) {
 
 		fclose(fp);
 	}
+	
+	free(line);
 }
 
 void Foldoc(struct raw_line *foldoc_rawp) {
@@ -505,6 +508,7 @@ void Foldoc(struct raw_line *foldoc_rawp) {
 			sprintf(buffer, "##codybot::Foldoc() error: Cannot open cmd.url: %s\n",
 				strerror(errno));
 			Msg(buffer);
+			free(line);
 			return;
 		}
 
@@ -514,6 +518,8 @@ void Foldoc(struct raw_line *foldoc_rawp) {
 
 		fclose(fp);
 	}
+	
+	free(line);
 }
 
 // array containing time at which !astro have been run
