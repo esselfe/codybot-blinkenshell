@@ -831,7 +831,8 @@ void SlapCheck(struct raw_line *slap_rawp) {
 		gettimeofday(&tv0, NULL);
 
 		time_t slap_time = (time_t)tv0.tv_sec;
-		struct tm *tm0 = gmtime(&slap_time);
+		struct tm *tm1 = malloc(sizeof(struct tm));
+		gmtime_r(&slap_time, tm1);
 		if (slap_cnt == 0) {
 			slap_hour = tm0->tm_hour;
 		}
