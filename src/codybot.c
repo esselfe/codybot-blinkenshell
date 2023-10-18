@@ -72,7 +72,8 @@ void Log(unsigned int direction, char *text) {
 
 	gettimeofday(&tv0, NULL);
 	t0 = (time_t)tv0.tv_sec;
-	tm0 = localtime(&t0);
+	tm0 = malloc(sizeof(struct tm));
+	localtime_r(&t0, tm0);
 	char *str = strdup(text);
 	// remove trailing newline
 	if (str[strlen(str)-1] == '\n')
