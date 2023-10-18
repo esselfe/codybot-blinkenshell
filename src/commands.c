@@ -834,18 +834,20 @@ void SlapCheck(struct raw_line *slap_rawp) {
 		struct tm *tm1 = malloc(sizeof(struct tm));
 		gmtime_r(&slap_time, tm1);
 		if (slap_cnt == 0) {
-			slap_hour = tm0->tm_hour;
+			slap_hour = tm1->tm_hour;
 		}
 		else {
 			if (slap_hour != tm0->tm_hour) {
-				slap_hour = tm0->tm_hour;
+				slap_hour = tm1->tm_hour;
 				slap_cnt = 0;
 			}
-			else if (slap_hour == tm0->tm_hour && slap_cnt >= slap_max) {
+			else if (slap_hour == tm1->tm_hour && slap_cnt >= slap_max) {
 				RawLineFree(rawp);
+				free(tm1);
 				return;
 			}
 		}
+		free(tm1);
 
 		srand((unsigned int)tv0.tv_usec);
 		sprintf(buffer, "%cACTION slaps %s with %s%c", 1, rawp->nick, slap_items[rand()%20], 1);
