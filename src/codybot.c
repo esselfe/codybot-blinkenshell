@@ -310,7 +310,9 @@ int main(int argc, char **argv) {
 	ParseAdminFile();
 
 	if (!full_user_name) {
-		char *name = getlogin();
+		char *name = malloc(128);
+		memset(name, 0, 128);
+		getlogin_r(name, 127);
 		full_user_name = (char *)malloc(strlen(name)+1);
 		sprintf(full_user_name, "%s", name);
 	}
