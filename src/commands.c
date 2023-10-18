@@ -854,29 +854,7 @@ void SlapCheck(struct raw_line *rawp) {
 }
 
 void Stats(struct raw_line *rawp) {
-	FILE *fp;
-	struct stat st;
-	if (stat("stats", &st) < 0) {
-		if (errno == ENOENT) { // doesn't exist, try to create it
-			fp = fopen("stats", "w+");
-			if (fp == NULL) {
-				sprintf(buffer, 
-					"codybot::Fortune() error: Cannot create stats file: %s", strerror(errno));
-				Msg(buffer);
-				return;
-			}
-			fputs("0", fp);
-			fclose(fp);
-		}
-		else if (errno == EACCES) {
-			sprintf(buffer, 
-				"codybot::Fortune() error: Cannot open stats file: %s", strerror(EACCES));
-			Msg(buffer);
-			return;
-		}
-	}
-
-	fp = fopen("stats", "r");
+	FILE *fp = fopen("stats", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "##codybot::Stats() error: Cannot open stats file: %s", strerror(errno));
 		Msg(buffer);
