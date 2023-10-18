@@ -876,28 +876,31 @@ void Stats(struct raw_line *stats_rawp) {
 void Uptime(struct raw_line *uptime_rawp) {
 	gettimeofday(&tv0, NULL);
 	t0 = (time_t)tv0.tv_sec - tv_start.tv_sec;
-	tm0 = gmtime(&t0);
+	struct tm *tm1 = malloc(sizeof(struct tm));
+	gmtime_r(&t0, tm1);
 	char buf[1024];
-	if (tm0->tm_year - 70)
+	if (tm1->tm_year - 70)
 		sprintf(buf,
 		  "uptime: %d year%s %d month%s %02d day%s %02d:%02d:%02d",
-		  tm0->tm_year-70, ((tm0->tm_year-70)>1)?"s":"",
-		  tm0->tm_mon, (tm0->tm_mon>1)?"s":"",
-		  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
-		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
-	else if (tm0->tm_mon > 0)
+		  tm1->tm_year-70, ((tm1->tm_year-70)>1)?"s":"",
+		  tm1->tm_mon, (tm1->tm_mon>1)?"s":"",
+		  tm1->tm_mday-1, (tm1->tm_mday>2)?"s":"",
+		  tm1->tm_hour, tm1->tm_min, tm1->tm_sec);
+	else if (tm1->tm_mon > 0)
 		sprintf(buf,
 		  "uptime: %d month%s %02d day%s %02d:%02d:%02d",
-		  tm0->tm_mon, (tm0->tm_mon>1)?"s":"",
-		  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
-		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
-	else if (tm0->tm_mday > 1)
+		  tm1->tm_mon, (tm1->tm_mon>1)?"s":"",
+		  tm1->tm_mday-1, (tm1->tm_mday>2)?"s":"",
+		  tm1->tm_hour, tm1->tm_min, tm1->tm_sec);
+	else if (tm1->tm_mday > 1)
 		sprintf(buf, "uptime: %02d day%s %02d:%02d:%02d",
-		  tm0->tm_mday-1, (tm0->tm_mday>2)?"s":"",
-		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
+		  tm1->tm_mday-1, (tm1->tm_mday>2)?"s":"",
+		  tm1->tm_hour, tm1->tm_min, tm1->tm_sec);
 	else
 		sprintf(buf, "uptime: %02d:%02d:%02d",
-		  tm0->tm_hour, tm0->tm_min, tm0->tm_sec);
+		  tm1->tm_hour, tm1->tm_min, tm1->tm_sec);
+	
+	free(tm1);
 	
 	Msg(buf);
 }
