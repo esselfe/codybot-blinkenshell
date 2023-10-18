@@ -61,10 +61,10 @@ struct AdminList {
 };
 extern struct AdminList admin_list;
 
-void AddAdmin(char *newnick, char *host);
+void AddAdmin(const char *newnick, const char *host);
 void DestroyAdminList(void);
 char *EnumerateAdmins(void);
-int IsAdmin(char *newnick, char *host);
+int IsAdmin(const char *newnick, const char *host);
 void ParseAdminFile(void);
 
 // from api.c

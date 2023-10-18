@@ -8,7 +8,7 @@
 
 struct AdminList admin_list;
 
-void AddAdmin(char *newnick, char *host) {
+void AddAdmin(const char *newnick, const char *host) {
 	if (debug)
 		printf("## AddAdmin(): \"%s\" \"%s\"\n", newnick, host);
 	
@@ -90,7 +90,7 @@ char *EnumerateAdmins(void) {
 	return str;
 }
 
-int IsAdmin(char *newnick, char *host) {
+int IsAdmin(const char *newnick, const char *host) {
 	struct Admin *admin = admin_list.first_admin;
 	if (admin == NULL)
 		return 0;
