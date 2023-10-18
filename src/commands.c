@@ -308,19 +308,15 @@ void Chars(struct raw_line *rawp) {
 }
 
 void Colorize(struct raw_line *rawp) {
-	char *cp = raw.text;
-
-	while (*cp != ' ')
-		++cp;
-	++cp;
+	char *cp = raw.text + strlen("!colorize ");
 	
 	char result[4096];
 	memset(result, 0, 4096);
 	while (1) {
-		strcat(result, colors[(rand()%13)+2]);
-		strncat(result, cp++, 1);
 		if (*cp == '\0')
 			break;
+		strcat(result, colors[(rand()%13)+2]);
+		strncat(result, cp++, 1);
 	}
 	strcat(result, colors[0]);
 
