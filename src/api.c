@@ -54,6 +54,7 @@ void APIFetchAstro(char *city) {
 	free(datestr);
 	free(key);
 	curl_easy_setopt(handle, CURLOPT_URL, url);
+	curl_easy_setopt(handle, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
 	free(url);
 	
 	FILE *fp = fopen("cmd.output", "w");
@@ -166,6 +167,7 @@ void APIFetchForecast(char *city) {
 		"?key=%s&q=%s&days=3&aqi=no&alerts=no", key, city);
 	free(key);
 	curl_easy_setopt(handle, CURLOPT_URL, url);
+	curl_easy_setopt(handle, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
 	
 	FILE *fp = fopen("cmd.output", "w");
 	if (fp == NULL) {
@@ -365,6 +367,7 @@ void APIFetchWeather(char *city) {
 		"?key=%s&q=%s", key, city);
 	free(key);
 	curl_easy_setopt(handle, CURLOPT_URL, url);
+	curl_easy_setopt(handle, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
 	
 	FILE *fp = fopen("cmd.output", "w");
 	if (fp == NULL) {
