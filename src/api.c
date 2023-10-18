@@ -50,10 +50,11 @@ void APIFetchAstro(char *city) {
 	char *datestr = malloc(128);
 	memset(datestr, 0, 128);
 	time_t t0 = time(NULL);
-	struct tm *tm0 = malloc(sizeof(struct tm));
-	localtime_r(&t0, tm0);
-	sprintf(datestr, "%d-%02d-%02d", tm0->tm_year+1900,
-		tm0->tm_mon+1, tm0->tm_mday);
+	struct tm *tm1 = malloc(sizeof(struct tm));
+	localtime_r(&t0, tm1);
+	sprintf(datestr, "%d-%02d-%02d", tm1->tm_year+1900,
+		tm1->tm_mon+1, tm1->tm_mday);
+	free(tm1);
 	
 	char *url = malloc(4096);
 	memset(url, 0, 4096);
