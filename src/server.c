@@ -160,12 +160,17 @@ void ServerConnect(void) {
 	else
 		write(socket_fd, buffer, strlen(buffer));
 
+	char *login_name = malloc(128);
+	memset(login_name, 0, 128);
+	getlogin_r(login_name, 127);
 	sprintf(buffer, "USER %s %s irc.blinkenshell.org :%s\n",
-		getlogin(), hostname, full_user_name);
+		login_name, hostname, full_user_name);
 	if (use_ssl)
 		SSL_write(pSSL, buffer, strlen(buffer));
 	else
 		write(socket_fd, buffer, strlen(buffer));
+	
+	free(login_name);
 }
 
 void ServerClose(void) {
