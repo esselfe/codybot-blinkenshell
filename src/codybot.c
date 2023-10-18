@@ -121,11 +121,11 @@ void Msg(const char *text) {
 		memset(buffer_log, 0, 4096);
 	}
 	else if (total_len > 400) {
-		char str[400];
+		char str[401];
 		const char *cp = text;
 		unsigned int cnt;
 		unsigned int cnt2 = 0;
-		memset(str, 0, 400);
+		memset(str, 0, 401);
 		sprintf(str, "PRIVMSG %s :", target);
 		cnt = strlen(str);
 		while (1) {
