@@ -97,7 +97,7 @@ void Log(unsigned int direction, const char *text) {
 		dirstr, str);
 	fputs(buffer_log, fp);
 
-	sprintf(buffer_log, "\033[00;36m%02d%02d%02d-%02d:%02d:%02d.%03ld %s##\033[00m%s\033[00;36m##\e[00m\n", 
+	sprintf(buffer_log, "\033[00;36m%02d%02d%02d-%02d:%02d:%02d.%03ld %s##\033[00m%s\033[00;36m##\033[00m\n", 
 		tm0->tm_year+1900-2000, tm0->tm_mon+1,
 		tm0->tm_mday, tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv0.tv_usec,
 		dirstr, str);
