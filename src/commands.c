@@ -917,7 +917,7 @@ void *WeatherFunc(void *ptr) {
 	unsigned int cnt_conv = 0;
 	char city[128];
 	char city_conv[128];
-	char *cp = rawp->text + strlen("!weather ");
+	const char *cp = rawp->text + strlen("!weather ");
 	memset(city, 0, 128);
 	memset(city_conv, 0, 128);
 	while (1) {
