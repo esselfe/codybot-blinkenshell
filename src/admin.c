@@ -71,9 +71,14 @@ char *EnumerateAdmins(void) {
 	}
 
 	while (1) {
-		strcat(str, admin->nick);
+		if (admin->nick != NULL)
+			strncat(str, admin->nick, 128);
+	
 		strcat(str, "@");
-		strcat(str, admin->host);
+	
+		if (admin->host != NULL)
+			strncat(str, admin->host, 128);
+	
 		if (admin->next != NULL) {
 			if (admin->next->next == NULL)
 				strcat(str, " and ");
