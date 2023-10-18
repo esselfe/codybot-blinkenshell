@@ -8,6 +8,16 @@
 
 #include "codybot.h"
 
+static void APIKeyStripNewLine(char *key) {
+	char *cp = key;
+	while (*cp != '\0') {
+		if (*cp == '\n') {
+			*cp = '\0';
+			break;
+		}
+	}
+}
+
 static char *APIGetKey(void) {
 	FILE *fp = fopen("api.key", "r");
 	if (fp == NULL) {
@@ -21,10 +31,7 @@ static char *APIGetKey(void) {
 	fgets(key, 511, fp);
 	fclose(fp);
 
-	// Remove newline from key string
-	/////////////////////////////////
-	if (key[strlen(key)-1] == '\n')
-		key[strlen(key)-1] = '\0';
+	APIKeyStripNewLine(key);
 	
 	return key;
 }
