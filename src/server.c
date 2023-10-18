@@ -106,7 +106,6 @@ void ServerConnect(void) {
 			SSL_CTX_set_options(ctx, SSL_OP_NO_COMPRESSION);
 			opt_ctx = SSL_CTX_get_options(ctx);
 			printf("||opt_ctx: %ld\n", opt_ctx);
-			SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, 0);
 		}
 		else
 			SSL_CTX_set_options(ctx, SSL_OP_NO_COMPRESSION);
@@ -129,9 +128,7 @@ void ServerConnect(void) {
 		BIO *bio = BIO_new_socket(socket_fd, BIO_CLOSE);
 		SSL_set_bio(pSSL, bio, bio);
 		SSL_connect(pSSL);
-		// temporarily disable the check, BlinkenIRC cert is expired
-		//ret = SSL_accept(pSSL);
-		ret = 1;
+		ret = SSL_accept(pSSL);
 		if (ret <= 0) {
 			fprintf(stderr,
 				"||codybot::ServerConnect() error: SSL_accept() failed, ret: %d\n",
