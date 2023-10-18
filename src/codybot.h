@@ -89,6 +89,7 @@ void ParseAdminFile(void);
 // from api.c
 void APIFetchAstro(char *city);
 void APIFetchForecast(char *city);
+void APIFetchTime(char *city);
 void APIFetchWeather(char *city);
 
 // from codybot.c
@@ -116,6 +117,7 @@ void Joke(struct raw_line *joke_rawp);
 void Rainbow(struct raw_line *rainbow_rawp);
 void SlapCheck(struct raw_line *slap_rawp);
 void Stats(struct raw_line *stats_rawp);
+void Time(struct raw_line *time_rawp);
 void Uptime(struct raw_line *uptime_rawp);
 void Weather(struct raw_line *weather_rawp);
 

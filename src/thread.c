@@ -132,8 +132,8 @@ strcmp(raw.command, "NICK")!=0) {
 			char c = trigger_char;
 sprintf(buffer, "commands: %cabout %cadmins %cascii %castro %ccal %ccalc "
 "%cchars %ccolorize %cdate %chelp %cdict %cfoldoc %cforecast %cfortune %cjoke "
-"%crainbow %cstats %cuptime %cversion %cweather\n",
-c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
+"%crainbow %cstats %ctime %cuptime %cversion %cweather\n",
+c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 			Msg(buffer);
 			continue;
 		}
@@ -329,6 +329,14 @@ c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 // stats
 		else if (strcmp(raw.text+1, "stats") == 0)
 			Stats(&raw);
+// time
+		else if (strcmp(raw.text+1, "time") == 0) {
+			sprintf(buffer, "time: missing city argument, example: '%ctime"
+				" montreal'", trigger_char);
+			Msg(buffer);
+		}
+		else if (strncmp(raw.text+1, "time ", 5) == 0)
+			Time(&raw);
 // trigger
 		else if (strcmp(raw.text+1, "trigger") == 0) {
 			sprintf(buffer, "trigger = '%c'", trigger_char);

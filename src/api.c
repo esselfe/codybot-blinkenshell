@@ -360,6 +360,99 @@ void APIFetchForecast(char *city) {
 	free(str);
 }
 
+void APIFetchTime(char *city) {
+	// Retrieve API key
+	///////////////////
+	char *key = APIGetKey();
+	if (key == NULL)
+		return;
+
+	// Perform curl request
+	///////////////////////
+	CURL *handle = curl_easy_init();
+	
+	char *url = malloc(4096);
+	memset(url, 0, 4096);
+	sprintf(url, "https://api.weatherapi.com/v1/timezone.json"
+		"?key=%s&q=%s", key, city);
+	free(key);
+	curl_easy_setopt(handle, CURLOPT_URL, url);
+	curl_easy_setopt(handle, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+	free(url);
+	
+	FILE *fp = fopen("cmd.output", "w");
+	if (fp == NULL) {
+		sprintf(buffer, "codybot error: Cannot open cmd.output: %s",
+			strerror(errno));
+		Msg(buffer);
+		curl_easy_cleanup(handle);
+		return;
+	}
+	curl_easy_setopt(handle, CURLOPT_WRITEDATA, (void *)fp);
+	
+	CURLcode ret = curl_easy_perform(handle);
+	if (ret != CURLE_OK) {
+		sprintf(buffer, "codybot error (curl): %s\n", curl_easy_strerror(ret));
+		Msg(buffer);
+		curl_easy_cleanup(handle);
+		return;
+	}
+	fclose(fp);
+	curl_easy_cleanup(handle);
+
+	// Parse json-formatted response
+	////////////////////////////////
+	json_object *root = json_object_from_file("cmd.output");
+	if (root == NULL) {
+		Msg("No results.");
+		return;
+	}
+	
+	json_object *location = json_object_object_get(root, "location");
+	if (location == NULL) {
+		json_object *error = json_object_object_get(root, "error");
+		if (error == NULL)
+			Msg("No location found in response.");
+		else {
+			json_object *message = json_object_object_get(error, "message");
+			Msg((char *)json_object_get_string(message));
+		}
+		
+		json_object_put(root);
+		return;
+	}
+	json_object *name = json_object_object_get(location, "name");
+	json_object *region = json_object_object_get(location, "region");
+	json_object *country = json_object_object_get(location, "country");
+	json_object *tz_id = json_object_object_get(location, "tz_id");
+	json_object *time_string = json_object_object_get(location, "localtime");
+	
+	// Create output string
+	///////////////////////
+	char *str = malloc(4096);
+	memset(str, 0, 4096);
+	char *value = (char *)json_object_get_string(name);
+	sprintf(str, "%s, ", value);
+	value = (char *)json_object_get_string(region);
+	strcat(str, value);
+	strcat(str, ", ");
+	value = (char *)json_object_get_string(country);
+	strcat(str, value);
+	strcat(str, ": Timezone ");
+	value = (char *)json_object_get_string(tz_id);
+	strcat(str, value);
+	strcat(str, ", ");
+	value = (char *)json_object_get_string(time_string);
+	strcat(str, value);
+	
+	json_object_put(root);
+	
+	// Send results to chat
+	///////////////////////
+	Msg(str);
+	free(str);
+}
+
 void APIFetchWeather(char *city) {
 	// Retrieve API key
 	///////////////////

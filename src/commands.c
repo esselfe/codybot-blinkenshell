@@ -870,6 +870,56 @@ void Stats(struct raw_line *stats_rawp) {
 	Msg(buffer);
 }
 
+void *TimeFunc(void *time_ptr) {
+	struct raw_line *rawp = RawLineDup((struct raw_line *)time_ptr);
+
+	unsigned int cnt = 0;
+	unsigned int cnt_conv = 0;
+	char city[128];
+	char city_conv[128];
+	const char *cp = rawp->text + strlen("!time ");
+	memset(city, 0, 128);
+	memset(city_conv, 0, 128);
+	while (1) {
+		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
+			break;
+		else if ((cnt == 0 && *cp == ' ') ||
+		  (*cp == '"' || *cp == '$' || *cp == '/' || *cp == '\\')) {
+			++cp;
+			continue;
+		}
+		else if (*cp == ' ') {
+			city[cnt++] = ' ';
+			city_conv[cnt_conv++] = '%';
+			city_conv[cnt_conv++] = '2';
+			city_conv[cnt_conv++] = '0';
+			++cp;
+			continue;
+		}
+		
+		city[cnt] = *cp;
+		city_conv[cnt_conv] = *cp;
+		++cnt;
+		++cnt_conv;
+		++cp;
+	}
+	RawLineFree(rawp);
+
+	APIFetchTime(city_conv);
+
+	return NULL;
+}
+
+void Time(struct raw_line *time_rawp) {
+	pthread_t thr;
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+	pthread_create(&thr, &attr, TimeFunc, (void *)time_rawp);
+	pthread_detach(thr);
+	pthread_attr_destroy(&attr);
+}
+
 void Uptime(struct raw_line *uptime_rawp) {
 	gettimeofday(&tv0, NULL);
 	t0 = (time_t)tv0.tv_sec - tv_start.tv_sec;
