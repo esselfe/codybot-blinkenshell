@@ -164,7 +164,7 @@ c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 // ascii
 		else if (strncmp(raw.text+1, "ascii", 5) == 0) {
 			if (strcmp(raw.channel, "#codybot")==0)
-				AsciiArt(&raw);
+				AsciiArt();
 			else
 				Msg("ascii: can only be run in #codybot (due to output > 4 lines)");
 		}
@@ -192,7 +192,7 @@ c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c);
 			Calc(&raw);
 // chars
 		else if (strncmp(raw.text+1, "chars", 5) == 0)
-			Chars(&raw);
+			Chars();
 // colorize
 		else if (strcmp(raw.text+1, "colorlist") == 0) {
 			Msg("\003011\003022\003044\003055\003066\003077\003088\00309\0031010\0031111\0031212\0031313\0031414\0031515");

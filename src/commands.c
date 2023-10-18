@@ -28,7 +28,7 @@ char *colors[] = {
 	"\00314", // grey
 	"\00315"}; // light grey
 
-void AsciiArt(struct raw_line *rawp) {
+void AsciiArt(void) {
 	FILE *fp = fopen("data/ascii.txt", "r");
 	if (fp == NULL) {
 		Msg("codybot::AsciiArt() error: cannot open data/ascii.txt");
@@ -129,8 +129,8 @@ int AstroCheckUsage(void) {
 	return 0;
 }
 
-void *AstroFunc(void *ptr) {
-	struct raw_line *rawp = RawLineDup((struct raw_line *)ptr);
+void *AstroFunc(void *astro_ptr) {
+	struct raw_line *rawp = RawLineDup((struct raw_line *)astro_ptr);
 
 	if (!AstroCheckUsage()) {
 		Msg("Astro quota reached, maximum 10 times every 30 minutes.");
@@ -177,12 +177,12 @@ void *AstroFunc(void *ptr) {
 	return NULL;
 }
 
-void Astro(struct raw_line *rawp) {
+void Astro(struct raw_line *astro_rawp) {
 	pthread_t thr;
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-	pthread_create(&thr, &attr, AstroFunc, (void *)rawp);
+	pthread_create(&thr, &attr, AstroFunc, (void *)astro_rawp);
 	pthread_detach(thr);
 	pthread_attr_destroy(&attr);
 }
@@ -216,8 +216,8 @@ void Cal(void) {
 	fclose(fp);
 }
 
-void Calc(struct raw_line *rawp) {
-	strcat(rawp->text, "\n");
+void Calc(struct raw_line *calc_rawp) {
+	strcat(calc_rawp->text, "\n");
 
 	FILE *fi = fopen("cmd.input", "w+");
 	if (fi == NULL) {
@@ -226,7 +226,7 @@ void Calc(struct raw_line *rawp) {
 		return;
 	}
 	fputs("scale=2; ", fi);
-	fputs(rawp->text+6, fi);
+	fputs(calc_rawp->text+6, fi);
 	fclose(fi);
 
 	system("/bin/bash -c './bc -l &> cmd.output < cmd.input'");
@@ -265,7 +265,7 @@ void Calc(struct raw_line *rawp) {
 	fclose(fp);
 }
 
-void Chars(struct raw_line *rawp) {
+void Chars(void) {
 	Msg("https://esselfe.ca/chars.html");
 
 	FILE *fp = fopen("data/chars.txt", "r");
@@ -286,8 +286,9 @@ void Chars(struct raw_line *rawp) {
 	fclose(fp);
 }
 
-void Colorize(struct raw_line *rawp) {
-	const char *cp = raw.text + strlen("!colorize ");
+void Colorize(struct raw_line *colorize_rawp) {
+	struct raw_line *rawp = RawLineDup(colorize_rawp);
+	const char *cp = rawp->text + strlen("!colorize ");
 	
 	char result[4096];
 	memset(result, 0, 4096);
@@ -298,6 +299,8 @@ void Colorize(struct raw_line *rawp) {
 		strncat(result, cp++, 1);
 	}
 	strcat(result, colors[0]);
+	
+	RawLineFree(rawp);
 
 	Msg(result);
 }
@@ -331,7 +334,8 @@ void Date(int offset) {
 }
 
 // see https://tools.ietf.org/html/rfc2229 (not fully implemented)
-void Dict(struct raw_line *rawp) {
+void Dict(struct raw_line *dict_rawp) {
+	struct raw_line *rawp = RawLineDup(dict_rawp);
 	const char *cp = rawp->text + strlen("!dict ");
 	char word[128];
 	memset(word, 0, 128);
@@ -344,6 +348,8 @@ void Dict(struct raw_line *rawp) {
 
 		word[cnt] = *cp;
 	}
+	
+	RawLineFree(rawp);
 
 	sprintf(buffer_cmd, "curl dict.org/d:%s:wn -o dict.output", word);
 	Log(LOCAL, buffer_cmd);
@@ -414,7 +420,8 @@ void Dict(struct raw_line *rawp) {
 	}
 }
 
-void Foldoc(struct raw_line *rawp) {
+void Foldoc(struct raw_line *foldoc_rawp) {
+	struct raw_line *rawp = RawLineDup(foldoc_rawp);
 	const char *cp = rawp->text + strlen("!foldoc ");
 	char word[128];
 	memset(word, 0, 128);
@@ -431,6 +438,8 @@ void Foldoc(struct raw_line *rawp) {
 
 		word[cnt] = *cp;
 	}
+	
+	RawLineFree(rawp);
 
 	sprintf(buffer_cmd, "curl dict.org/d:%s:foldoc -o dict.output", word);
 	Log(LOCAL, buffer_cmd);
@@ -584,17 +593,19 @@ void *ForecastFunc(void *ptr) {
 	return NULL;
 }
 
-void Forecast(struct raw_line *rawp) {
+void Forecast(struct raw_line *forecast_rawp) {
 	pthread_t thr;
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-	pthread_create(&thr, &attr, ForecastFunc, (void *)rawp);
+	pthread_create(&thr, &attr, ForecastFunc, (void *)forecast_rawp);
 	pthread_detach(thr);
 	pthread_attr_destroy(&attr);
 }
 
-void Fortune(struct raw_line *rawp) {
+void Fortune(struct raw_line *fortune_rawp) {
+	RawGetTarget(fortune_rawp);
+
 	FILE *fp = fopen("data/fortunes.txt", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "##codybot::Fortune() error: Cannot open data/fortunes.txt: %s",
@@ -657,7 +668,6 @@ void Fortune(struct raw_line *rawp) {
 	fclose(fp);
 
 	if (strlen(fortune_line) > 0) {
-		RawGetTarget(rawp);
 		sprintf(buffer, "fortune: %s", fortune_line);
 		Msg(buffer);
 	
@@ -685,7 +695,9 @@ void Fortune(struct raw_line *rawp) {
 
 }
 
-void Joke(struct raw_line *rawp) {
+void Joke(struct raw_line *joke_rawp) {
+	struct raw_line *rawp = RawLineDup(joke_rawp);
+	
 	FILE *fp = fopen("data/jokes.txt", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "codybot::Joke() error: cannot open data/jokes.txt: %s", strerror(errno));
@@ -748,12 +760,15 @@ void Joke(struct raw_line *rawp) {
 	else {
 		Msg("codybot::Joke(): joke_line is empty!");
 	}
+	RawLineFree(rawp);
 
 	fclose(fp);
 }
 
-void Rainbow(struct raw_line *rawp) {
-	const char *cp = raw.text + strlen("!rainbow ");
+void Rainbow(struct raw_line *rainbow_rawp) {
+	struct raw_line *rawp = RawLineDup(rainbow_rawp);
+	RawGetTarget(rawp);
+	const char *cp = rawp->text + strlen("!rainbow ");
 	
 	char *colors2[8] = {
 	"\003", // restore/default
@@ -779,6 +794,8 @@ void Rainbow(struct raw_line *rawp) {
 			cnt = 1;
 	}
 	strcat(result, colors[0]);
+	
+	RawLineFree(rawp);
 
 	Msg(result);
 }
@@ -792,8 +809,11 @@ char *slap_items[20] = {
 unsigned int slap_max = 10;
 unsigned int slap_cnt;
 unsigned int slap_hour;
-void SlapCheck(struct raw_line *rawp) {
+void SlapCheck(struct raw_line *slap_rawp) {
+	struct raw_line *rawp = RawLineDup(slap_rawp);
+	RawGetTarget(rawp);
 	const char *c = rawp->text;
+	
 	if ((*c==1 && *(c+1)=='A' && *(c+2)=='C' && *(c+3)=='T' && *(c+4)=='I' &&
 	  *(c+5)=='O' && *(c+6)=='N' && *(c+7)==' ' &&
 	  *(c+8)=='s' && *(c+9)=='l' && *(c+10)=='a' && *(c+11)=='p' && *(c+12)=='s' &&
@@ -804,7 +824,6 @@ void SlapCheck(struct raw_line *rawp) {
 	  *(c+18)=='n' && *(c+19)=='g' && *(c+20)=='S' && *(c+21)=='p' && *(c+22)=='r' &&
 	  *(c+23)=='o' && *(c+24)=='c' && *(c+25)=='k' && *(c+26)=='e' && *(c+27)=='t' &&
 	  *(c+28)==' '))) {
-		RawGetTarget(rawp);
 		gettimeofday(&tv0, NULL);
 
 		time_t slap_time = (time_t)tv0.tv_sec;
@@ -817,17 +836,22 @@ void SlapCheck(struct raw_line *rawp) {
 				slap_hour = tm0->tm_hour;
 				slap_cnt = 0;
 			}
-			else if (slap_hour == tm0->tm_hour && slap_cnt >= slap_max)
+			else if (slap_hour == tm0->tm_hour && slap_cnt >= slap_max) {
+				RawLineFree(rawp);
 				return;
+			}
 		}
 
 		srand((unsigned int)tv0.tv_usec);
 		sprintf(buffer, "%cACTION slaps %s with %s%c", 1, rawp->nick, slap_items[rand()%20], 1);
 		Msg(buffer);
 	}
+	RawLineFree(rawp);
 }
 
-void Stats(struct raw_line *rawp) {
+void Stats(struct raw_line *stats_rawp) {
+	RawGetTarget(stats_rawp);
+	
 	FILE *fp = fopen("stats", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "##codybot::Stats() error: Cannot open stats file: %s", strerror(errno));
@@ -840,12 +864,12 @@ void Stats(struct raw_line *rawp) {
 		fclose(fp);
 		fortune_total = atoi(str);
 	}
-	RawGetTarget(rawp);
 	sprintf(buffer, "Given fortunes: %llu", fortune_total);
 	Msg(buffer);
 }
 
-void Uptime(struct raw_line *rawp) {
+void Uptime(struct raw_line *uptime_rawp) {
+	RawGetTarget(uptime_rawp);
 	gettimeofday(&tv0, NULL);
 	t0 = (time_t)tv0.tv_sec - tv_start.tv_sec;
 	tm0 = gmtime(&t0);
@@ -956,12 +980,12 @@ void *WeatherFunc(void *ptr) {
 	return NULL;
 }
 
-void Weather(struct raw_line *rawp) {
+void Weather(struct raw_line *weather_rawp) {
 	pthread_t thr;
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-	pthread_create(&thr, &attr, WeatherFunc, (void *)rawp);
+	pthread_create(&thr, &attr, WeatherFunc, (void *)weather_rawp);
 	pthread_detach(thr);
 	pthread_attr_destroy(&attr);
 }

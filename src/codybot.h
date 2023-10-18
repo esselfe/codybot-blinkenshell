@@ -100,24 +100,24 @@ void Msg(const char *text);
 void *ThreadRXFunc(void *argp);
 
 // from commands.c
-void AsciiArt(struct raw_line *rawp);
-void Astro(struct raw_line *rawp);
+void AsciiArt(void);
+void Astro(struct raw_line *astro_rawp);
 void Cal(void);
-void Calc(struct raw_line *rawp);
+void Calc(struct raw_line *calc_rawp);
 void CC(struct raw_line *rawp);
-void Chars(struct raw_line *rawp);
-void Colorize(struct raw_line *rawp);
+void Chars(void);
+void Colorize(struct raw_line *colorize_rawp);
 void Date(int offset);
-void Dict(struct raw_line *rawp);
-void Foldoc(struct raw_line *rawp);
-void Forecast(struct raw_line *rawp);
-void Fortune(struct raw_line *rawp);
-void Joke(struct raw_line *rawp);
-void Rainbow(struct raw_line *rawp);
-void SlapCheck(struct raw_line *rawp);
-void Stats(struct raw_line *rawp);
-void Uptime(struct raw_line *rawp);
-void Weather(struct raw_line *rawp);
+void Dict(struct raw_line *dict_rawp);
+void Foldoc(struct raw_line *foldoc_rawp);
+void Forecast(struct raw_line *forecast_rawp);
+void Fortune(struct raw_line *fortune_rawp);
+void Joke(struct raw_line *joke_rawp);
+void Rainbow(struct raw_line *rainbow_rawp);
+void SlapCheck(struct raw_line *slap_rawp);
+void Stats(struct raw_line *stats_rawp);
+void Uptime(struct raw_line *uptime_rawp);
+void Weather(struct raw_line *weather_rawp);
 
 // from raw.c
 char *RawGetTarget(struct raw_line *rawp);
