@@ -315,6 +315,7 @@ int main(int argc, char **argv) {
 		getlogin_r(name, 127);
 		full_user_name = (char *)malloc(strlen(name)+1);
 		sprintf(full_user_name, "%s", name);
+		free(name);
 	}
 	if (!hostname) {
 		hostname = (char *)malloc(1024);
