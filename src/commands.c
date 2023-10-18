@@ -325,6 +325,7 @@ void Date(int offset) {
 	memset(line, 0, 1024);
 	getline(&line, &size, fp);
 	Msg(line);
+	free(line);
 
 	fclose(fp);
 }
