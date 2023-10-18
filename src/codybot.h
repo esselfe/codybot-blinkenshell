@@ -29,25 +29,23 @@ extern char *target;
 extern unsigned int server_port, local_port;
 extern char *server_ip;
 extern char *server_ip_blinkenshell;
-extern char *server_ip_freenode;
 extern SSL *pSSL;
 
 // Globals from raw.c
 // a raw line from the server should hold something like one of these:
-// :esselfe!~bsfc@unaffiliated/esselfe PRIVMSG #codybot :^stats
-// :codybot!~user@unaffiliated/esselfe PRIVMSG ##linux-offtopic :^fortune
+// :esselfe!~steph@user/esselfe PRIVMSG #codybot :!stats
+// :codybot!~user@user/esselfe PRIVMSG ##linux-offtopic :!fortune
 // :NickServ!NickServ@services. NOTICE codybot :Invalid password for codybot.
-// :freenode-connect!frigg@freenode/utility-bot/frigg NOTICE codybot :Welcome to freenode.
-// :PING :livingstone.freenode.net
+// :PING :1697621846
 // :codybot MODE codybot :+Zi
-// :livingstone.freenode.net 372 codybot :- Thank you for using freenode!
+// :copper.libera.chat 001 codybot :Welcome to the Libera.Chat Internet Relay Chat Network codybot
 struct raw_line {
-    char *nick;
-    char *username;
-    char *host;
-    char *command;
-    char *channel;
-    char *text;
+	char *nick;
+	char *username;
+	char *host;
+	char *command;
+	char *channel;
+	char *text;
 };
 extern struct raw_line raw;
 

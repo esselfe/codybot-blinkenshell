@@ -82,7 +82,7 @@ void RawLineParse(struct raw_line *rawp, char *line) {
 		return;
 
 	if (debug)
-		printf("\n\e[01;32m##RawLineParse() started\e[00m\n");
+		printf("\n\033[01;32m##RawLineParse() started\033[00m\n");
 	
 	while (1) {
 		if (*c == '\0')
@@ -181,6 +181,6 @@ void RawLineParse(struct raw_line *rawp, char *line) {
 	}
 
 	if (debug)
-		printf("\e[01;32m##RawLineParse() ended\e[00m\n\n");
+		printf("\033[01;32m##RawLineParse() ended\033[00m\n\n");
 }
 

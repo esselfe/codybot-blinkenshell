@@ -12,32 +12,31 @@
 #include "codybot.h"
 
 unsigned int server_port, local_port;
-char *server_ip, *server_ip_blinkenshell = "194.14.45.5",
-	*server_ip_freenode = "204.225.96.251";
+char *server_ip, *server_ip_blinkenshell = "194.14.45.5";
 SSL *pSSL;
 
 void ServerGetIP(char *hostname) {
-    struct hostent *he;
-    struct in_addr **addr_list;
-    int cnt = 0;
+	struct hostent *he;
+	struct in_addr **addr_list;
+	int cnt = 0;
 
-    he = gethostbyname(hostname);
-    if (he == NULL) {
-        fprintf(stderr, "##codybot::ServerGetIP() error: Cannot gethostbyname()\n");
-        exit(1);
-    }
+	he = gethostbyname(hostname);
+	if (he == NULL) {
+		fprintf(stderr, "##codybot::ServerGetIP() error: Cannot gethostbyname()\n");
+		exit(1);
+	}
 
-    addr_list = (struct in_addr **)he->h_addr_list;
+	addr_list = (struct in_addr **)he->h_addr_list;
 
-    char *tmpstr = inet_ntoa(*addr_list[0]);
-    server_ip = (char *)malloc(strlen(tmpstr)+1);
-    sprintf(server_ip, "%s", tmpstr);
+	char *tmpstr = inet_ntoa(*addr_list[0]);
+	server_ip = (char *)malloc(strlen(tmpstr)+1);
+	sprintf(server_ip, "%s", tmpstr);
 
-    if (debug) {
-        for (cnt = 0; addr_list[cnt] != NULL; cnt++) {
-            printf("%s\n", inet_ntoa(*addr_list[cnt]));
-        }
-    }
+	if (debug) {
+		for (cnt = 0; addr_list[cnt] != NULL; cnt++) {
+			printf("%s\n", inet_ntoa(*addr_list[cnt]));
+		}
+	}
 }
 
 void ServerConnect(void) {
@@ -57,7 +56,9 @@ void ServerConnect(void) {
 	if (local_port)
 		addr.sin_port = htons(local_port);
 	if (bind(socket_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-		fprintf(stderr, "||codybot::ServerConnect() error: Cannot bind(): %s\n", strerror(errno));
+		fprintf(stderr,
+			"||codybot::ServerConnect() error: Cannot bind(): %s\n",
+			strerror(errno));
 		close(socket_fd);
 		exit(1);
 	}
@@ -71,7 +72,9 @@ void ServerConnect(void) {
 	host.sin_family = AF_INET;
 	host.sin_port = htons(server_port);
 	if (connect(socket_fd, (struct sockaddr *)&host, sizeof(host)) < 0) {
-		fprintf(stderr, "||codybot::ServerConnect() error: Cannot connect(): %s\n", strerror(errno));
+		fprintf(stderr,
+			"||codybot::ServerConnect() error: Cannot connect(): %s\n",
+			strerror(errno));
 		close(socket_fd);
 		exit(1);
 	}
@@ -89,7 +92,8 @@ void ServerConnect(void) {
 		//const SSL_METHOD *method = TLSv1_2_client_method();
 		SSL_CTX *ctx = SSL_CTX_new(method);
 		if (!ctx) {
-			fprintf(stderr, "||codybot::ServerConnect() error: Cannot create SSL context\n");
+			fprintf(stderr,
+				"||codybot::ServerConnect() error: Cannot create SSL context\n");
 			close(socket_fd);
 			exit(1);
 		}
@@ -127,7 +131,9 @@ void ServerConnect(void) {
 		//ret = SSL_accept(pSSL);
 		ret = 1;
 		if (ret <= 0) {
-			fprintf(stderr, "||codybot::ServerConnect() error: SSL_accept() failed, ret: %d\n", ret);
+			fprintf(stderr,
+				"||codybot::ServerConnect() error: SSL_accept() failed, ret: %d\n",
+				ret);
 			fprintf(stderr, "||SSL error number: %d\n", SSL_get_error(pSSL, 0));
 			close(socket_fd);
 			exit(1);
@@ -156,8 +162,8 @@ void ServerConnect(void) {
 void ServerClose(void) {
 	if (use_ssl) {
 		SSL_shutdown(pSSL);
-    	SSL_free(pSSL);
+	SSL_free(pSSL);
 	}
-    close(socket_fd);
+	close(socket_fd);
 }
 
