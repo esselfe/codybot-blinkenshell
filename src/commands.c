@@ -141,7 +141,7 @@ void *AstroFunc(void *ptr) {
 	unsigned int cnt_conv = 0;
 	char city[128];
 	char city_conv[128];
-	char *cp = rawp->text + strlen("!astro ");
+	const char *cp = rawp->text + strlen("!astro ");
 	memset(city, 0, 128);
 	memset(city_conv, 0, 128);
 	while (1) {
@@ -217,27 +217,6 @@ void Cal(void) {
 }
 
 void Calc(struct raw_line *rawp) {
-	// check for "kill" found in ",calc `killall codybot`" which kills the bot
-	char *c = rawp->text;
-	while (1) {
-		if (*c == '\0' || *c == '\n')
-			break;
-		if (*c == '\\') {
-			Msg("No backslashes allowed, sorry");
-			return;
-		}
-		else if (*c == '$') {
-			*(c++) = ' ';
-			continue;
-		}
-
-		if (strlen(c) >= 5 && strncmp(c, "kill", 4) == 0) {
-			Msg("calc: contains a blocked term...\n");
-			return;
-		}
-		++c;
-	}
-
 	strcat(rawp->text, "\n");
 
 	FILE *fi = fopen("cmd.input", "w+");
@@ -308,7 +287,7 @@ void Chars(struct raw_line *rawp) {
 }
 
 void Colorize(struct raw_line *rawp) {
-	char *cp = raw.text + strlen("!colorize ");
+	const char *cp = raw.text + strlen("!colorize ");
 	
 	char result[4096];
 	memset(result, 0, 4096);
@@ -352,7 +331,7 @@ void Date(int offset) {
 
 // see https://tools.ietf.org/html/rfc2229 (not fully implemented)
 void Dict(struct raw_line *rawp) {
-	char *cp = rawp->text + strlen("!dict ");
+	const char *cp = rawp->text + strlen("!dict ");
 	char word[128];
 	memset(word, 0, 128);
 	int cnt;
@@ -435,7 +414,7 @@ void Dict(struct raw_line *rawp) {
 }
 
 void Foldoc(struct raw_line *rawp) {
-	char *cp = rawp->text + strlen("!foldoc ");
+	const char *cp = rawp->text + strlen("!foldoc ");
 	char word[128];
 	memset(word, 0, 128);
 	int cnt;
@@ -568,7 +547,7 @@ void *ForecastFunc(void *ptr) {
 	unsigned int cnt_conv = 0;
 	char city[128];
 	char city_conv[128];
-	char *cp = rawp->text + strlen("!forecast ");
+	const char *cp = rawp->text + strlen("!forecast ");
 	memset(city, 0, 128);
 	memset(city_conv, 0, 128);
 	while (1) {
@@ -773,7 +752,7 @@ void Joke(struct raw_line *rawp) {
 }
 
 void Rainbow(struct raw_line *rawp) {
-	char *cp = raw.text + strlen("!rainbow ");
+	const char *cp = raw.text + strlen("!rainbow ");
 	
 	char *colors2[8] = {
 	"\003", // restore/default
@@ -811,7 +790,7 @@ char *slap_items[20] = {
 };
 unsigned int slap_max = 10, slap_cnt, slap_hour;
 void SlapCheck(struct raw_line *rawp) {
-	char *c = rawp->text;
+	const char *c = rawp->text;
 	if ((*c==1 && *(c+1)=='A' && *(c+2)=='C' && *(c+3)=='T' && *(c+4)=='I' &&
 	  *(c+5)=='O' && *(c+6)=='N' && *(c+7)==' ' &&
 	  *(c+8)=='s' && *(c+9)=='l' && *(c+10)=='a' && *(c+11)=='p' && *(c+12)=='s' &&
