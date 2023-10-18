@@ -23,8 +23,8 @@ static char *APIGetKey(void) {
 
 	// Remove newline from key string
 	/////////////////////////////////
-	if (*(key+strlen(key)-1) == '\n')
-		*(key+strlen(key)-1) = '\0';
+	if (key[strlen(key)-1] == '\n')
+		key[strlen(key)-1] = '\0';
 	
 	return key;
 }
