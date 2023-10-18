@@ -684,27 +684,6 @@ void Fortune(struct raw_line *rawp) {
 		RawGetTarget(rawp);
 		sprintf(buffer, "fortune: %s", fortune_line);
 		Msg(buffer);
-
-		struct stat st;
-		if (stat("stats", &st) < 0) {
-			if (errno == ENOENT) { // doesn't exist, try to create it
-				fp = fopen("stats", "w+");
-				if (fp == NULL) {
-					sprintf(buffer, 
-						"codybot::Fortune() error: Cannot create stats file: %s", strerror(errno));
-					Msg(buffer);
-					return;
-				}
-				fputs("0", fp);
-				fclose(fp);
-			}
-			else if (errno == EACCES) {
-				sprintf(buffer, 
-					"codybot::Fortune() error: Cannot open stats file: %s", strerror(EACCES));
-				Msg(buffer);
-				return;
-			}
-		}
 	
 		// Read current stat count
 		fp = fopen("stats", "r");
