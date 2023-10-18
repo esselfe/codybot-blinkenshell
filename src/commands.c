@@ -613,8 +613,6 @@ void Forecast(struct raw_line *forecast_rawp) {
 }
 
 void Fortune(struct raw_line *fortune_rawp) {
-	RawGetTarget(fortune_rawp);
-
 	FILE *fp = fopen("data/fortunes.txt", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "##codybot::Fortune() error: Cannot open data/fortunes.txt: %s",
@@ -760,8 +758,7 @@ void Joke(struct raw_line *joke_rawp) {
 		else
 			joke_line[cnt++] = c;
 	}
-
-	RawGetTarget(rawp);
+	
 	if (strlen(joke_line) > 0) {
 		sprintf(buffer, "joke: %s", joke_line);
 		Msg(buffer);
@@ -776,7 +773,6 @@ void Joke(struct raw_line *joke_rawp) {
 
 void Rainbow(struct raw_line *rainbow_rawp) {
 	struct raw_line *rawp = RawLineDup(rainbow_rawp);
-	RawGetTarget(rawp);
 	const char *cp = rawp->text + strlen("!rainbow ");
 	
 	char *colors2[8] = {
@@ -820,7 +816,6 @@ unsigned int slap_cnt;
 unsigned int slap_hour;
 void SlapCheck(struct raw_line *slap_rawp) {
 	struct raw_line *rawp = RawLineDup(slap_rawp);
-	RawGetTarget(rawp);
 	const char *c = rawp->text;
 	
 	if ((*c==1 && *(c+1)=='A' && *(c+2)=='C' && *(c+3)=='T' && *(c+4)=='I' &&
@@ -859,8 +854,6 @@ void SlapCheck(struct raw_line *slap_rawp) {
 }
 
 void Stats(struct raw_line *stats_rawp) {
-	RawGetTarget(stats_rawp);
-	
 	FILE *fp = fopen("stats", "r");
 	if (fp == NULL) {
 		sprintf(buffer, "##codybot::Stats() error: Cannot open stats file: %s", strerror(errno));
@@ -878,7 +871,6 @@ void Stats(struct raw_line *stats_rawp) {
 }
 
 void Uptime(struct raw_line *uptime_rawp) {
-	RawGetTarget(uptime_rawp);
 	gettimeofday(&tv0, NULL);
 	t0 = (time_t)tv0.tv_sec - tv_start.tv_sec;
 	tm0 = gmtime(&t0);
@@ -941,6 +933,7 @@ int WeatherCheckUsage(void) {
 
 void *WeatherFunc(void *ptr) {
 	struct raw_line *rawp = RawLineDup((struct raw_line *)ptr);
+	
 	char buf[4096]; // Use our own buffer instead of the global one
 	memset(buf,0, 4096);
 

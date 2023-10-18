@@ -74,6 +74,9 @@ void ServerConnect(void) {
 	host.sin_addr.s_addr = inet_addr(server_ip);
 	host.sin_family = AF_INET;
 	host.sin_port = htons(server_port);
+	if (debug)
+		printf("IP: %s\nPort: %u\n", server_ip, server_port);
+	
 	if (connect(socket_fd, (struct sockaddr *)&host, sizeof(host)) < 0) {
 		fprintf(stderr,
 			"||codybot::ServerConnect() error: Cannot connect(): %s\n",

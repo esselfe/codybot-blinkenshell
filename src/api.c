@@ -15,6 +15,7 @@ static void APIKeyStripNewLine(char *key) {
 			*cp = '\0';
 			break;
 		}
+		++cp;
 	}
 }
 
