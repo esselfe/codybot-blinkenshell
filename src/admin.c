@@ -96,14 +96,9 @@ int IsAdmin(const char *newnick, const char *host) {
 		return 0;
 	
 	while (1) {
-		if (strcmp(newnick, admin->nick) == 0) {
-			if (admin->host != NULL) {
-				if (strcmp(host, admin->host) == 0)
-					return 1;
-			}
-			else
-				return 1;
-		}
+		if (strcmp(newnick, admin->nick) == 0 &&
+		  strcmp(host, admin->host) == 0) 
+			return 1;
 
 		if (admin->next == NULL)
 			break;
