@@ -36,7 +36,9 @@ void AsciiArt(struct raw_line *rawp) {
 	}
 
 	// count how many '%'
-	int c = 0, cprev, cnt = 0;
+	int c = 0;
+	int cprev;
+	int cnt = 0;
 	while (1) {
 		cprev = c;
 		c = fgetc(fp);
@@ -135,8 +137,11 @@ void *AstroFunc(void *ptr) {
 		return NULL;
 	}
 
-	unsigned int cnt = 0, cnt_conv = 0;
-	char city[128], city_conv[128], *cp = rawp->text + strlen("!astro ");
+	unsigned int cnt = 0;
+	unsigned int cnt_conv = 0;
+	char city[128];
+	char city_conv[128];
+	char *cp = rawp->text + strlen("!astro ");
 	memset(city, 0, 128);
 	memset(city_conv, 0, 128);
 	while (1) {
@@ -563,8 +568,11 @@ void *ForecastFunc(void *ptr) {
 		return NULL;
 	}
 
-	unsigned int cnt = 0, cnt_conv = 0;
-	char city[128], city_conv[128], *cp = rawp->text + strlen("!forecast ");
+	unsigned int cnt = 0;
+	unsigned int cnt_conv = 0;
+	char city[128];
+	char city_conv[128];
+	char *cp = rawp->text + strlen("!forecast ");
 	memset(city, 0, 128);
 	memset(city_conv, 0, 128);
 	while (1) {
@@ -628,7 +636,9 @@ void Fortune(struct raw_line *rawp) {
 	// 150 to be remeasured if 2 last items in the file are deleted or new
 	fseek(fp, rand()%(filesize-150), SEEK_CUR);
 
-	int c = 0, cprev, cnt = 0;
+	int c = 0;
+	int cprev;
+	int cnt = 0;
 	char fortune_line[4096];
 	memset(fortune_line, 0, 4096);
 	while (1) { // go to next entry following '%'
@@ -738,7 +748,9 @@ void Joke(struct raw_line *rawp) {
 	if (debug)
 		printf("##filesize: %lu\n##rnd: %u\n", filesize, rnd);
 
-	int c = 0, cprev, cnt = 0;
+	int c = 0;
+	int cprev;
+	int cnt = 0;
 	while (1) {
 		cprev = c;
 		c = fgetc(fp);
@@ -754,7 +766,8 @@ void Joke(struct raw_line *rawp) {
 
 	char joke_line[4096];
 	memset(joke_line, 0, 4096);
-	cnt = 0, c = ' ';
+	cnt = 0;
+	c = ' ';
 	while (1) {
 		cprev = c;
 		c = fgetc(fp);
@@ -972,8 +985,11 @@ void *WeatherFunc(void *ptr) {
 		return NULL;
 	}
 
-	unsigned int cnt = 0, cnt_conv = 0;
-	char city[128], city_conv[128], *cp = rawp->text + strlen("!weather ");
+	unsigned int cnt = 0;
+	unsigned int cnt_conv = 0;
+	char city[128];
+	char city_conv[128];
+	char *cp = rawp->text + strlen("!weather ");
 	memset(city, 0, 128);
 	memset(city_conv, 0, 128);
 	while (1) {

@@ -9,15 +9,29 @@
 
 // Globals from codybot.c
 extern const char *codybot_version_string;
-extern int debug, socket_fd, ret, endmainloop, cc_disabled, sh_disabled, 
-	sh_locked, wttr_disabled, cmd_timeout, use_ssl, cc_compiler;
+extern int debug;
+extern int socket_fd;
+extern int ret;
+extern int endmainloop;
+extern int cc_disabled;
+extern int sh_disabled;
+extern int sh_locked;
+extern int wttr_disabled;
+extern int cmd_timeout;
+extern int use_ssl;
+extern int cc_compiler;
 extern unsigned long long fortune_total;
-extern struct timeval tv0, tv_start;
+extern struct timeval tv0;
+extern struct timeval tv_start;
 extern struct tm *tm0;
-extern time_t t0, ctcp_prev_time;
+extern time_t t0;
+extern time_t ctcp_prev_time;
 extern char ctcp_prev_nick[128];
 extern char *log_filename;
-extern char *buffer, *buffer_rx, *buffer_cmd, *buffer_log;
+extern char *buffer;
+extern char *buffer_rx;
+extern char *buffer_cmd;
+extern char *buffer_log;
 extern char trigger_char;
 extern char *current_channel;
 extern char *nick;
@@ -26,7 +40,8 @@ extern char *hostname;
 extern char *target;
 
 // Globals from server.c
-extern unsigned int server_port, local_port;
+extern unsigned int server_port;
+extern unsigned int local_port;
 extern char *server_ip;
 extern char *server_ip_blinkenshell;
 extern SSL *pSSL;
@@ -51,13 +66,16 @@ extern struct raw_line raw;
 
 // from admin.c
 struct Admin {
-	struct Admin *prev, *next;
-	char *nick, *host;
+	struct Admin *prev;
+	struct Admin *next;
+	char *nick;
+	char *host;
 };
 
 struct AdminList {
 	unsigned int total_admins;
-	struct Admin *first_admin, *last_admin;
+	struct Admin *first_admin;
+	struct Admin *last_admin;
 };
 extern struct AdminList admin_list;
 

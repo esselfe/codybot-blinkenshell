@@ -56,8 +56,13 @@ void RawLineParse(struct raw_line *rawp, char *line) {
 	RawLineClear(rawp);
 
 	char *c = line;
-	unsigned int cnt = 0, rec_nick = 1, rec_username = 0, rec_host = 0, rec_command = 0,
-		rec_channel = 0, rec_text = 0; // recording flags
+	unsigned int cnt = 0;
+	unsigned int rec_nick = 1;
+	unsigned int rec_username = 0;
+	unsigned int rec_host = 0;
+	unsigned int rec_command = 0;
+	unsigned int rec_channel = 0;
+	unsigned int rec_text = 0; // recording flags
 	
 	// messages to skip:
 // :sao.blinkenshell.org 254 codybot 15 :channels formed

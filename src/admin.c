@@ -118,12 +118,15 @@ void ParseAdminFile(void) {
 		return;
 	}
 
-	char newnick[1024], host[1024];
+	char newnick[1024];
+	char host[1024];
 	memset(newnick, 0, 1024);
 	memset(host, 0, 1024);
 	char c;
-	unsigned int recording_nick = 1, recording_host = 0,
-		in_comment = 0, cnt = 0;
+	unsigned int recording_nick = 1;
+	unsigned int recording_host = 0;
+	unsigned int in_comment = 0;
+	unsigned int cnt = 0;
 	while (1) {
 		c = fgetc(fp);
 		if (c == EOF) {

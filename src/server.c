@@ -11,8 +11,10 @@
 
 #include "codybot.h"
 
-unsigned int server_port, local_port;
-char *server_ip, *server_ip_blinkenshell = "194.14.45.5";
+unsigned int server_port;
+unsigned int local_port;
+char *server_ip;
+char *server_ip_blinkenshell = "194.14.45.5";
 SSL *pSSL;
 
 void ServerGetIP(char *hostname) {

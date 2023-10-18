@@ -37,15 +37,26 @@ void HelpShow(void) {
 	printf("               { -P/--localport PORTNUM | -p/--port PORTNUM | -s/--server ADDR | -t/--trigger CHAR }\n");
 }
 
-int debug, socket_fd, ret, endmainloop, wttr_disabled, use_ssl;
+int debug;
+int socket_fd;
+int ret;
+int endmainloop;
+int wttr_disabled;
+int use_ssl;
 unsigned long long fortune_total;
-struct timeval tv0, tv_start;
+struct timeval tv0;
+struct timeval tv_start;
 struct tm *tm0;
-time_t t0, ctcp_prev_time;
+time_t t0;
+time_t ctcp_prev_time;
 char ctcp_prev_nick[128];
 char *log_filename;
-char *buffer, *buffer_rx, *buffer_cmd, *buffer_log;
-char trigger_char, trigger_char_default = '!';
+char *buffer;
+char *buffer_rx;
+char *buffer_cmd;
+char *buffer_log;
+char trigger_char;
+char trigger_char_default = '!';
 char *current_channel;
 char *nick; // nick used by the bot
 char *full_user_name;
@@ -108,8 +119,10 @@ void Msg(char *text) {
 		memset(buffer_log, 0, 4096);
 	}
 	else if (total_len > 400) {
-		char str[400], *cp = text;
-		unsigned int cnt, cnt2 = 0;
+		char str[400];
+		char *cp = text;
+		unsigned int cnt;
+		unsigned int cnt2 = 0;
 		memset(str, 0, 400);
 		sprintf(str, "PRIVMSG %s :", target);
 		cnt = strlen(str);
