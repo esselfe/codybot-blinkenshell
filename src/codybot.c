@@ -340,8 +340,9 @@ int main(int argc, char **argv) {
 	if (server_port == 6667)
 		use_ssl = 0;
 	if (!server_hostname) {
-		server_hostname = malloc(strlen("irc.blinkenshell.org")+1);
-		sprintf(server_hostname, "irc.blinkenshell.org");
+		const char *tmpstr = "irc.blinkenshell.org";
+		server_hostname = malloc(strlen(tmpstr)+1);
+		snprintf(server_hostname, strlen(tmpstr), "%s", tmpstr);
 	}
 	if (!server_ip)
 		ServerGetIP(server_hostname);
