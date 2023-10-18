@@ -150,11 +150,8 @@ void *AstroFunc(void *astro_ptr) {
 	while (1) {
 		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
 			break;
-		else if (cnt == 0 && *cp == ' ') {
-			++cp;
-			continue;
-		}
-		else if (*cp == '"' || *cp == '$' || *cp == '/' || *cp == '\\') {
+		else if ((cnt == 0 && *cp == ' ') ||
+		  (*cp == '"' || *cp == '$' || *cp == '/' || *cp == '\\')) {
 			++cp;
 			continue;
 		}
