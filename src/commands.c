@@ -788,7 +788,9 @@ char *slap_items[20] = {
 "a rubber band", "a large trout", "a rabbit", "a lizard", "a dinosaur",
 "a chair", "a mouse pad", "a C programming book", "a belt"
 };
-unsigned int slap_max = 10, slap_cnt, slap_hour;
+unsigned int slap_max = 10;
+unsigned int slap_cnt;
+unsigned int slap_hour;
 void SlapCheck(struct raw_line *rawp) {
 	const char *c = rawp->text;
 	if ((*c==1 && *(c+1)=='A' && *(c+2)=='C' && *(c+3)=='T' && *(c+4)=='I' &&
