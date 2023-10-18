@@ -106,9 +106,14 @@ void ServerConnect(void) {
 			SSL_CTX_set_options(ctx, SSL_OP_NO_COMPRESSION);
 			opt_ctx = SSL_CTX_get_options(ctx);
 			printf("||opt_ctx: %ld\n", opt_ctx);
+			SSL_CTX_set_min_proto_version(ctx, TLS1_2_VERSION);
+			opt_ctx = SSL_CTX_get_options(ctx);
+			printf("||opt_ctx: %ld\n", opt_ctx);
 		}
-		else
+		else {
 			SSL_CTX_set_options(ctx, SSL_OP_NO_COMPRESSION);
+			SSL_CTX_set_min_proto_version(ctx, TLS1_2_VERSION);
+		}
 	
 		pSSL = SSL_new(ctx);
 		long opt_ssl;
