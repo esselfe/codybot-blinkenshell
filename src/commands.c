@@ -428,18 +428,18 @@ void Foldoc(struct raw_line *foldoc_rawp) {
 	const char *cp = rawp->text + strlen("!foldoc ");
 	char word[128];
 	memset(word, 0, 128);
-	int cnt;
-	for (cnt=0; cnt<127; cp++,cnt++) {
+	int wcnt;
+	for (wcnt=0; wcnt<127; cp++,wcnt++) {
 		if (*cp == '\0')
 			break;
 		else if (*cp == ' ') {
-			word[cnt++] = '%';
-			word[cnt++] = '2';
-			word[cnt] = '0';
+			word[wcnt++] = '%';
+			word[wcnt++] = '2';
+			word[wcnt] = '0';
 			continue;
 		}
 
-		word[cnt] = *cp;
+		word[wcnt] = *cp;
 	}
 	
 	RawLineFree(rawp);
