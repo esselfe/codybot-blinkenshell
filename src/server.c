@@ -13,6 +13,7 @@
 
 unsigned int server_port;
 unsigned int local_port;
+char *server_hostname;
 char *server_ip;
 char *server_ip_blinkenshell = "194.14.45.5";
 SSL *pSSL;
@@ -132,6 +133,7 @@ void ServerConnect(void) {
 	
 		BIO *bio = BIO_new_socket(socket_fd, BIO_CLOSE);
 		SSL_set_bio(pSSL, bio, bio);
+		SSL_set1_host(pSSL, server_hostname);
 		SSL_connect(pSSL);
 		ret = SSL_accept(pSSL);
 		if (ret <= 0) {

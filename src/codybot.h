@@ -42,6 +42,7 @@ extern char *target;
 // Globals from server.c
 extern unsigned int server_port;
 extern unsigned int local_port;
+extern char *server_hostname;
 extern char *server_ip;
 extern char *server_ip_blinkenshell;
 extern SSL *pSSL;

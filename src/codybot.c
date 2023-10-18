@@ -294,6 +294,7 @@ int main(int argc, char **argv) {
 				use_ssl = 1;
 			break;
 		case 's':
+			server_hostname = strdup(optarg);
 			ServerGetIP(optarg);
 			break;
 		case 't':
@@ -334,8 +335,12 @@ int main(int argc, char **argv) {
 	}
 	if (server_port == 6667)
 		use_ssl = 0;
+	if (!server_hostname) {
+		server_hostname = malloc(strlen("irc.blinkenshell.org")+1);
+		sprintf(server_hostname, "irc.blinkenshell.org");
+	}
 	if (!server_ip)
-		ServerGetIP("irc.blinkenshell.org");
+		ServerGetIP(server_hostname);
 	if (!trigger_char)
 		trigger_char = trigger_char_default;
 
