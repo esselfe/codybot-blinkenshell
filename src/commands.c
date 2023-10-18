@@ -773,11 +773,7 @@ void Joke(struct raw_line *rawp) {
 }
 
 void Rainbow(struct raw_line *rawp) {
-	char *cp = raw.text;
-
-	while (*cp != ' ')
-		++cp;
-	++cp;
+	char *cp = raw.text + strlen("!rainbow ");
 	
 	char *colors2[8] = {
 	"\003", // restore/default
@@ -792,17 +788,17 @@ void Rainbow(struct raw_line *rawp) {
 	char result[4096];
 	memset(result, 0, 4096);
 	while (1) {
+		if (*cp == '\0')
+			break;
+		
 		strcat(result, colors2[cnt]);
 		strncat(result, cp++, 1);
 		if (*cp != ' ')
 			++cnt;
 		if (cnt >= 8)
 			cnt = 1;
-		if (*cp == '\0') {
-			strcat(result, colors[0]);
-			break;
-		}
 	}
+	strcat(result, colors[0]);
 
 	Msg(result);
 }
