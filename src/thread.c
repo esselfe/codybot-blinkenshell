@@ -88,12 +88,14 @@ void *ThreadRXFunc(void *argp) {
 			Log(OUT, buffer);
 			continue;
 		}
-		else if (strcmp(raw.text, "\x01TIME\x01") == 0) {
+		else if (strncmp(raw.text, "\x01TIME\x01", 6) == 0) {
 			if (CheckCTCPTime())
 				continue;
 
 			t0 = time(NULL);
-			sprintf(buffer, "NOTICE %s :\x01TIME %s\x01\n", raw.nick, ctime(&t0));
+			char buf[128];
+			ctime_r(&t0, buf);
+			sprintf(buffer, "NOTICE %s :\x01TIME %s\x01\n", raw.nick, buf);
 			if (use_ssl)
 				SSL_write(pSSL, buffer, strlen(buffer));
 			else
