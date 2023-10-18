@@ -51,7 +51,8 @@ void AsciiArt(void) {
 	fseek(fp, 0, SEEK_SET);
 	gettimeofday(&tv0, NULL);
 	srand((unsigned int)tv0.tv_usec);
-	int choice = rand() % cnt;
+	int choice = rand() % cnt+1;
+	--choice;
 
 	// go to chosen item
 	fseek(fp, 0, SEEK_SET);
