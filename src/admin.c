@@ -100,14 +100,6 @@ int IsAdmin(const char *newnick, const char *host) {
 			if (admin->host != NULL) {
 				if (strcmp(host, admin->host) == 0)
 					return 1;
-				else { // could catch the same nick in the list
-						// with different host
-					if (admin->next == NULL)
-						break;
-					else
-						admin = admin->next;
-					continue;
-				}
 			}
 			else
 				return 1;
