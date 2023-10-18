@@ -101,6 +101,7 @@ void Log(unsigned int direction, const char *text) {
 		tm0->tm_year+1900-2000, tm0->tm_mon+1,
 		tm0->tm_mday, tm0->tm_hour, tm0->tm_min, tm0->tm_sec, tv0.tv_usec,
 		dirstr, str);
+	free(str);
 	fputs(buffer_log, stdout);
 	
 	memset(buffer_log, 0, 4096);
