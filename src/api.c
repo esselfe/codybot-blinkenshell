@@ -431,19 +431,30 @@ void APIFetchTime(char *city) {
 	///////////////////////
 	char *str = malloc(4096);
 	memset(str, 0, 4096);
-	char *value = (char *)json_object_get_string(name);
-	sprintf(str, "%s, ", value);
-	value = (char *)json_object_get_string(region);
-	strcat(str, value);
-	strcat(str, ", ");
-	value = (char *)json_object_get_string(country);
-	strcat(str, value);
-	strcat(str, ": Timezone ");
-	value = (char *)json_object_get_string(tz_id);
-	strcat(str, value);
-	strcat(str, ", ");
-	value = (char *)json_object_get_string(time_string);
-	strcat(str, value);
+	char *value;
+	if (name) {
+		value = (char *)json_object_get_string(name);
+		sprintf(str, "%s, ", value);
+	}
+	if (region) {
+		value = (char *)json_object_get_string(region);
+		strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (country) {
+		value = (char *)json_object_get_string(country);
+		strcat(str, value);
+	}
+	if (tz_id) {
+		strcat(str, ": Timezone ");
+		value = (char *)json_object_get_string(tz_id);
+		strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (time_string) {
+		value = (char *)json_object_get_string(time_string);
+		strcat(str, value);
+	}
 	
 	json_object_put(root);
 	
