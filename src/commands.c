@@ -137,16 +137,14 @@ void *AstroFunc(void *astro_ptr) {
 
 	if (!AstroCheckUsage()) {
 		Msg("Astro quota reached, maximum 10 times every 30 minutes.");
+		RawLineFree(rawp);
 		return NULL;
 	}
 
 	unsigned int cnt = 0;
-	unsigned int cnt_conv = 0;
 	char city[128];
-	char city_conv[128];
 	const char *cp = rawp->text + strlen("!astro ");
 	memset(city, 0, 128);
-	memset(city_conv, 0, 128);
 	while (1) {
 		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
 			break;
@@ -155,24 +153,14 @@ void *AstroFunc(void *astro_ptr) {
 			++cp;
 			continue;
 		}
-		else if (*cp == ' ') {
-			city[cnt++] = ' ';
-			city_conv[cnt_conv++] = '%';
-			city_conv[cnt_conv++] = '2';
-			city_conv[cnt_conv++] = '0';
-			++cp;
-			continue;
-		}
 		
 		city[cnt] = *cp;
-		city_conv[cnt_conv] = *cp;
 		++cnt;
-		++cnt_conv;
 		++cp;
 	}
 	RawLineFree(rawp);
 
-	APIFetchAstro(city_conv);
+	APIFetchAstro(city);
 
 	return NULL;
 }
@@ -556,16 +544,14 @@ void *ForecastFunc(void *ptr) {
 
 	if (!ForecastCheckUsage()) {
 		Msg("Forecast quota reached, maximum 10 times every 30 minutes.");
+		RawLineFree(rawp);
 		return NULL;
 	}
 
 	unsigned int cnt = 0;
-	unsigned int cnt_conv = 0;
 	char city[128];
-	char city_conv[128];
 	const char *cp = rawp->text + strlen("!forecast ");
 	memset(city, 0, 128);
-	memset(city_conv, 0, 128);
 	while (1) {
 		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
 			break;
@@ -577,24 +563,14 @@ void *ForecastFunc(void *ptr) {
 			++cp;
 			continue;
 		}
-		else if (*cp == ' ') {
-			city[cnt++] = ' ';
-			city_conv[cnt_conv++] = '%';
-			city_conv[cnt_conv++] = '2';
-			city_conv[cnt_conv++] = '0';
-			++cp;
-			continue;
-		}
 		
 		city[cnt] = *cp;
-		city_conv[cnt_conv] = *cp;
 		++cnt;
-		++cnt_conv;
 		++cp;
 	}
 	RawLineFree(rawp);
 
-	APIFetchForecast(city_conv);
+	APIFetchForecast(city);
 
 	return NULL;
 }
@@ -874,12 +850,9 @@ void *TimeFunc(void *time_ptr) {
 	struct raw_line *rawp = RawLineDup((struct raw_line *)time_ptr);
 
 	unsigned int cnt = 0;
-	unsigned int cnt_conv = 0;
 	char city[128];
-	char city_conv[128];
 	const char *cp = rawp->text + strlen("!time ");
 	memset(city, 0, 128);
-	memset(city_conv, 0, 128);
 	while (1) {
 		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
 			break;
@@ -888,24 +861,14 @@ void *TimeFunc(void *time_ptr) {
 			++cp;
 			continue;
 		}
-		else if (*cp == ' ') {
-			city[cnt++] = ' ';
-			city_conv[cnt_conv++] = '%';
-			city_conv[cnt_conv++] = '2';
-			city_conv[cnt_conv++] = '0';
-			++cp;
-			continue;
-		}
 		
 		city[cnt] = *cp;
-		city_conv[cnt_conv] = *cp;
 		++cnt;
-		++cnt_conv;
 		++cp;
 	}
 	RawLineFree(rawp);
 
-	APIFetchTime(city_conv);
+	APIFetchTime(city);
 
 	return NULL;
 }
@@ -992,16 +955,14 @@ void *WeatherFunc(void *ptr) {
 
 	if (!WeatherCheckUsage()) {
 		Msg("Weather quota reached, maximum 10 times every 30 minutes.");
+		RawLineFree(rawp);
 		return NULL;
 	}
 
 	unsigned int cnt = 0;
-	unsigned int cnt_conv = 0;
 	char city[128];
-	char city_conv[128];
 	const char *cp = rawp->text + strlen("!weather ");
 	memset(city, 0, 128);
-	memset(city_conv, 0, 128);
 	while (1) {
 		if (*cp == '\n' || *cp == '\0' || cp - rawp->text >= 128)
 			break;
@@ -1013,24 +974,14 @@ void *WeatherFunc(void *ptr) {
 			++cp;
 			continue;
 		}
-		else if (*cp == ' ') {
-			city[cnt++] = ' ';
-			city_conv[cnt_conv++] = '%';
-			city_conv[cnt_conv++] = '2';
-			city_conv[cnt_conv++] = '0';
-			++cp;
-			continue;
-		}
 		
 		city[cnt] = *cp;
-		city_conv[cnt_conv] = *cp;
 		++cnt;
-		++cnt_conv;
 		++cp;
 	}
 	RawLineFree(rawp);
 
-	APIFetchWeather(city_conv);
+	APIFetchWeather(city);
 
 	return NULL;
 }
