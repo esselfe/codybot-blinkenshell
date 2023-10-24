@@ -127,32 +127,66 @@ void APIFetchAstro(char *city) {
 	///////////////////////
 	char *str = malloc(4096);
 	memset(str, 0, 4096);
-	char *value = (char *)json_object_get_string(name);
-	sprintf(str, "%s, ", value);
-	value = (char *)json_object_get_string(region);
-	strcat(str, value);
-	strcat(str, ", ");
-	value = (char *)json_object_get_string(country);
-	strcat(str, value);
-	strcat(str, ": Sunrise ");
-	value = (char *)json_object_get_string(sunrise);
-	strcat(str, value);
-	strcat(str, ", sunset ");
-	value = (char *)json_object_get_string(sunset);
-	strcat(str, value);
-	strcat(str, ", moonrise ");
-	value = (char *)json_object_get_string(moonrise);
-	strcat(str, value);
-	strcat(str, ", moonset ");
-	value = (char *)json_object_get_string(moonset);
-	strcat(str, value);
-	strcat(str, ", phase ");
-	value = (char *)json_object_get_string(moonphase);
-	strcat(str, value);
-	strcat(str, ", illumination ");
-	value = (char *)json_object_get_string(moonillum);
-	strcat(str, value);
-	strcat(str, "%");
+	char *value = NULL;
+	if (name != NULL) {
+		value = (char *)json_object_get_string(name);
+		if (value != NULL)
+			sprintf(str, "%s, ", value);
+	}
+	if (region != NULL) {
+		value = (char *)json_object_get_string(region);
+		if (value != NULL)
+			strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (country != NULL) {
+		value = (char *)json_object_get_string(country);
+		if (value != NULL)
+			strcat(str, value);
+	}
+	strcat(str, ": ");
+	if (sunrise != NULL) {
+		strcat(str, "Sunrise ");
+		value = (char *)json_object_get_string(sunrise);
+		if (value != NULL)
+			strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (sunset != NULL) {
+		strcat(str, "sunset ");
+		value = (char *)json_object_get_string(sunset);
+		if (value != NULL)
+			strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (moonrise != NULL) {
+		strcat(str, "moonrise ");
+		value = (char *)json_object_get_string(moonrise);
+		if (value != NULL)
+			strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (moonset != NULL) {
+		strcat(str, "moonset ");
+		value = (char *)json_object_get_string(moonset);
+		if (value != NULL)
+			strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (moonphase != NULL) {
+		strcat(str, "phase ");
+		value = (char *)json_object_get_string(moonphase);
+		if (value != NULL)
+			strcat(str, value);
+		strcat(str, ", ");
+	}
+	if (moonillum != NULL) {
+		strcat(str, "illumination ");
+		value = (char *)json_object_get_string(moonillum);
+		if (value != NULL)
+			strcat(str, value);
+		strcat(str, "%");
+	}
 	
 	json_object_put(root);
 	
@@ -440,26 +474,31 @@ void APIFetchTime(char *city) {
 	char *value;
 	if (name) {
 		value = (char *)json_object_get_string(name);
-		sprintf(str, "%s, ", value);
+		if (value != NULL)
+			sprintf(str, "%s, ", value);
 	}
 	if (region) {
 		value = (char *)json_object_get_string(region);
-		strcat(str, value);
+		if (value != NULL)
+			strcat(str, value);
 		strcat(str, ", ");
 	}
 	if (country) {
 		value = (char *)json_object_get_string(country);
-		strcat(str, value);
+		if (value != NULL)
+			strcat(str, value);
 	}
 	if (tz_id) {
 		strcat(str, ": Timezone ");
 		value = (char *)json_object_get_string(tz_id);
-		strcat(str, value);
+		if (value != NULL)
+			strcat(str, value);
 		strcat(str, ", ");
 	}
 	if (time_string) {
 		value = (char *)json_object_get_string(time_string);
-		strcat(str, value);
+		if (value != NULL)
+			strcat(str, value);
 	}
 	
 	json_object_put(root);
