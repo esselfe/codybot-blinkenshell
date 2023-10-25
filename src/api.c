@@ -592,44 +592,100 @@ void APIFetchWeather(char *city) {
 	///////////////////////
 	char *str = malloc(4096);
 	memset(str, 0, 4096);
-	char *value = (char *)json_object_get_string(name);
-	sprintf(str, "%s, ", value);
-	value = (char *)json_object_get_string(region);
-	strcat(str, value);
-	strcat(str, ", ");
-	value = (char *)json_object_get_string(country);
-	strcat(str, value);
-	strcat(str, ": ");
-	value = (char *)json_object_get_string(text);
-	strcat(str, value);
-	strcat(str, ", ");
-	value = (char *)json_object_get_string(temp_c);
-	strcat(str, value);
-	strcat(str, "C/");
-	value = (char *)json_object_get_string(temp_f);
-	strcat(str, value);
-	strcat(str, "F feels like ");
-	value = (char *)json_object_get_string(feels_c);
-	strcat(str, value);
-	strcat(str, "C/");
-	value = (char *)json_object_get_string(feels_f);
-	strcat(str, value);
-	strcat(str, "F, wind ");
-	value = (char *)json_object_get_string(wind_k);
-	strcat(str, value);
-	strcat(str, "kmh/");
-	value = (char *)json_object_get_string(wind_m);
-	strcat(str, value);
-	strcat(str, "mph, gust ");
-	value = (char *)json_object_get_string(gust_k);
-	strcat(str, value);
-	strcat(str, "kmh/");
-	value = (char *)json_object_get_string(gust_m);
-	strcat(str, value);
-	strcat(str, "mph, precip. ");
-	value = (char *)json_object_get_string(precip);
-	strcat(str, value);
-	strcat(str, "mm");
+	char *value;
+	if (name != NULL) {
+		value = (char *)json_object_get_string(name);
+		if (value != NULL)
+			sprintf(str, "%s, ", value);
+	}
+	if (region != NULL) {
+		value = (char *)json_object_get_string(region);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, ", ");
+	}
+	if (country != NULL) {
+		value = (char *)json_object_get_string(country);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, ": ");
+	}
+	if (text != NULL) {
+		value = (char *)json_object_get_string(text);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, ", ");
+	}
+	if (temp_c != NULL) {
+		value = (char *)json_object_get_string(temp_c);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "C/");
+	}
+	if (temp_f != NULL) {
+		value = (char *)json_object_get_string(temp_f);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "F ");
+	}
+	strcat(str, "feels like ");
+	if (feels_c != NULL) {
+		value = (char *)json_object_get_string(feels_c);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "C/");
+	}
+	if (feels_f != NULL) {
+		value = (char *)json_object_get_string(feels_f);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "F, ");
+	}
+	strcat(str, "wind ");
+	if (wind_k != NULL) {
+		value = (char *)json_object_get_string(wind_k);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "kmh/");
+	}
+	if (wind_m != NULL) {
+		value = (char *)json_object_get_string(wind_m);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "mph, ");
+	}
+	strcat(str, "gust ");
+	if (gust_k != NULL) {
+		value = (char *)json_object_get_string(gust_k);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "kmh/");
+	}
+	if (gust_m != NULL) {
+		value = (char *)json_object_get_string(gust_m);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "mph, ");
+	}
+	strcat(str, "precip. ");
+	if (precip != NULL) {
+		value = (char *)json_object_get_string(precip);
+		if (value != NULL)
+			strcat(str, value);
+		
+		strcat(str, "mm");
+	}
 	
 	json_object_put(root);
 	
