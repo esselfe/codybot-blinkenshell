@@ -272,35 +272,48 @@ int main(int argc, char **argv) {
 			debug = 1;
 			break;
 		case 'H':
-			hostname = (char *)malloc(strlen(optarg)+1);
-			sprintf(hostname, "%s", optarg);
+			if (optarg != NULL) {
+				hostname = (char *)malloc(strlen(optarg)+1);
+				sprintf(hostname, "%s", optarg);
+			}
 			break;
 		case 'l':
-			log_filename = (char *)malloc(strlen(optarg)+1);
-			sprintf(log_filename, "%s", optarg);
+			if (optarg != NULL) {
+				log_filename = (char *)malloc(strlen(optarg)+1);
+				sprintf(log_filename, "%s", optarg);
+			}
 			break;
 		case 'N':
-			full_user_name = (char *)malloc(strlen(optarg)+1);
-			sprintf(full_user_name, "%s", optarg);
+			if (optarg != NULL) {
+				full_user_name = (char *)malloc(strlen(optarg)+1);
+				sprintf(full_user_name, "%s", optarg);
+			}
 			break;
 		case 'n':
-			nick = (char *)malloc(strlen(optarg)+1);
-			sprintf(nick, "%s", optarg);
+			if (optarg != NULL) {
+				nick = (char *)malloc(strlen(optarg)+1);
+				sprintf(nick, "%s", optarg);
+			}
 			break;
 		case 'P':
-			local_port = atoi(optarg);
+			if (optarg != NULL)
+				local_port = atoi(optarg);
 			break;
 		case 'p':
-			server_port = atoi(optarg);
+			if (optarg != NULL)
+				server_port = atoi(optarg);
 			if (server_port == 6697)
 				use_ssl = 1;
 			break;
 		case 's':
-			server_hostname = strdup(optarg);
-			ServerGetIP(optarg);
+			if (optarg != NULL) {
+				server_hostname = strdup(optarg);
+				ServerGetIP(optarg);
+			}
 			break;
 		case 't':
-			trigger_char = *optarg;
+			if (optarg != NULL)
+				trigger_char = *optarg;
 			break;
 		default:
 			fprintf(stderr, "##codybot::main() error: Unknown argument: %c/%d\n", (char)c, c);
