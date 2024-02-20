@@ -744,6 +744,10 @@ void Joke(struct raw_line *joke_rawp) {
 	fclose(fp);
 }
 
+void Ping(struct raw_line *ping_rawp) {
+	Msg("pong");
+}
+
 void Rainbow(struct raw_line *rainbow_rawp) {
 	struct raw_line *rawp = RawLineDup(rainbow_rawp);
 	const char *cp = rawp->text + strlen("!rainbow ");

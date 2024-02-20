@@ -114,6 +114,7 @@ void Foldoc(struct raw_line *foldoc_rawp);
 void Forecast(struct raw_line *forecast_rawp);
 void Fortune(struct raw_line *fortune_rawp);
 void Joke(struct raw_line *joke_rawp);
+void Ping(struct raw_line *ping_rawp);
 void Rainbow(struct raw_line *rainbow_rawp);
 void SlapCheck(struct raw_line *slap_rawp);
 void Stats(struct raw_line *stats_rawp);
