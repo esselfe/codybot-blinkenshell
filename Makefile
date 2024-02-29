@@ -3,7 +3,8 @@ CFLAGS = -std=c11 -Wall -Werror -D_GNU_SOURCE -I/home/codybot/opt/include
 LDFLAGS = -lpthread -lssl -lcrypto -lmagic -L/home/codybot/opt/lib -lcurl -ljson-c
 OBJDIR = obj
 OBJS = $(OBJDIR)/admin.o $(OBJDIR)/api.o $(OBJDIR)/commands.o \
-$(OBJDIR)/codybot.o $(OBJDIR)/raw.o $(OBJDIR)/server.o $(OBJDIR)/thread.o
+$(OBJDIR)/codybot.o $(OBJDIR)/ctcp.o $(OBJDIR)/raw.o \
+$(OBJDIR)/server.o $(OBJDIR)/thread.o
 PROGNAME = codybot
 
 .PHONY: tcc default all prepare clean
@@ -26,6 +27,9 @@ $(OBJDIR)/commands.o: src/commands.c
 
 $(OBJDIR)/codybot.o: src/codybot.c
 	gcc -c $(CFLAGS) src/codybot.c -o $(OBJDIR)/codybot.o
+
+$(OBJDIR)/ctcp.o: src/ctcp.c
+	gcc -c $(CFLAGS) src/ctcp.c -o $(OBJDIR)/ctcp.o
 
 $(OBJDIR)/raw.o: src/raw.c
 	gcc -c $(CFLAGS) src/raw.c -o $(OBJDIR)/raw.o

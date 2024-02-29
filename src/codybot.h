@@ -122,6 +122,10 @@ void Time(struct raw_line *time_rawp);
 void Uptime(struct raw_line *uptime_rawp);
 void Weather(struct raw_line *weather_rawp);
 
+// from ctcp.c
+int CheckCTCPTime(void);
+int CheckCTCP(struct raw_line *rawp);
+
 // from raw.c
 char *RawGetTarget(struct raw_line *rawp);
 void RawLineClear(struct raw_line *rawp);
