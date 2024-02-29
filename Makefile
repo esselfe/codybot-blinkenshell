@@ -1,5 +1,5 @@
 
-CFLAGS = -std=c11 -Wall -Werror -D_GNU_SOURCE -I/home/codybot/opt/include
+CFLAGS = -std=c11 -Wall -D_GNU_SOURCE -I/home/codybot/opt/include
 LDFLAGS = -lpthread -lssl -lcrypto -lmagic -L/home/codybot/opt/lib -lcurl -ljson-c
 OBJDIR = obj
 OBJS = $(OBJDIR)/admin.o $(OBJDIR)/api.o $(OBJDIR)/commands.o \
