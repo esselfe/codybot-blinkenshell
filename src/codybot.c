@@ -36,9 +36,19 @@ static const struct option long_options[] = {
 static const char *short_options = "hVdH:l:N:n:P:p:s:t:";
 
 void HelpShow(void) {
-	printf("Usage: codybot { -h/--help | -V/--version | -d/--debug }\n");
-	printf("               { -H/--hostname HOST | -l/--log FILENAME | -N/--fullname NAME | -n/--nick NICK }\n");
-	printf("               { -P/--localport PORTNUM | -p/--port PORTNUM | -s/--server ADDR | -t/--trigger CHAR }\n");
+printf("Usage: codybot { OPTION [ ARGUMENT ] }\n"
+"Options:\n"
+"\t-h/--help\n"
+"\t-V/--version\n"
+"\t-d/--debug\n"
+"\t-H/--hostname HOST\n"
+"\t-l/--log FILENAME\n"
+"\t-N/--fullname NAME\n"
+"\t-n/--nick NICK\n"
+"\t-P/--localport PORTNUM\n"
+"\t-p/--port PORTNUM\n"
+"\t-s/--server ADDR\n"
+"\t-t/--trigger CHAR\n");
 }
 
 int debug;
