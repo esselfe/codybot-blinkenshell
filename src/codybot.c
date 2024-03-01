@@ -12,7 +12,7 @@
 
 #include "codybot.h"
 
-// b stands for blinkenshell's version
+// b stands for Blinkenshell's version
 const char *codybot_version_string = "0.4.4b";
 
 static const struct option long_options[] = {
@@ -78,8 +78,6 @@ void Log(unsigned int direction, const char *text) {
 	// remove trailing newline
 	if (str[strlen(str)-1] == '\n')
 		str[strlen(str)-1] = '\0';
-//	if (str[strlen(str)] == '\n')
-//		str[strlen(str)] = '\0';
 
 	char dirstr[3];
 	if (direction == LOCAL)
@@ -161,6 +159,7 @@ void Msg(const char *text) {
 }
 
 // Read and parse keyboard input from the console
+// on which codybot has been started from.
 void ReadCommandLoop(void) {
 	char buffer_line[4096];
 	while (!endmainloop) {
@@ -233,7 +232,7 @@ void ReadCommandLoop(void) {
 			target = raw.channel;
 			Uptime(NULL);
 		}
-		else {
+		else { // Send input directly to the server
 			if (use_ssl)
 				SSL_write(pSSL, buffer_line, strlen(buffer_line));
 			else
