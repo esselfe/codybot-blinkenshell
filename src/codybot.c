@@ -1,3 +1,7 @@
+/* Codybot is an IRC bot written in the C programming language,
+   providing users with fortune cookies, jokes, weather per city,
+   ascii-art images, text colorization and fortune cookie counter.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
