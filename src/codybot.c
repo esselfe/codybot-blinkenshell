@@ -233,6 +233,15 @@ void ReadCommandLoop(void) {
 			Log(OUT, "PRIVMSG NickServ :identify *********");
 			memset(buffer_cmd, 0, 4096);
 		}
+		else if (strcmp(buffer_line, "j\n") == 0) {
+			sprintf(buffer_cmd, "JOIN #codybot\n");
+			if (use_ssl)
+				SSL_write(pSSL, buffer_cmd, strlen(buffer_cmd));
+			else
+				write(socket_fd, buffer_cmd, strlen(buffer_cmd));
+			Log(OUT, buffer_cmd);
+			memset(buffer_cmd, 0, 4096);
+		}
 		else if (strcmp(buffer_line, "trigger\n") == 0)
 			printf("trigger = %c\n", trigger_char);
 		else if (strncmp(buffer_line, "trigger ", 8) == 0) {

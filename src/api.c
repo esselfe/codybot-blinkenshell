@@ -268,7 +268,7 @@ void APIFetchForecast(char *city) {
 	json_object *forecast = json_object_object_get(root, "forecast");
 	json_object *forecastday = json_object_object_get(forecast, "forecastday");
 	
-	json_object *item1 = json_object_array_get_idx(forecastday, 1);
+	json_object *item1 = json_object_array_get_idx(forecastday, 0);
 	json_object *date1 = json_object_object_get(item1, "date");
 	json_object *day1 = json_object_object_get(item1, "day");
 	json_object *condition1 = json_object_object_get(day1, "condition");
@@ -281,7 +281,7 @@ void APIFetchForecast(char *city) {
         json_object *totalprecip_in1 = json_object_object_get(day1, "totalprecip_in");
         json_object *totalsnow_cm1 = json_object_object_get(day1, "totalsnow_cm");
 	
-	json_object *item2 = json_object_array_get_idx(forecastday, 2);
+	json_object *item2 = json_object_array_get_idx(forecastday, 1);
 	json_object *date2 = json_object_object_get(item2, "date");
 	json_object *day2 = json_object_object_get(item2, "day");
 	json_object *condition2 = json_object_object_get(day2, "condition");
@@ -293,6 +293,19 @@ void APIFetchForecast(char *city) {
 	json_object *totalprecip_mm2 = json_object_object_get(day2, "totalprecip_mm");
         json_object *totalprecip_in2 = json_object_object_get(day2, "totalprecip_in");
         json_object *totalsnow_cm2 = json_object_object_get(day2, "totalsnow_cm");
+        
+	json_object *item3 = json_object_array_get_idx(forecastday, 2);
+	json_object *date3 = json_object_object_get(item3, "date");
+	json_object *day3 = json_object_object_get(item3, "day");
+	json_object *condition3 = json_object_object_get(day3, "condition");
+	json_object *text3 = json_object_object_get(condition3, "text");
+	json_object *mintemp_c3 = json_object_object_get(day3, "mintemp_c");
+	json_object *mintemp_f3 = json_object_object_get(day3, "mintemp_f");
+	json_object *maxtemp_c3 = json_object_object_get(day3, "maxtemp_c");
+	json_object *maxtemp_f3 = json_object_object_get(day3, "maxtemp_f");
+	json_object *totalprecip_mm3 = json_object_object_get(day3, "totalprecip_mm");
+        json_object *totalprecip_in3 = json_object_object_get(day3, "totalprecip_in");
+        json_object *totalsnow_cm3 = json_object_object_get(day3, "totalsnow_cm");
         
 	// Create final output string
 	/////////////////////////////
@@ -387,6 +400,47 @@ void APIFetchForecast(char *city) {
 	if (totalsnow_cm2 != NULL) {
 		strcat(str, "total snow ");
 		strcat(str, (char *)json_object_get_string(totalsnow_cm2));
+		strcat(str, "cm ");
+	}
+	
+	if (date3 != NULL) {
+		strcat(str, (char *)json_object_get_string(date3));
+		strcat(str, ": ");
+	}
+	if (text3 != NULL) {
+		strcat(str, (char *)json_object_get_string(text3));
+		strcat(str, ", ");
+	}
+	if (mintemp_c3 != NULL) {
+		strcat(str, "minimum ");
+		strcat(str, (char *)json_object_get_string(mintemp_c3));
+		strcat(str, "C/");
+	}
+	if (mintemp_f3 != NULL) {
+		strcat(str, (char *)json_object_get_string(mintemp_f3));
+		strcat(str, "F, ");
+	}
+	if (maxtemp_c3 != NULL) {
+		strcat(str, "maximum ");
+		strcat(str, (char *)json_object_get_string(maxtemp_c3));
+		strcat(str, "C/");
+	}
+	if (maxtemp_f3 != NULL) {
+		strcat(str, (char *)json_object_get_string(maxtemp_f3));
+		strcat(str, "F ");
+	}
+	if (totalprecip_mm3 != NULL) {
+		strcat(str, "total precip. ");
+		strcat(str, (char *)json_object_get_string(totalprecip_mm3));
+		strcat(str, "mm/");
+	}
+	if (totalprecip_in3 != NULL) {
+		strcat(str, (char *)json_object_get_string(totalprecip_in3));
+		strcat(str, "in, ");
+	}
+	if (totalsnow_cm3 != NULL) {
+		strcat(str, "total snow ");
+		strcat(str, (char *)json_object_get_string(totalsnow_cm3));
 		strcat(str, "cm");
 	}
 	
