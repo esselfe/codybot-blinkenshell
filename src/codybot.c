@@ -367,7 +367,8 @@ int main(int argc, char **argv) {
 	if (server_port == 6667)
 		use_ssl = 0;
 	if (!server_hostname) {
-		const char *tmpstr = "irc.blinkenshell.org";
+		//const char *tmpstr = "irc.blinkenshell.org";
+		const char *tmpstr = "sao.blinkenshell.org";
 		server_hostname = malloc(strlen(tmpstr)+1);
 		snprintf(server_hostname, strlen(tmpstr), "%s", tmpstr);
 	}
