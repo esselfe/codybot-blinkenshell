@@ -1,4 +1,8 @@
-20190824-20230923
+20190824-20250226
+
+Note: this project has been abandonned.
+https://blinkenshell.org/wiki/Projects/codybot
+
 Codybot is an IRC bot written in the C programming language,
 providing users with fortune cookies, jokes, weather per city,
 ascii-art images, text colorization and fortune cookie counter.
